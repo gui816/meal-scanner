@@ -67,3 +67,4 @@ A typical photo analysis costs **<$0.001** per call.
 - **Pillow** — image validation & resize
 - **python-multipart** — file upload
 # NutriLens - force deploy Sat Jun 13 09:00:10 PM WEST 2026
+# Render auto-deploy test Sat Jun 13 10:44:19 PM WEST 2026
