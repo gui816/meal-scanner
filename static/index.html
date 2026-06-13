@@ -332,7 +332,8 @@ dz.addEventListener("drop",e=>{
 });
 
 async function analyze(){
-  const fi=document.getElementById("fileInput"); if(!fi.files[0]) return;
+  const fi=document.getElementById("fileInput")||document.getElementById("cameraInput");
+  if(!fi||!fi.files[0]) return;
   const btn=document.getElementById("analyzeBtn"); btn.disabled=true;
   document.getElementById("loading").style.display="block";
   document.getElementById("results").style.display="none";
