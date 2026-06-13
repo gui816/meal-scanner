@@ -73,7 +73,9 @@ SYSTEM_PROMPT = """Analyse this food photo. Return ONLY valid JSON (no markdown,
 
 {"dish_name": "...", "ingredients": [{"name": "...", "estimated_amount": "..."}], "total_calories_kcal": 0, "protein_g": 0, "carbs_g": 0, "fat_g": 0, "notes": "..."}
 
-Be realistic about portions. Use metric units."""
+Be realistic about portions. Use metric units.
+
+{lang}"""
 
 
 # ---------------------------------------------------------------------------
@@ -96,11 +98,22 @@ def _validate_image(contents: bytes, filename: str) -> PIL.Image.Image:
     return img
 
 
-def _call_gemini(image: PIL.Image.Image) -> MealAnalysis:
+def _call_gemini(image: PIL.Image.Image, lang: str = "en") -> MealAnalysis:
+    # Add language instruction to prompt
+    lang_instruction = {
+        "pt": "Responda em português (de Portugal). Use unidades métricas.",
+        "en": "Respond in English. Use metric units.",
+        "es": "Responde en español. Usa unidades métricas.",
+        "fr": "Répondez en français. Utilisez les unités métriques.",
+        "de": "Antworte auf Deutsch. Verwende metrische Einheiten.",
+        "it": "Rispondi in italiano. Usa unità metriche."
+    }
+    lang_prompt = lang_instruction.get(lang, lang_instruction["en"])
+    prompt = SYSTEM_PROMPT.replace("{lang}", lang_prompt)
     try:
         resp = client.models.generate_content(
             model=MODEL,
-            contents=[SYSTEM_PROMPT, image],
+            contents=[prompt, image],
             config=types.GenerateContentConfig(
                 temperature=0.15,
                 max_output_tokens=4096,
@@ -201,17 +214,19 @@ def auth(body: dict):
 
 
 @app.post("/analyze", response_model=MealAnalysis)
-async def analyze(req: Request, file: UploadFile = File(...)):
+async def analyze(req: Request, file: UploadFile = File(...), lang: str = "en"):
     if not _check_token(req):
         logger.warning(f"Unauthenticated analyze attempt from {req.client.host if req.client else 'unknown'}")
         raise HTTPException(401, "Not authenticated. POST /auth first.")
     if file.content_type not in ALLOWED_TYPES:
         logger.warning(f"Unsupported type: {file.content_type}")
         raise HTTPException(400, f"Unsupported type '{file.content_type}'. Use JPEG, PNG, or WebP.")
+    if lang not in ["pt","en","es","fr","de","it"]:
+        lang = "en"
     contents = await file.read()
     image = _validate_image(contents, file.filename or "photo")
     try:
-        result = _call_gemini(image)
+        result = _call_gemini(image, lang)
         logger.info(f"Analyze success: {result.dish_name}, {result.total_calories_kcal} kcal, {len(result.ingredients)} ingredients")
         return result
     except HTTPException:

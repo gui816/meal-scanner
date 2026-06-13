@@ -164,7 +164,7 @@ async function analyze(){
   const btn=document.getElementById("analyzeBtn");btn.disabled=true;btn.textContent="...";
   document.getElementById("loading").style.display="block";document.getElementById("results").style.display="none";
   const fd=new FormData();fd.append("file",fi.files[0]);
-  try{const r=await fetch("/analyze",{method:"POST",headers:{"x-scan-auth":TOKEN},body:fd});if(r.status===401){sessionStorage.removeItem("ms_token");location.reload();return;}const data=await r.json();showResults(data);}catch(e){document.getElementById("loading").innerHTML="<p style='color:#dc2626'>Error</p>";}
+  try{const lng=detectLang();const r=await fetch("/analyze?lang="+lng,{method:"POST",headers:{"x-scan-auth":TOKEN},body:fd});if(r.status===401){sessionStorage.removeItem("ms_token");location.reload();return;}const data=await r.json();showResults(data);}catch(e){document.getElementById("loading").innerHTML="<p style='color:#dc2626'>Error</p>";}
   btn.disabled=false;btn.textContent="Analyze meal";document.getElementById("loading").style.display="none";
 }
 function showResults(d){
