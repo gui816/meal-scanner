@@ -185,6 +185,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.mount("/static", StaticFiles(directory=Path(__file__).resolve().parent / "static"), name="static")
+
 # ── Auth helpers ──────────────────────────────────────────────────────
 
 TOKEN_HEADER = "x-scan-auth"

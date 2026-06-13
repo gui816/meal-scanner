@@ -2,8 +2,15 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title id="pageTitle">Meal Scanner</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta name="theme-color" content="#2563eb"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="NutriLens"/>
+<meta name="description" content="Snap a photo of your meal and get instant nutritional analysis - ingredients, calories, protein, carbs and fat."/>
+<link rel="manifest" href="/static/manifest.json"/>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white'%3E%F0%9F%8D%BD%3C/text%3E%3C/svg%3E"/>
+<title id="pageTitle">NutriLens</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
@@ -83,8 +90,8 @@ footer{text-align:center;margin-top:1.5rem;color:var(--sub);font-size:.72rem;opa
     <button class="lang-btn" data-lang="it" onclick="setLang('it')">🇮🇹 IT</button>
   </div>
   <div class="gate-card">
-    <div class="gate-icon">&#x1F37D;</div>
-    <div class="gate-title" data-i18n="gate_title">Meal Scanner</div>
+    <div class="gate-icon">&#x1F9ED;</div>
+    <div class="gate-title" data-i18n="gate_title">NutriLens</div>
     <div class="gate-sub" data-i18n="gate_sub">Enter password to access</div>
     <input type="password" id="gp" placeholder="Password" autocomplete="off" data-i18n="gate_placeholder" onkeydown="if(event.key==='Enter')doAuth()"/>
     <button class="gate-btn" onclick="doAuth()" data-i18n="gate_btn">Enter</button>
@@ -103,7 +110,7 @@ footer{text-align:center;margin-top:1.5rem;color:var(--sub);font-size:.72rem;opa
     </select>
   </div>
   <header>
-    <h1>&#x1F37D; <span data-i18n="title">Meal Scanner</span></h1>
+    <h1>&#x1F9ED; <span data-i18n="title">NutriLens</span></h1>
     <p data-i18n="subtitle">Upload a photo of your meal - get ingredients and estimated calories</p>
   </header>
   <div class="upload-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
@@ -136,12 +143,12 @@ footer{text-align:center;margin-top:1.5rem;color:var(--sub);font-size:.72rem;opa
 </div>
 <script>
 const I18N = {
-pt:{gate_title:"Meal Scanner",gate_sub:"Insere a password para aceder",gate_placeholder:"Password",gate_btn:"Entrar",gate_err:"Password errada. Tenta novamente.",title:"Meal Scanner",subtitle:"Tira uma foto ao teu prato - descobre os ingredientes e calorias estimadas",drop_title:"Larga a tua foto aqui",drop_sub:"ou clica para procurar - JPEG, PNG, WebP",analyze_btn:"Analisar refeição",analyzing:"A analisar a tua refeição...",ingredients_title:"Ingredientes",reset_btn:"Analisar outra refeição",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
-en:{gate_title:"Meal Scanner",gate_sub:"Enter password to access",gate_placeholder:"Password",gate_btn:"Enter",gate_err:"Wrong password. Try again.",title:"Meal Scanner",subtitle:"Upload a photo of your meal - get ingredients and estimated calories",drop_title:"Drop your photo here",drop_sub:"or click to browse - JPEG, PNG, WebP",analyze_btn:"Analyze meal",analyzing:"Analysing your meal...",ingredients_title:"Ingredients",reset_btn:"Scan another meal",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
-es:{gate_title:"Meal Scanner",gate_sub:"Introduce la contraseña para acceder",gate_placeholder:"Contraseña",gate_btn:"Entrar",gate_err:"Contraseña incorrecta. Inténtalo de nuevo.",title:"Meal Scanner",subtitle:"Sube una foto de tu plato - descubre ingredientes y calorías estimadas",drop_title:"Suelta tu foto aquí",drop_sub:"o haz clic para buscar - JPEG, PNG, WebP",analyze_btn:"Analizar comida",analyzing:"Analizando tu comida...",ingredients_title:"Ingredientes",reset_btn:"Analizar otro plato",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
-fr:{gate_title:"Meal Scanner",gate_sub:"Entrez le mot de passe pour accéder",gate_placeholder:"Mot de passe",gate_btn:"Entrer",gate_err:"Mot de passe incorrect. Réessayez.",title:"Meal Scanner",subtitle:"Prenez une photo de votre plat - obtenez les ingrédients et calories estimés",drop_title:"Déposez votre photo ici",drop_sub:"ou cliquez pour parcourir - JPEG, PNG, WebP",analyze_btn:"Analyser le repas",analyzing:"Analyse de votre repas en cours...",ingredients_title:"Ingrédients",reset_btn:"Analyser un autre plat",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
-de:{gate_title:"Meal Scanner",gate_sub:"Passwort eingeben, um zuzugreifen",gate_placeholder:"Passwort",gate_btn:"Eingeben",gate_err:"Falsches Passwort. Versuche es erneut.",title:"Meal Scanner",subtitle:"Foto deines Gerichts hochladen - Zutaten und Kalorien schätzen",drop_title:"Foto hier ablegen",drop_sub:"oder klicken zum Durchsuchen - JPEG, PNG, WebP",analyze_btn:"Mahlzeit analysieren",analyzing:"Analysiere deine Mahlzeit...",ingredients_title:"Zutaten",reset_btn:"Weitere Mahlzeit scannen",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
-it:{gate_title:"Meal Scanner",gate_sub:"Inserisci la password per accedere",gate_placeholder:"Password",gate_btn:"Entra",gate_err:"Password errata. Riprova.",title:"Meal Scanner",subtitle:"Carica una foto del tuo piatto - scopri ingredienti e calorie stimate",drop_title:"Trascina la tua foto qui",drop_sub:"o clicca per cercare - JPEG, PNG, WebP",analyze_btn:"Analizza pasto",analyzing:"Analisi del pasto in corso...",ingredients_title:"Ingredienti",reset_btn:"Analizza un altro pasto",footer:"MVP by Guilherme Guerreiro with Copilot AI"}
+pt:{gate_title:"NutriLens",gate_sub:"Insere a password para aceder",gate_placeholder:"Password",gate_btn:"Entrar",gate_err:"Password errada. Tenta novamente.",title:"NutriLens",subtitle:"Fotografa a tua refeição e obtém análise nutricional instantânea - ingredientes, calorias, proteína, hidratos e gordura",drop_title:"Larga a tua foto aqui",drop_sub:"ou clica para procurar - JPEG, PNG, WebP",analyze_btn:"Analisar refeição",analyzing:"A analisar a tua refeição...",ingredients_title:"Ingredientes",reset_btn:"Analisar outra refeição",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
+en:{gate_title:"NutriLens",gate_sub:"Enter password to access",gate_placeholder:"Password",gate_btn:"Enter",gate_err:"Wrong password. Try again.",title:"NutriLens",subtitle:"Snap a photo of your meal and get instant nutritional analysis - ingredients, calories, protein, carbs and fat",drop_title:"Drop your photo here",drop_sub:"or click to browse - JPEG, PNG, WebP",analyze_btn:"Analyze meal",analyzing:"Analysing your meal...",ingredients_title:"Ingredients",reset_btn:"Scan another meal",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
+es:{gate_title:"NutriLens",gate_sub:"Introduce la contraseña para acceder",gate_placeholder:"Contraseña",gate_btn:"Entrar",gate_err:"Contraseña incorrecta. Inténtalo de nuevo.",title:"NutriLens",subtitle:"Toma una foto de tu plato y obtén análisis nutricional instantáneo - ingredientes, calorías, proteínas, carbohidratos y grasas",drop_title:"Suelta tu foto aquí",drop_sub:"o haz clic para buscar - JPEG, PNG, WebP",analyze_btn:"Analizar comida",analyzing:"Analizando tu comida...",ingredients_title:"Ingredientes",reset_btn:"Analizar otro plato",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
+fr:{gate_title:"NutriLens",gate_sub:"Entrez le mot de passe pour accéder",gate_placeholder:"Mot de passe",gate_btn:"Entrer",gate_err:"Mot de passe incorrect. Réessayez.",title:"NutriLens",subtitle:"Prenez une photo de votre plat et obtenez une analyse nutritionnelle instantanée - ingrédients, calories, protéines, glucides et lipides",drop_title:"Déposez votre photo ici",drop_sub:"ou cliquez pour parcourir - JPEG, PNG, WebP",analyze_btn:"Analyser le repas",analyzing:"Analyse de votre repas en cours...",ingredients_title:"Ingrédients",reset_btn:"Analyser un autre plat",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
+de:{gate_title:"NutriLens",gate_sub:"Passwort eingeben, um zuzugreifen",gate_placeholder:"Passwort",gate_btn:"Eingeben",gate_err:"Falsches Passwort. Versuche es erneut.",title:"NutriLens",subtitle:"Foto deines Gerichts für eine sofortige Ernährungsanalyse - Zutaten, Kalorien, Eiweiß, Kohlenhydrate und Fett",drop_title:"Foto hier ablegen",drop_sub:"oder klicken zum Durchsuchen - JPEG, PNG, WebP",analyze_btn:"Mahlzeit analysieren",analyzing:"Analysiere deine Mahlzeit...",ingredients_title:"Zutaten",reset_btn:"Weitere Mahlzeit scannen",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
+it:{gate_title:"NutriLens",gate_sub:"Inserisci la password per accedere",gate_placeholder:"Password",gate_btn:"Entra",gate_err:"Password errata. Riprova.",title:"NutriLens",subtitle:"Scatta una foto del tuo piatto e ottieni un’analisi nutrizionale istantanea - ingredienti, calorie, proteine, carboidrati e grassi",drop_title:"Trascina la tua foto qui",drop_sub:"o clicca per cercare - JPEG, PNG, WebP",analyze_btn:"Analizza pasto",analyzing:"Analisi del pasto in corso...",ingredients_title:"Ingredienti",reset_btn:"Analizza un altro pasto",footer:"MVP by Guilherme Guerreiro with Copilot AI"}
 ;
 let TOKENlet TOKEN=null;
 function applyLang(l){
@@ -192,6 +199,9 @@ function reset(){
   document.getElementById("fileName").style.display="none";document.getElementById("dropZone").classList.remove("has-img");
   document.querySelector(".uz-icon").style.display="block";
 }
+</script>
+<script>
+if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("/static/sw.js");});}
 </script>
 </body>
 </html>
