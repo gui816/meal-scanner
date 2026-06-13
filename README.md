@@ -66,3 +66,4 @@ A typical photo analysis costs **<$0.001** per call.
 - **google-genai** — Gemini SDK
 - **Pillow** — image validation & resize
 - **python-multipart** — file upload
+# NutriLens - force deploy Sat Jun 13 09:00:10 PM WEST 2026
