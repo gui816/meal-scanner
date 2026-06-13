@@ -29,7 +29,7 @@ load_dotenv()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 SITE_PASSWORD = os.getenv("SITE_PASSWORD", "scanner")
 PASSWORD_HASH = hashlib.sha256(SITE_PASSWORD.encode()).hexdigest()
-MODEL = "gemini-2.0-flash"
+MODEL = "gemini-2.5-flash"  # cheapest vision model
 MAX_IMAGE_SIZE = 10 * 1024 * 1024  # 10 MB
 ALLOWED_TYPES = {"image/jpeg", "image/png", "image/webp"}
 
@@ -109,7 +109,7 @@ def _call_gemini(image: PIL.Image.Image) -> MealAnalysis:
     resp = client.models.generate_content(
         model=MODEL,
         contents=[SYSTEM_PROMPT, image],
-        config={"temperature": 0.2, "max_output_tokens": 1024},
+        config={"temperature": 0.15, "max_output_tokens": 1024},
     )
     raw = resp.text.strip()
     if raw.startswith("```"):
