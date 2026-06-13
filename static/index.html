@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <!-- NutriLens v2.0 -->
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
-<meta name="theme-color" content="#16a34a"/>
+<meta name="theme-color" content="#21424b"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
@@ -19,10 +19,10 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f7f8fa;--bg2:#ffffff;--bg3:#eef0f4;
-  --text:#1c1e24;--sub:#6b7280;--border:#e5e7eb;
-  --brand:#2563eb;--brand-hover:#1d4ed8;--brand-light:#eff6ff;
-  --green:#16a34a;--green-light:#f0fdf4;--amber:#d97706;--amber-light:#fffbeb;
+  --bg:#ffffff;--bg2:#ffffff;--bg3:#f5f6f7;
+  --text:#1c1e24;--sub:#6b7280;--border:#e2e4e7;
+  --brand:#21424b;--brand-hover:#18333a;--brand-light:#eef3f5;
+  --green:#21424b;--green-light:#eef3f5;--amber:#d97706;--amber-light:#fffbeb;
   --radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
   --shadow-lg:0 10px 25px rgba(0,0,0,.1);
 }
@@ -48,7 +48,7 @@ header h1 span{color:var(--brand)}
 header p{color:var(--sub);font-size:.85rem;margin-top:.2rem}
 .upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:2.5rem 2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg2)}
 .upload-zone:hover,.upload-zone.dragover{border-color:var(--brand);background:var(--brand-light)}
-.upload-zone.has-img{border-color:var(--green);border-style:solid}
+.upload-zone.has-img{border-color:var(--brand);border-style:solid}
 .uz-icon{font-size:2.8rem;margin-bottom:.6rem}
 .uz-title{font-weight:600;font-size:.95rem;color:var(--text);margin-bottom:.2rem}
 .uz-sub{color:var(--sub);font-size:.82rem}
@@ -65,7 +65,7 @@ header p{color:var(--sub);font-size:.85rem;margin-top:.2rem}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
 .result-header h2{font-size:1.2rem;font-weight:700}
-.cal-badge{background:var(--green-light);color:var(--green);padding:.25rem .85rem;border-radius:20px;font-size:.85rem;font-weight:700}
+.cal-badge{background:var(--brand-light);color:var(--brand);padding:.25rem .85rem;border-radius:20px;font-size:.85rem;font-weight:700}
 .macro-row{display:flex;gap:.5rem;margin-bottom:1.2rem}
 .macro{flex:1;min-width:70px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.7rem;text-align:center}
 .macro-num{font-size:1.1rem;font-weight:800;color:var(--brand)}
@@ -95,7 +95,7 @@ footer{text-align:center;margin-top:1.5rem;color:var(--sub);font-size:.72rem;opa
     </select>
   </div>
   <div class="gate-card">
-    <div class="gate-icon">
+    <div class="gate-icon" style="margin-bottom:1.2rem">
 <svg width="60" height="60" viewBox="0 0 512 512">
   <defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#16a34a"/><stop offset="100%" stop-color="#15803d"/></linearGradient></defs>
   <circle cx="256" cy="256" r="240" fill="url(#gg)"/>
@@ -135,8 +135,8 @@ footer{text-align:center;margin-top:1.5rem;color:var(--sub);font-size:.72rem;opa
   </div>
   <header>
     <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:.2rem">
-    <img src="/static/logo-square.jpg" style="width:56px;height:56px;border-radius:12px;object-fit:cover;flex-shrink:0;box-shadow:0 2px 12px rgba(22,163,74,0.12)" alt="NutriLens"/>
-    <h1 style="font-size:1.8rem"><span data-i18n="title">NutriLens</span></h1>
+    <img src="/static/logo-square.jpg" style="width:64px;height:64px;border-radius:14px;object-fit:cover;flex-shrink:0;box-shadow:0 4px 16px rgba(33,66,75,0.12)" alt="NutriLens"/>
+    <h1 style="font-size:2rem"><span data-i18n="title">NutriLens</span></h1>
   </div>
     <p data-i18n="subtitle">Upload a photo of your meal - get ingredients and estimated calories</p>
   </header>

@@ -4,14 +4,10 @@
   "description": "Snap a photo of your meal and get instant nutritional analysis",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f7f8fa",
-  "theme_color": "#16a34a",
+  "background_color": "#ffffff",
+  "theme_color": "#21424b",
   "orientation": "portrait",
   "icons": [
-    {
-      "src": "/static/logo-square.jpg",
-      "sizes": "512x512",
-      "type": "image/jpeg"
-    }
+    {"src": "/static/logo-square.jpg", "sizes": "512x512", "type": "image/jpeg"}
   ]
 }
