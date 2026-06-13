@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Fundo arredondado -->
+  <rect width="100" height="100" rx="22" fill="#21424b"/>
+  
+  <!-- Anel exterior de scan (lente da câmara) -->
+  <circle cx="50" cy="48" r="30" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="2"/>
+  <circle cx="50" cy="48" r="28" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+  
+  <!-- Prato / tigela -->
+  <ellipse cx="50" cy="55" rx="20" ry="11" fill="rgba(255,255,255,.12)"/>
+  <ellipse cx="50" cy="53" rx="16" ry="8" fill="rgba(255,255,255,.06)"/>
+  
+  <!-- Comida no prato (arroz + proteína + vegetal) -->
+  <ellipse cx="42" cy="52" rx="7" ry="3.5" fill="rgba(255,255,255,.22)" transform="rotate(-10,42,52)"/>
+  <ellipse cx="57" cy="51" rx="5" ry="2.5" fill="rgba(255,255,255,.15)" transform="rotate(8,57,51)"/>
+  <ellipse cx="49" cy="49" rx="4" ry="2.5" fill="rgba(255,255,255,.28)" transform="rotate(-3,49,49)"/>
+  <ellipse cx="38" cy="51" rx="3" ry="2" fill="rgba(134,239,172,.35)" transform="rotate(-15,38,51)"/>
+  
+  <!-- Vapor (comida quente) -->
+  <path d="M46 40 Q48 34 46 28" stroke="rgba(255,255,255,.15)" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M52 38 Q54 32 52 26" stroke="rgba(255,255,255,.2)" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M58 40 Q60 34 58 28" stroke="rgba(255,255,255,.12)" stroke-width="2" fill="none" stroke-linecap="round"/>
+  
+  <!-- Scanner / lupa no canto -->
+  <circle cx="70" cy="30" r="9" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="2.5"/>
+  <line x1="77" y1="37" x2="82" y2="42" stroke="rgba(255,255,255,.2)" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Foco central (crosshair) -->
+  <circle cx="50" cy="48" r="1.5" fill="rgba(255,255,255,.35)"/>
+  <line x1="50" y1="42" x2="50" y2="45" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+  <line x1="50" y1="51" x2="50" y2="54" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+  <line x1="44" y1="48" x2="47" y2="48" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+  <line x1="53" y1="48" x2="56" y2="48" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+  
+  <!-- Faísca / energia / caloria (topo) -->
+  <path d="M32 25 Q30 20 33 17 Q35 15 36 18 Q38 20 36 23 Q34 26 32 25Z" fill="rgba(251,191,36,.4)"/>
+  <path d="M33 24 Q32 21 33.5 19 Q35 18 35.5 20 Q36.5 22 35 24Z" fill="rgba(251,191,36,.6)"/>
+  
+  <!-- Mini pontos de dados (nutrientes) -->
+  <circle cx="30" cy="72" r="2" fill="rgba(134,239,172,.3)"/>
+  <circle cx="37" cy="74" r="1.5" fill="rgba(134,239,172,.2)"/>
+  <circle cx="63" cy="74" r="1.5" fill="rgba(251,191,36,.2)"/>
+  <circle cx="70" cy="72" r="2" fill="rgba(251,191,36,.3)"/>
+  
+  <!-- Linhas de dados (gráfico minimalista) -->
+  <line x1="34" y1="76" x2="42" y2="72" stroke="rgba(134,239,172,.15)" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="42" y1="72" x2="50" y2="73" stroke="rgba(134,239,172,.1)" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="50" y1="73" x2="58" y2="70" stroke="rgba(251,191,36,.1)" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="58" y1="70" x2="66" y2="74" stroke="rgba(251,191,36,.15)" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
