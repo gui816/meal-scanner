@@ -106,12 +106,19 @@ def _validate_image(contents: bytes, filename: str) -> PIL.Image.Image:
 
 
 def _call_gemini(image: PIL.Image.Image) -> MealAnalysis:
-    resp = client.models.generate_content(
-        model=MODEL,
-        contents=[SYSTEM_PROMPT, image],
-        config={"temperature": 0.15, "max_output_tokens": 1024},
-    )
-    raw = resp.text.strip()
+    try:
+        resp = client.models.generate_content(
+            model=MODEL,
+            contents=[SYSTEM_PROMPT, image],
+            config={"temperature": 0.15, "max_output_tokens": 1024},
+        )
+        raw = resp.text.strip()
+    except Exception as exc:
+        err = str(exc)
+        if "RESOURCE_EXHAUSTED" in err or "quota" in err:
+            raise HTTPException(429, f"API quota exceeded: {err[:200]}")
+        raise HTTPException(502, f"Gemini API error: {err[:300]}")
+
     if raw.startswith("```"):
         raw = raw.split("\n", 1)[1]
         raw = raw.rsplit("```", 1)[0]
