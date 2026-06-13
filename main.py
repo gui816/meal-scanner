@@ -3,6 +3,11 @@
 from __future__ import annotations
 
 import hashlib
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
+logger = logging.getLogger(__name__)
+
 import io
 import json
 import logging
@@ -92,6 +97,8 @@ Rules:
 # ---------------------------------------------------------------------------
 
 def _validate_image(contents: bytes, filename: str) -> PIL.Image.Image:
+    logger.info(f"Image received: {filename}, {len(contents)} bytes, type={filename.split('.')[-1] if '.' in filename else 'unknown'}")
+
     if len(contents) > MAX_IMAGE_SIZE:
         raise HTTPException(413, f"Image too large ({len(contents)} bytes). Max {MAX_IMAGE_SIZE} bytes.")
     try:
@@ -113,8 +120,10 @@ def _call_gemini(image: PIL.Image.Image) -> MealAnalysis:
             config={"temperature": 0.15, "max_output_tokens": 1024},
         )
         raw = resp.text.strip()
+        logger.info(f"Gemini raw response ({len(raw)} chars): {raw[:200]}...")
     except Exception as exc:
         err = str(exc)
+        logger.error(f"Gemini API call failed: {err[:300]}")
         if "RESOURCE_EXHAUSTED" in err or "quota" in err:
             raise HTTPException(429, f"API quota exceeded: {err[:200]}")
         raise HTTPException(502, f"Gemini API error: {err[:300]}")
@@ -207,12 +216,22 @@ def auth(body: dict):
 @app.post("/analyze", response_model=MealAnalysis)
 async def analyze(req: Request, file: UploadFile = File(...)):
     if not _check_token(req):
+        logger.warning(f"Unauthenticated analyze attempt from {req.client.host if req.client else 'unknown'}")
         raise HTTPException(401, "Not authenticated. POST /auth first.")
     if file.content_type not in ALLOWED_TYPES:
+        logger.warning(f"Unsupported type: {file.content_type}")
         raise HTTPException(400, f"Unsupported type '{file.content_type}'. Use JPEG, PNG, or WebP.")
     contents = await file.read()
     image = _validate_image(contents, file.filename or "photo")
-    return _call_gemini(image)
+    try:
+        result = _call_gemini(image)
+        logger.info(f"Analyze success: {result.dish_name}, {result.total_calories_kcal} kcal, {len(result.ingredients)} ingredients")
+        return result
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error(f"Unexpected error in analyze: {exc}", exc_info=True)
+        raise HTTPException(500, f"Internal error: {str(exc)[:200]}")
 
 
 # ── Frontend ──────────────────────────────────────────────────────────
