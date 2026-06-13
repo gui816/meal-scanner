@@ -27,7 +27,7 @@ from google import genai
 load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-SITE_PASSWORD = os.getenv("SITE_PASSWORD", "scanner")
+SITE_PASSWORD = os.getenv("SITE_PASSWORD", "trilayer")
 PASSWORD_HASH = hashlib.sha256(SITE_PASSWORD.encode()).hexdigest()
 MODEL = "gemini-2.5-flash"  # cheapest vision model
 MAX_IMAGE_SIZE = 10 * 1024 * 1024  # 10 MB
