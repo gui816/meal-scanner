@@ -119,15 +119,37 @@ def _call_gemini(image: PIL.Image.Image) -> MealAnalysis:
             raise HTTPException(429, f"API quota exceeded: {err[:200]}")
         raise HTTPException(502, f"Gemini API error: {err[:300]}")
 
-    if raw.startswith("```"):
-        raw = raw.split("\n", 1)[1]
-        raw = raw.rsplit("```", 1)[0]
-    raw = raw.strip()
+    # Strip markdown code fences if present
+    if "```" in raw:
+        # Extract JSON between first ``` and last ```
+        parts = raw.split("```")
+        for p in parts:
+            p = p.strip()
+            if p.startswith("json"):
+                p = p[4:].strip()
+            if p.startswith("{") and p.endswith("}"):
+                raw = p
+                break
+        else:
+            # fallback: just strip the fences
+            raw = raw.replace("```json", "").replace("```", "").strip()
 
     try:
         data = json.loads(raw)
-    except json.JSONDecodeError as exc:
-        raise HTTPException(502, f"Gemini returned invalid JSON:\n{raw[:500]}") from exc
+    except json.JSONDecodeError:
+        # Last resort: find first { and last }
+        start = raw.find("{")
+        end = raw.rfind("}")
+        if start >= 0 and end > start:
+            raw = raw[start:end+1]
+            try:
+                data = json.loads(raw)
+            except json.JSONDecodeError as exc:
+                raise HTTPException(502, f"Gemini returned invalid JSON:\n{raw[:500]}")
+        else:
+            raise HTTPException(502, f"Gemini returned invalid JSON:\n{raw[:500]}")
+
+
 
     ingredients = [Ingredient(**i) for i in data.get("ingredients", [])]
     return MealAnalysis(
