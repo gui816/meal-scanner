@@ -93,7 +93,25 @@ footer{text-align:center;margin-top:1.5rem;color:var(--sub);font-size:.72rem;opa
     <button class="lang-btn" data-lang="it" onclick="setLang('it')">🇮🇹 IT</button>
   </div>
   <div class="gate-card">
-    <div class="gate-icon">&#x1F9ED;</div>
+    <div class="gate-icon">
+<svg width="60" height="60" viewBox="0 0 512 512">
+  <defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#16a34a"/><stop offset="100%" stop-color="#15803d"/></linearGradient></defs>
+  <circle cx="256" cy="256" r="240" fill="url(#gg)"/>
+  <ellipse cx="256" cy="290" rx="120" ry="58" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.2)" stroke-width="2.5"/>
+  <ellipse cx="256" cy="285" rx="90" ry="42" fill="rgba(255,255,255,0.05)"/>
+  <line x1="160" y1="315" x2="175" y2="215" stroke="rgba(255,255,255,0.18)" stroke-width="2.8" stroke-linecap="round"/>
+  <line x1="160" y1="215" x2="160" y2="200" stroke="rgba(255,255,255,0.18)" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="167" y1="215" x2="167" y2="200" stroke="rgba(255,255,255,0.18)" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="174" y1="215" x2="174" y2="200" stroke="rgba(255,255,255,0.18)" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="153" y1="215" x2="153" y2="200" stroke="rgba(255,255,255,0.18)" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="345" y1="315" x2="345" y2="215" stroke="rgba(255,255,255,0.18)" stroke-width="2.8" stroke-linecap="round"/>
+  <path d="M345 215 Q355 225 355 245 Q355 265 345 275" stroke="rgba(255,255,255,0.18)" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+  <path d="M256 305 Q234 290 236 272 Q238 258 248 250 Q251 247 256 238 Q261 247 264 250 Q274 258 276 272 Q278 290 256 305Z" fill="rgba(255,255,255,0.38)"/>
+  <path d="M256 299 Q242 287 244 273 Q246 262 254 256 Q256 253 256 248 Q256 253 258 256 Q266 262 268 273 Q270 287 256 299Z" fill="rgba(255,255,255,0.5)"/>
+  <circle cx="262" cy="252" r="1.8" fill="rgba(255,255,255,0.5)"/>
+  <text x="256" y="335" text-anchor="middle" font-size="24" font-weight="700" font-family="Inter,sans-serif" fill="rgba(255,255,255,0.22)">kcal</text>
+</svg>
+</div>
     <div class="gate-title" data-i18n="gate_title">NutriLens</div>
     <div class="gate-sub" data-i18n="gate_sub">Enter password to access</div>
     <input type="password" id="gp" placeholder="Password" autocomplete="off" data-i18n="gate_placeholder" onkeydown="if(event.key==='Enter')doAuth()"/>
@@ -122,13 +140,14 @@ footer{text-align:center;margin-top:1.5rem;color:var(--sub);font-size:.72rem;opa
         </linearGradient>
       </defs>
       <circle cx="256" cy="256" r="240" fill="url(#lg)"/>
-      <ellipse cx="256" cy="285" rx="120" ry="65" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="2.5"/>
-      <ellipse cx="256" cy="278" rx="90" ry="46" fill="rgba(255,255,255,0.05)"/>
-      <path d="M256 295 Q224 258 242 205 Q256 175 278 190 Q302 210 278 252 Q268 272 256 295Z" fill="rgba(255,255,255,0.3)" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
-      <path d="M256 295 Q254 268 258 242 Q262 220 270 205" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" fill="none"/>
-      <path d="M244 290 Q220 262 226 230 Q230 214 242 228" fill="rgba(255,255,255,0.18)"/>
-      <circle cx="256" cy="256" r="2" fill="rgba(255,255,255,0.35)"/>
-      <circle cx="256" cy="256" r="160" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2"/>
+      <ellipse cx="256" cy="290" rx="120" ry="58" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.2)" stroke-width="2.5"/>
+      <ellipse cx="256" cy="285" rx="90" ry="42" fill="rgba(255,255,255,0.05)"/>
+      <line x1="162" y1="315" x2="176" y2="215" stroke="rgba(255,255,255,0.18)" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="345" y1="315" x2="345" y2="215" stroke="rgba(255,255,255,0.18)" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M345 215 Q354 224 354 242 Q354 260 345 270" stroke="rgba(255,255,255,0.18)" stroke-width="2.5" fill="none"/>
+      <path d="M256 303 Q236 289 238 273 Q240 260 249 253 Q252 250 256 242 Q260 250 263 253 Q272 260 274 273 Q276 289 256 303Z" fill="rgba(255,255,255,0.35)"/>
+      <path d="M256 298 Q244 287 245 275 Q247 265 253 259 Q256 256 256 250 Q256 256 259 259 Q265 265 267 275 Q268 287 256 298Z" fill="rgba(255,255,255,0.45)"/>
+      <text x="256" y="332" text-anchor="middle" font-size="22" font-weight="700" font-family="Inter,sans-serif" fill="rgba(255,255,255,0.22)">kcal</text>
     </svg>
     <h1><span data-i18n="title">NutriLens</span></h1>
   </div>
