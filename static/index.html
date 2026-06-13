@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
 <meta name="theme-color" content="#16a34a"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="NutriLens"/>
 <meta name="description" content="Snap a photo of your meal and get instant nutritional analysis - ingredients, calories, protein, carbs and fat."/>
@@ -169,8 +170,7 @@ es:{gate_title:"NutriLens",gate_sub:"Introduce la contraseña para acceder",gate
 fr:{gate_title:"NutriLens",gate_sub:"Entrez le mot de passe pour accéder",gate_placeholder:"Mot de passe",gate_btn:"Entrer",gate_err:"Mot de passe incorrect. Réessayez.",title:"NutriLens",subtitle:"Prenez une photo de votre plat et obtenez une analyse nutritionnelle instantanée - ingrédients, calories, protéines, glucides et lipides",drop_title:"Déposez votre photo ici",drop_sub:"ou cliquez pour parcourir - JPEG, PNG, WebP",analyze_btn:"Analyser le repas",analyzing:"Analyse de votre repas en cours...",ingredients_title:"Ingrédients",reset_btn:"Analyser un autre plat",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
 de:{gate_title:"NutriLens",gate_sub:"Passwort eingeben, um zuzugreifen",gate_placeholder:"Passwort",gate_btn:"Eingeben",gate_err:"Falsches Passwort. Versuche es erneut.",title:"NutriLens",subtitle:"Foto deines Gerichts für eine sofortige Ernährungsanalyse - Zutaten, Kalorien, Eiweiß, Kohlenhydrate und Fett",drop_title:"Foto hier ablegen",drop_sub:"oder klicken zum Durchsuchen - JPEG, PNG, WebP",analyze_btn:"Mahlzeit analysieren",analyzing:"Analysiere deine Mahlzeit...",ingredients_title:"Zutaten",reset_btn:"Weitere Mahlzeit scannen",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
 it:{gate_title:"NutriLens",gate_sub:"Inserisci la password per accedere",gate_placeholder:"Password",gate_btn:"Entra",gate_err:"Password errata. Riprova.",title:"NutriLens",subtitle:"Scatta una foto del tuo piatto e ottieni un’analisi nutrizionale istantanea - ingredienti, calorie, proteine, carboidrati e grassi",drop_title:"Trascina la tua foto qui",drop_sub:"o clicca per cercare - JPEG, PNG, WebP",analyze_btn:"Analizza pasto",analyzing:"Analisi del pasto in corso...",ingredients_title:"Ingredienti",reset_btn:"Analizza un altro pasto",footer:"MVP by Guilherme Guerreiro with Copilot AI"}
-;
-let TOKENlet TOKEN=null;
+let TOKEN=null;
 function applyLang(l){
   const t=I18N[l]||I18N.en;
   document.querySelectorAll("[data-i18n]").forEach(e=>{const k=e.getAttribute("data-i18n");if(t[k]){if(e.tagName==="INPUT")e.placeholder=t[k];else e.textContent=t[k];}});
