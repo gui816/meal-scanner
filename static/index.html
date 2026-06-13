@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title id="pageTitle">Meal Scanner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f8fa;--bg2:#ffffff;--bg3:#eef0f4;
+  --text:#1c1e24;--sub:#6b7280;--border:#e5e7eb;
+  --brand:#2563eb;--brand-hover:#1d4ed8;--brand-light:#eff6ff;
+  --green:#16a34a;--green-light:#f0fdf4;--amber:#d97706;--amber-light:#fffbeb;
+  --radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.1);
+}
+html{scroll-behavior:smooth}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;line-height:1.5}
+#gate{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:var(--bg)}
+.gate-card{text-align:center;width:100%;max-width:380px;padding:2rem}
+.gate-icon{font-size:3rem;margin-bottom:.5rem}
+.gate-title{font-size:1.5rem;font-weight:800;color:var(--text);margin-bottom:.2rem}
+.gate-sub{color:var(--sub);font-size:.85rem;margin-bottom:2rem}
+.gate-card input{width:100%;padding:.85rem 1rem;margin-bottom:.7rem;background:var(--bg2);border:2px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:.95rem;outline:none;font-family:inherit;transition:border-color .2s}
+.gate-card input:focus{border-color:var(--brand)}
+.gate-btn{width:100%;padding:.85rem;background:var(--brand);color:#fff;border:none;border-radius:var(--radius);font-size:.95rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background .2s}
+.gate-btn:hover{background:var(--brand-hover)}
+.gate-err{color:#dc2626;font-size:.82rem;margin-top:.7rem;display:none}
+#app{display:none;width:100%;max-width:620px;margin:0 auto}
+.lang-bar{display:flex;gap:4px;justify-content:flex-end;margin-bottom:1rem}
+.lang-btn{padding:4px 10px;border:1px solid var(--border);background:var(--bg2);border-radius:6px;font-size:.72rem;font-weight:600;cursor:pointer;color:var(--sub);transition:all .15s;font-family:inherit}
+.lang-btn:hover{border-color:var(--brand);color:var(--brand)}
+.lang-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+header{text-align:center;margin-bottom:1.5rem}
+header h1{font-size:1.6rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+header h1 span{color:var(--brand)}
+header p{color:var(--sub);font-size:.85rem;margin-top:.2rem}
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:2.5rem 2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg2)}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--brand);background:var(--brand-light)}
+.upload-zone.has-img{border-color:var(--green);border-style:solid}
+.uz-icon{font-size:2.8rem;margin-bottom:.6rem}
+.uz-title{font-weight:600;font-size:.95rem;color:var(--text);margin-bottom:.2rem}
+.uz-sub{color:var(--sub);font-size:.82rem}
+.uz-file{display:none;margin-top:.6rem;color:var(--green);font-size:.85rem;font-weight:600}
+.uz-preview{display:none;margin-top:1rem;max-width:100%;max-height:280px;border-radius:var(--radius);object-fit:cover;box-shadow:var(--shadow)}
+.btn-primary{display:none;margin:1rem auto 0;padding:.85rem 2.5rem;background:var(--brand);color:#fff;border:none;border-radius:var(--radius);font-size:.95rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;box-shadow:var(--shadow)}
+.btn-primary:hover{background:var(--brand-hover);transform:translateY(-1px);box-shadow:var(--shadow-lg)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.loading{display:none;text-align:center;margin:1.5rem 0}
+.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--brand);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto .6rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{color:var(--sub);font-size:.85rem}
+#results{display:none;margin-top:1.5rem;animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
+.result-header h2{font-size:1.2rem;font-weight:700}
+.cal-badge{background:var(--green-light);color:var(--green);padding:.25rem .85rem;border-radius:20px;font-size:.85rem;font-weight:700}
+.macro-row{display:flex;gap:.5rem;margin-bottom:1.2rem}
+.macro{flex:1;min-width:70px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.7rem;text-align:center}
+.macro-num{font-size:1.1rem;font-weight:800;color:var(--brand)}
+.macro-lbl{font-size:.7rem;color:var(--sub);margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+.card{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--bg2);margin-bottom:.8rem}
+.card-title{padding:.75rem 1rem;background:var(--bg3);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--sub)}
+.ing-list{list-style:none}
+.ing-item{display:flex;justify-content:space-between;padding:.65rem 1rem;border-top:1px solid var(--border);font-size:.88rem}
+.ing-item:last-child{border-bottom:none}
+.ing-amount{color:var(--sub);font-weight:500}
+.notes-box{margin-top:.8rem;padding:.9rem 1rem;background:var(--amber-light);border:1px solid #fcd34d;border-radius:var(--radius);font-size:.84rem;color:#92400e;line-height:1.6}
+.reset-btn{display:inline-block;margin-top:1rem;background:none;border:1px solid var(--border);color:var(--sub);padding:.5rem 1.2rem;border-radius:var(--radius);font-size:.82rem;cursor:pointer;font-family:inherit;transition:all .2s}
+.reset-btn:hover{background:var(--bg3);color:var(--text)}
+footer{text-align:center;margin-top:1.5rem;color:var(--sub);font-size:.72rem;opacity:.5}
+</style>
+</head>
+<body>
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-icon">&#x1F37D;</div>
+    <div class="gate-title" data-i18n="gate_title">Meal Scanner</div>
+    <div class="gate-sub" data-i18n="gate_sub">Enter password to access</div>
+    <input type="password" id="gp" placeholder="Password" autocomplete="off" onkeydown="if(event.key==='Enter')doAuth()"/>
+    <button class="gate-btn" onclick="doAuth()" data-i18n="gate_btn">Enter</button>
+    <div class="gate-err" id="ge" data-i18n="gate_err">Wrong password. Try again.</div>
+  </div>
+</div>
+<div id="app">
+  <div class="lang-bar">
+    <button class="lang-btn" data-lang="pt" onclick="setLang('pt')">PT</button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-lang="es" onclick="setLang('es')">ES</button>
+    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" data-lang="de" onclick="setLang('de')">DE</button>
+    <button class="lang-btn" data-lang="it" onclick="setLang('it')">IT</button>
+  </div>
+  <header>
+    <h1>&#x1F37D; <span data-i18n="title">Meal Scanner</span></h1>
+    <p data-i18n="subtitle">Upload a photo of your meal - get ingredients and estimated calories</p>
+  </header>
+  <div class="upload-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+    <div class="uz-icon">&#x1F4F8;</div>
+    <div class="uz-title" data-i18n="drop_title">Drop your photo here</div>
+    <div class="uz-sub" data-i18n="drop_sub">or click to browse - JPEG, PNG, WebP</div>
+    <div class="uz-file" id="fileName"></div>
+    <img class="uz-preview" id="preview" alt="preview"/>
+    <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="handleFile(this)"/>
+  </div>
+  <button class="btn-primary" id="analyzeBtn" onclick="analyze()" data-i18n="analyze_btn">Analyze meal</button>
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p data-i18n="analyzing">Analysing your meal...</p>
+  </div>
+  <div id="results">
+    <div class="result-header">
+      <h2 id="dishName"></h2>
+      <div class="cal-badge" id="calBadge"></div>
+    </div>
+    <div class="macro-row" id="macroRow"></div>
+    <div class="card">
+      <div class="card-title" data-i18n="ingredients_title">Ingredients</div>
+      <ul class="ing-list" id="ingList"></ul>
+    </div>
+    <div class="notes-box" id="notes"></div>
+    <button class="reset-btn" onclick="reset()" data-i18n="reset_btn">Scan another meal</button>
+  </div>
+  <footer data-i18n="footer">Powered by Gemini Flash</footer>
+</div>
+<script>
+const I18N = {
+  pt:{gate_title:"Meal Scanner",gate_sub:"Insere a password para aceder",gate_btn:"Entrar",gate_err:"Password errada. Tenta novamente.",title:"Meal Scanner",subtitle:"Tira uma foto ao teu prato - descobre os ingredientes e calorias estimadas",drop_title:"Larga a tua foto aqui",drop_sub:"ou clica para procurar - JPEG, PNG, WebP",analyze_btn:"Analisar refei\u00e7\u00e3o",analyzing:"A analisar a tua refei\u00e7\u00e3o...",ingredients_title:"Ingredientes",reset_btn:"Analisar outra refei\u00e7\u00e3o",footer:"Powered by Gemini Flash"},
+  en:{gate_title:"Meal Scanner",gate_sub:"Enter password to access",gate_btn:"Enter",gate_err:"Wrong password. Try again.",title:"Meal Scanner",subtitle:"Upload a photo of your meal - get ingredients and estimated calories",drop_title:"Drop your photo here",drop_sub:"or click to browse - JPEG, PNG, WebP",analyze_btn:"Analyze meal",analyzing:"Analysing your meal...",ingredients_title:"Ingredients",reset_btn:"Scan another meal",footer:"Powered by Gemini Flash"},
+  es:{gate_title:"Meal Scanner",gate_sub:"Introduce la contrase\u00f1a para acceder",gate_btn:"Entrar",gate_err:"Contrase\u00f1a incorrecta. Int\u00e9ntalo de nuevo.",title:"Meal Scanner",subtitle:"Sube una foto de tu plato - descubre ingredientes y calor\u00edas estimadas",drop_title:"Suelta tu foto aqu\u00ed",drop_sub:"o haz clic para buscar - JPEG, PNG, WebP",analyze_btn:"Analizar comida",analyzing:"Analizando tu comida...",ingredients_title:"Ingredientes",reset_btn:"Analizar otro plato",footer:"Powered by Gemini Flash"},
+  fr:{gate_title:"Meal Scanner",gate_sub:"Entrez le mot de passe pour acc\u00e9der",gate_btn:"Entrer",gate_err:"Mot de passe incorrect. R\u00e9essayez.",title:"Meal Scanner",subtitle:"Prenez une photo de votre plat - obtenez les ingr\u00e9dients et calories estim\u00e9s",drop_title:"D\u00e9posez votre photo ici",drop_sub:"ou cliquez pour parcourir - JPEG, PNG, WebP",analyze_btn:"Analyser le repas",analyzing:"Analyse de votre repas en cours...",ingredients_title:"Ingr\u00e9dients",reset_btn:"Analyser un autre plat",footer:"Powered by Gemini Flash"},
+  de:{gate_title:"Meal Scanner",gate_sub:"Passwort eingeben, um zuzugreifen",gate_btn:"Eingeben",gate_err:"Falsches Passwort. Versuche es erneut.",title:"Meal Scanner",subtitle:"Foto deines Gerichts hochladen - Zutaten und Kalorien sch\u00e4tzen",drop_title:"Foto hier ablegen",drop_sub:"oder klicken zum Durchsuchen - JPEG, PNG, WebP",analyze_btn:"Mahlzeit analysieren",analyzing:"Analysiere deine Mahlzeit...",ingredients_title:"Zutaten",reset_btn:"Weitere Mahlzeit scannen",footer:"Powered by Gemini Flash"},
+  it:{gate_title:"Meal Scanner",gate_sub:"Inserisci la password per accedere",gate_btn:"Entra",gate_err:"Password errata. Riprova.",title:"Meal Scanner",subtitle:"Carica una foto del tuo piatto - scopri ingredienti e calorie stimate",drop_title:"Trascina la tua foto qui",drop_sub:"o clicca per cercare - JPEG, PNG, WebP",analyze_btn:"Analizza pasto",analyzing:"Analisi del pasto in corso...",ingredients_title:"Ingredienti",reset_btn:"Analizza un altro pasto",footer:"Powered by Gemini Flash"}
+};
+let TOKEN=null;
+function applyLang(l){
+  const t=I18N[l]||I18N.en;
+  document.querySelectorAll("[data-i18n]").forEach(e=>{const k=e.getAttribute("data-i18n");if(t[k])e.textContent=t[k];});
+  document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("active",b.getAttribute("data-lang")===l));
+  localStorage.setItem("ms_lang",l);
+}
+function setLang(l){applyLang(l);}
+function detectLang(){const s=localStorage.getItem("ms_lang");if(s)return s;const n=(navigator.language||"en").split("-")[0];return["pt","en","es","fr","de","it"].includes(n)?n:"en";}
+async function doAuth(){
+  const pwd=document.getElementById("gp").value,err=document.getElementById("ge");
+  try{const r=await fetch("/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:pwd})});if(!r.ok){err.style.display="block";return;}const d=await r.json();TOKEN=d.token;sessionStorage.setItem("ms_token",TOKEN);document.getElementById("gate").style.display="none";document.getElementById("app").style.display="block";}catch(e){err.style.display="block";}
+}
+window.addEventListener("DOMContentLoaded",()=>{const t=sessionStorage.getItem("ms_token");if(t){TOKEN=t;document.getElementById("gate").style.display="none";document.getElementById("app").style.display="block";}applyLang(detectLang());});
+function handleFile(i){
+  const f=i.files[0];if(!f)return;
+  document.getElementById("dropZone").classList.add("has-img");
+  document.getElementById("fileName").textContent=f.name;document.getElementById("fileName").style.display="block";
+  const r=new FileReader();r.onload=e=>{const p=document.getElementById("preview");p.src=e.target.result;p.style.display="block";document.querySelector(".uz-icon").style.display="none";};
+  r.readAsDataURL(f);document.getElementById("analyzeBtn").style.display="block";
+}
+const dz=document.getElementById("dropZone");
+dz.addEventListener("dragover",e=>{e.preventDefault();dz.classList.add("dragover");});
+dz.addEventListener("dragleave",()=>dz.classList.remove("dragover"));
+dz.addEventListener("drop",e=>{e.preventDefault();dz.classList.remove("dragover");const f=e.dataTransfer.files[0];if(f){document.getElementById("fileInput").files=e.dataTransfer.files;handleFile(document.getElementById("fileInput"));}});
+async function analyze(){
+  const fi=document.getElementById("fileInput");if(!fi.files[0])return;
+  const btn=document.getElementById("analyzeBtn");btn.disabled=true;btn.textContent="...";
+  document.getElementById("loading").style.display="block";document.getElementById("results").style.display="none";
+  const fd=new FormData();fd.append("file",fi.files[0]);
+  try{const r=await fetch("/analyze",{method:"POST",headers:{"x-scan-auth":TOKEN},body:fd});if(r.status===401){sessionStorage.removeItem("ms_token");location.reload();return;}const data=await r.json();showResults(data);}catch(e){document.getElementById("loading").innerHTML="<p style='color:#dc2626'>Error</p>";}
+  btn.disabled=false;btn.textContent="Analyze meal";document.getElementById("loading").style.display="none";
+}
+function showResults(d){
+  document.getElementById("dishName").textContent=d.dish_name;
+  document.getElementById("calBadge").textContent=d.total_calories_kcal+" kcal";
+  const l=detectLang();const m={pt:["Proteina","Hidratos","Gordura"],en:["Protein","Carbs","Fat"],es:["Proteina","Carbohidratos","Grasa"],fr:["Proteines","Glucides","Lipides"],de:["Eiweiss","Kohlenhydrate","Fett"],it:["Proteine","Carboidrati","Grassi"]};
+  const ml=m[l]||m.en;
+  document.getElementById("macroRow").innerHTML=[{l:ml[0],v:d.protein_g},{l:ml[1],v:d.carbs_g},{l:ml[2],v:d.fat_g}].map(x=>'<div class="macro"><div class="macro-num">'+x.v+'</div><div class="macro-lbl">g '+x.l+'</div></div>').join("");
+  document.getElementById("ingList").innerHTML=d.ingredients.map(i=>'<li class="ing-item"><span>'+i.name+'</span><span class="ing-amount">'+i.estimated_amount+'</span></li>').join("");
+  document.getElementById("notes").textContent=d.notes;
+  document.getElementById("results").style.display="block";
+}
+function reset(){
+  document.getElementById("results").style.display="none";document.getElementById("analyzeBtn").style.display="none";
+  document.getElementById("fileInput").value="";document.getElementById("preview").style.display="none";
+  document.getElementById("fileName").style.display="none";document.getElementById("dropZone").classList.remove("has-img");
+  document.querySelector(".uz-icon").style.display="block";
+}
+</script>
+</body>
+</html>
