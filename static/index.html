@@ -75,11 +75,19 @@ footer{text-align:center;margin-top:1.5rem;color:var(--sub);font-size:.72rem;opa
 </head>
 <body>
 <div id="gate">
+  <div class="lang-bar" style="position:absolute;top:1rem;right:1rem">
+    <button class="lang-btn" data-lang="pt" onclick="setLang('pt')">🇵🇹 PT</button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">🇬🇧 EN</button>
+    <button class="lang-btn" data-lang="es" onclick="setLang('es')">🇪🇸 ES</button>
+    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">🇫🇷 FR</button>
+    <button class="lang-btn" data-lang="de" onclick="setLang('de')">🇩🇪 DE</button>
+    <button class="lang-btn" data-lang="it" onclick="setLang('it')">🇮🇹 IT</button>
+  </div>
   <div class="gate-card">
     <div class="gate-icon">&#x1F37D;</div>
     <div class="gate-title" data-i18n="gate_title">Meal Scanner</div>
     <div class="gate-sub" data-i18n="gate_sub">Enter password to access</div>
-    <input type="password" id="gp" placeholder="Password" autocomplete="off" onkeydown="if(event.key==='Enter')doAuth()"/>
+    <input type="password" id="gp" placeholder="Password" autocomplete="off" data-i18n="gate_placeholder" onkeydown="if(event.key==='Enter')doAuth()"/>
     <button class="gate-btn" onclick="doAuth()" data-i18n="gate_btn">Enter</button>
     <div class="gate-err" id="ge" data-i18n="gate_err">Wrong password. Try again.</div>
   </div>
@@ -127,17 +135,17 @@ footer{text-align:center;margin-top:1.5rem;color:var(--sub);font-size:.72rem;opa
 </div>
 <script>
 const I18N = {
-  pt:{gate_title:"Meal Scanner",gate_sub:"Insere a password para aceder",gate_btn:"Entrar",gate_err:"Password errada. Tenta novamente.",title:"Meal Scanner",subtitle:"Tira uma foto ao teu prato - descobre os ingredientes e calorias estimadas",drop_title:"Larga a tua foto aqui",drop_sub:"ou clica para procurar - JPEG, PNG, WebP",analyze_btn:"Analisar refei\u00e7\u00e3o",analyzing:"A analisar a tua refei\u00e7\u00e3o...",ingredients_title:"Ingredientes",reset_btn:"Analisar outra refei\u00e7\u00e3o",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
-  en:{gate_title:"Meal Scanner",gate_sub:"Enter password to access",gate_btn:"Enter",gate_err:"Wrong password. Try again.",title:"Meal Scanner",subtitle:"Upload a photo of your meal - get ingredients and estimated calories",drop_title:"Drop your photo here",drop_sub:"or click to browse - JPEG, PNG, WebP",analyze_btn:"Analyze meal",analyzing:"Analysing your meal...",ingredients_title:"Ingredients",reset_btn:"Scan another meal",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
-  es:{gate_title:"Meal Scanner",gate_sub:"Introduce la contrase\u00f1a para acceder",gate_btn:"Entrar",gate_err:"Contrase\u00f1a incorrecta. Int\u00e9ntalo de nuevo.",title:"Meal Scanner",subtitle:"Sube una foto de tu plato - descubre ingredientes y calor\u00edas estimadas",drop_title:"Suelta tu foto aqu\u00ed",drop_sub:"o haz clic para buscar - JPEG, PNG, WebP",analyze_btn:"Analizar comida",analyzing:"Analizando tu comida...",ingredients_title:"Ingredientes",reset_btn:"Analizar otro plato",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
-  fr:{gate_title:"Meal Scanner",gate_sub:"Entrez le mot de passe pour acc\u00e9der",gate_btn:"Entrer",gate_err:"Mot de passe incorrect. R\u00e9essayez.",title:"Meal Scanner",subtitle:"Prenez une photo de votre plat - obtenez les ingr\u00e9dients et calories estim\u00e9s",drop_title:"D\u00e9posez votre photo ici",drop_sub:"ou cliquez pour parcourir - JPEG, PNG, WebP",analyze_btn:"Analyser le repas",analyzing:"Analyse de votre repas en cours...",ingredients_title:"Ingr\u00e9dients",reset_btn:"Analyser un autre plat",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
-  de:{gate_title:"Meal Scanner",gate_sub:"Passwort eingeben, um zuzugreifen",gate_btn:"Eingeben",gate_err:"Falsches Passwort. Versuche es erneut.",title:"Meal Scanner",subtitle:"Foto deines Gerichts hochladen - Zutaten und Kalorien sch\u00e4tzen",drop_title:"Foto hier ablegen",drop_sub:"oder klicken zum Durchsuchen - JPEG, PNG, WebP",analyze_btn:"Mahlzeit analysieren",analyzing:"Analysiere deine Mahlzeit...",ingredients_title:"Zutaten",reset_btn:"Weitere Mahlzeit scannen",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
-  it:{gate_title:"Meal Scanner",gate_sub:"Inserisci la password per accedere",gate_btn:"Entra",gate_err:"Password errata. Riprova.",title:"Meal Scanner",subtitle:"Carica una foto del tuo piatto - scopri ingredienti e calorie stimate",drop_title:"Trascina la tua foto qui",drop_sub:"o clicca per cercare - JPEG, PNG, WebP",analyze_btn:"Analizza pasto",analyzing:"Analisi del pasto in corso...",ingredients_title:"Ingredienti",reset_btn:"Analizza un altro pasto",footer:"MVP by Guilherme Guerreiro with Copilot AI"}
-};
-let TOKEN=null;
+pt:{gate_title:"Meal Scanner",gate_sub:"Insere a password para aceder",gate_placeholder:"Password",gate_btn:"Entrar",gate_err:"Password errada. Tenta novamente.",title:"Meal Scanner",subtitle:"Tira uma foto ao teu prato - descobre os ingredientes e calorias estimadas",drop_title:"Larga a tua foto aqui",drop_sub:"ou clica para procurar - JPEG, PNG, WebP",analyze_btn:"Analisar refeição",analyzing:"A analisar a tua refeição...",ingredients_title:"Ingredientes",reset_btn:"Analisar outra refeição",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
+en:{gate_title:"Meal Scanner",gate_sub:"Enter password to access",gate_placeholder:"Password",gate_btn:"Enter",gate_err:"Wrong password. Try again.",title:"Meal Scanner",subtitle:"Upload a photo of your meal - get ingredients and estimated calories",drop_title:"Drop your photo here",drop_sub:"or click to browse - JPEG, PNG, WebP",analyze_btn:"Analyze meal",analyzing:"Analysing your meal...",ingredients_title:"Ingredients",reset_btn:"Scan another meal",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
+es:{gate_title:"Meal Scanner",gate_sub:"Introduce la contraseña para acceder",gate_placeholder:"Contraseña",gate_btn:"Entrar",gate_err:"Contraseña incorrecta. Inténtalo de nuevo.",title:"Meal Scanner",subtitle:"Sube una foto de tu plato - descubre ingredientes y calorías estimadas",drop_title:"Suelta tu foto aquí",drop_sub:"o haz clic para buscar - JPEG, PNG, WebP",analyze_btn:"Analizar comida",analyzing:"Analizando tu comida...",ingredients_title:"Ingredientes",reset_btn:"Analizar otro plato",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
+fr:{gate_title:"Meal Scanner",gate_sub:"Entrez le mot de passe pour accéder",gate_placeholder:"Mot de passe",gate_btn:"Entrer",gate_err:"Mot de passe incorrect. Réessayez.",title:"Meal Scanner",subtitle:"Prenez une photo de votre plat - obtenez les ingrédients et calories estimés",drop_title:"Déposez votre photo ici",drop_sub:"ou cliquez pour parcourir - JPEG, PNG, WebP",analyze_btn:"Analyser le repas",analyzing:"Analyse de votre repas en cours...",ingredients_title:"Ingrédients",reset_btn:"Analyser un autre plat",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
+de:{gate_title:"Meal Scanner",gate_sub:"Passwort eingeben, um zuzugreifen",gate_placeholder:"Passwort",gate_btn:"Eingeben",gate_err:"Falsches Passwort. Versuche es erneut.",title:"Meal Scanner",subtitle:"Foto deines Gerichts hochladen - Zutaten und Kalorien schätzen",drop_title:"Foto hier ablegen",drop_sub:"oder klicken zum Durchsuchen - JPEG, PNG, WebP",analyze_btn:"Mahlzeit analysieren",analyzing:"Analysiere deine Mahlzeit...",ingredients_title:"Zutaten",reset_btn:"Weitere Mahlzeit scannen",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
+it:{gate_title:"Meal Scanner",gate_sub:"Inserisci la password per accedere",gate_placeholder:"Password",gate_btn:"Entra",gate_err:"Password errata. Riprova.",title:"Meal Scanner",subtitle:"Carica una foto del tuo piatto - scopri ingredienti e calorie stimate",drop_title:"Trascina la tua foto qui",drop_sub:"o clicca per cercare - JPEG, PNG, WebP",analyze_btn:"Analizza pasto",analyzing:"Analisi del pasto in corso...",ingredients_title:"Ingredienti",reset_btn:"Analizza un altro pasto",footer:"MVP by Guilherme Guerreiro with Copilot AI"}
+;
+let TOKENlet TOKEN=null;
 function applyLang(l){
   const t=I18N[l]||I18N.en;
-  document.querySelectorAll("[data-i18n]").forEach(e=>{const k=e.getAttribute("data-i18n");if(t[k])e.textContent=t[k];});
+  document.querySelectorAll("[data-i18n]").forEach(e=>{const k=e.getAttribute("data-i18n");if(t[k]){if(e.tagName==="INPUT")e.placeholder=t[k];else e.textContent=t[k];}});
   document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("active",b.getAttribute("data-lang")===l));
   localStorage.setItem("ms_lang",l);
 }
