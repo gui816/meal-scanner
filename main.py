@@ -24,6 +24,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from google import genai
+from google.genai import types
 
 # ---------------------------------------------------------------------------
 # config
@@ -68,28 +69,11 @@ class MealAnalysis:
 # prompt
 # ---------------------------------------------------------------------------
 
-SYSTEM_PROMPT = """You are a professional nutritionist and chef. Analyse the food in this photo.
+SYSTEM_PROMPT = """Analyse this food photo. Return ONLY valid JSON (no markdown, no extra text).
 
-Return **only** valid JSON — no markdown fences, no extra text.
+{"dish_name": "...", "ingredients": [{"name": "...", "estimated_amount": "..."}], "total_calories_kcal": 0, "protein_g": 0, "carbs_g": 0, "fat_g": 0, "notes": "..."}
 
-Schema:
-{
-  "dish_name": "short descriptive name of the dish",
-  "ingredients": [
-    {"name": "ingredient name", "estimated_amount": "amount with unit"}
-  ],
-  "total_calories_kcal": <integer estimate>,
-  "protein_g": <integer estimate>,
-  "carbs_g": <integer estimate>,
-  "fat_g": <integer estimate>,
-  "notes": "any relevant observations"
-}
-
-Rules:
-- Be realistic about portion sizes.
-- If you cannot clearly identify the dish, set dish_name to "Unknown dish".
-- Use metric units (g, ml).
-- Total calories must be consistent with the listed ingredients + macros."""
+Be realistic about portions. Use metric units."""
 
 
 # ---------------------------------------------------------------------------
@@ -117,7 +101,10 @@ def _call_gemini(image: PIL.Image.Image) -> MealAnalysis:
         resp = client.models.generate_content(
             model=MODEL,
             contents=[SYSTEM_PROMPT, image],
-            config={"temperature": 0.15, "max_output_tokens": 1024},
+            config=types.GenerateContentConfig(
+                temperature=0.15,
+                max_output_tokens=4096,
+            ),
         )
         raw = resp.text.strip()
         logger.info(f"Gemini raw response ({len(raw)} chars): {raw[:200]}...")
