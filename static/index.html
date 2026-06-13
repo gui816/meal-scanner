@@ -2,89 +2,131 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8"/>
-<!-- NutriLens v2.0 -->
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
 <meta name="theme-color" content="#21424b"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="NutriLens"/>
-<meta name="description" content="Snap a photo of your meal and get instant nutritional analysis - ingredients, calories, protein, carbs and fat."/>
-<link rel="icon" type="image/svg+xml" href="/static/logo-square.jpg"/>
-<link rel="manifest" href="/static/manifest.json"/>
-<link rel="apple-touch-icon" href="/static/logo-square.jpg" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2316a34a'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white'%3E%F0%9F%8D%BD%3C/text%3E%3C/svg%3E"/>
+<meta name="description" content="Tire uma foto à sua refeição e obtenha uma análise nutricional instantânea."/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%2321424b'/%3E%3Ccircle cx='50' cy='52' r='26' fill='none' stroke='%23ffffff' stroke-width='4'/%3E%3Crect x='38' y='30' width='24' height='6' rx='3' fill='%23ea580c'/%3E%3Cpath d='M50 38c-5 0-9 4-9 9s7 11 9 11 9-6 9-11-4-9-9-9z' fill='%2316a34a'/%3E%3Ccircle cx='70' cy='42' r='3' fill='%23ea580c'/%3E%3C/svg%3E"/>
 <title id="pageTitle">NutriLens</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#ffffff;--bg2:#ffffff;--bg3:#f5f6f7;
-  --text:#1c1e24;--sub:#6b7280;--border:#e2e4e7;
-  --brand:#21424b;--brand-hover:#18333a;--brand-light:#eef3f5;
-  --green:#21424b;--green-light:#eef3f5;--amber:#d97706;--amber-light:#fffbeb;
-  --radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
-  --shadow-lg:0 10px 25px rgba(0,0,0,.1);
+  --bg:#f8fafc;--bg-card:#ffffff;--bg-alt:#f1f5f9;
+  --text:#0f172a;--sub:#64748b;--border:#e2e8f0;
+  --brand:#21424b;--brand-hover:#162d33;--brand-light:#eef4f6;
+  --accent:#ea580c;--accent-hover:#c2410c;--accent-light:#ffedd5;
+  --green:#16a34a;--green-hover:#15803d;--green-light:#dcfce7;
+  --radius:16px;--radius-sm:8px;
+  --shadow:0 4px 6px -1px rgba(0,0,0,0.05),0 2px 4px -2px rgba(0,0,0,0.05);
+  --shadow-lg:0 20px 25px -5px rgba(0,0,0,0.1),0 8px 10px -6px rgba(0,0,0,0.1);
 }
-html{scroll-behavior:smooth}
-body{font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;line-height:1.5}
-#gate{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:var(--bg)}
-.gate-card{text-align:center;width:100%;max-width:380px;padding:2rem}
-.gate-icon{font-size:3rem;margin-bottom:.5rem}
-.gate-title{font-size:1.5rem;font-weight:800;color:var(--text);margin-bottom:.2rem}
-.gate-sub{color:var(--sub);font-size:.85rem;margin-bottom:2rem}
-.gate-card input{width:100%;padding:.85rem 1rem;margin-bottom:.7rem;background:var(--bg2);border:2px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:.95rem;outline:none;font-family:inherit;transition:border-color .2s}
-.gate-card input:focus{border-color:var(--brand)}
-.gate-btn{width:100%;padding:.85rem;background:var(--brand);color:#fff;border:none;border-radius:var(--radius);font-size:.95rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background .2s}
-.gate-btn:hover{background:var(--brand-hover)}
-.gate-err{color:#dc2626;font-size:.82rem;margin-top:.7rem;display:none}
-#app{display:none;width:100%;max-width:620px;margin:0 auto}
-.lang-bar{display:flex;gap:4px;justify-content:flex-end;margin-bottom:1rem}
-.lang-select{padding:6px 12px;border:2px solid var(--border);background:var(--bg2);border-radius:var(--radius);font-size:.82rem;font-weight:600;color:var(--text);cursor:pointer;font-family:inherit;transition:border-color .15s;outline:none}
-.lang-select:hover,.lang-select:focus{border-color:var(--brand)}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;line-height:1.5;-webkit-font-smoothing:antialiased}
+
+/* Portão de Autenticação */
+#gate{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:1rem}
+.gate-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-lg);text-align:center;width:100%;max-width:400px;padding:2.5rem 2rem;border:1px solid var(--border)}
+.gate-title{font-size:1.75rem;font-weight:800;color:var(--brand);margin-bottom:.25rem;letter-spacing:-0.5px}
+.gate-sub{color:var(--sub);font-size:.875rem;margin-bottom:1.5rem}
+.gate-card .lang-select{width:100%;margin-bottom:1rem;padding:10px;font-size:.9rem}
+.gate-card input{width:100%;padding:.85rem 1rem;margin-bottom:1rem;background:var(--bg-alt);border:2px solid transparent;border-radius:var(--radius);color:var(--text);font-size:1rem;outline:none;font-family:inherit;transition:all .2s}
+.gate-card input:focus{border-color:var(--brand);background:var(--bg-card)}
+
+/* Estrutura Principal App */
+#app{display:none;width:100%;max-width:540px;margin:0 auto;background:var(--bg-card);padding:1.5rem;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}
+.lang-bar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:1.25rem;align-items:center}
+.lang-select{padding:6px 12px;border:1px solid var(--border);background:var(--bg-card);border-radius:var(--radius-sm);font-size:.85rem;font-weight:600;color:var(--text);cursor:pointer;outline:none;transition:all .2s;font-family:inherit}
+.lang-select:hover{border-color:var(--brand);background:var(--bg-alt)}
+
 header{text-align:center;margin-bottom:1.5rem}
-header h1{font-size:1.6rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
-header h1 span{color:var(--brand)}
-header p{color:var(--sub);font-size:.85rem;margin-top:.2rem}
-.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:2.5rem 2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg2)}
-.upload-zone:hover,.upload-zone.dragover{border-color:var(--brand);background:var(--brand-light)}
-.upload-zone.has-img{border-color:var(--brand);border-style:solid}
-.uz-icon{font-size:2.8rem;margin-bottom:.6rem}
-.uz-title{font-weight:600;font-size:.95rem;color:var(--text);margin-bottom:.2rem}
-.uz-sub{color:var(--sub);font-size:.82rem}
-.uz-file{display:none;margin-top:.6rem;color:var(--green);font-size:.85rem;font-weight:600}
-.uz-preview{display:none;margin-top:1rem;max-width:100%;max-height:280px;border-radius:var(--radius);object-fit:cover;box-shadow:var(--shadow)}
-.btn-primary{display:none;margin:1rem auto 0;padding:.85rem 2.5rem;background:var(--brand);color:#fff;border:none;border-radius:var(--radius);font-size:.95rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;box-shadow:var(--shadow)}
+header h1{font-size:1.8rem;font-weight:800;color:var(--brand);letter-spacing:-1px;display:flex;align-items:center;justify-content:center;gap:10px}
+header p{color:var(--sub);font-size:.85rem;margin-top:.4rem;max-width:90%;margin-left:auto;margin-right:auto}
+
+/* Componente Passo a Passo */
+.steps-container{display:flex;justify-content:space-between;background:var(--bg-alt);padding:1rem;border-radius:var(--radius);margin-bottom:1.5rem;gap:8px}
+.step-item{flex:1;text-align:center;position:relative}
+.step-badge{width:24px;height:24px;background:var(--brand);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;margin:0 auto .5rem;box-shadow:0 2px 4px rgba(0,0,0,0.1)}
+.step-item:nth-child(2) .step-badge{background:var(--accent)}
+.step-item:nth-child(3) .step-badge{background:var(--green)}
+.step-icon{font-size:1.4rem;margin-bottom:2px}
+.step-txt{font-size:.72rem;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:0.02em;display:block}
+.step-subtxt{font-size:.65rem;color:var(--sub);display:block;margin-top:1px}
+
+/* Zona de Upload & Ações Mobile */
+.upload-container{margin-bottom:1.5rem}
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:all 0.2s cubic-bezier(0.4,0,0.2,1);background:var(--bg-alt);position:relative;overflow:hidden}
+.upload-zone.dragover{border-color:var(--brand);background:var(--brand-light)}
+.upload-zone.has-img{border-style:solid;border-color:var(--brand);background:var(--bg-card);padding:1rem}
+.uz-icon{font-size:3rem;margin-bottom:.5rem;display:inline-block}
+.uz-title{font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.25rem}
+.uz-sub{color:var(--sub);font-size:.8rem}
+.uz-file{display:none;margin-top:.5rem;color:var(--brand);font-size:.8rem;font-weight:600;background:var(--brand-light);padding:4px 12px;border-radius:20px;display:inline-block}
+.uz-preview{display:none;width:100%;max-height:280px;border-radius:calc(var(--radius) - 4px);object-fit:cover;box-shadow:var(--shadow)}
+
+/* Destaque para Ações Mobile (Câmara vs Galeria) */
+.mobile-actions{display:flex;gap:12px;margin-top:1rem}
+.btn-action{flex:1;padding:1rem .75rem;border:none;border-radius:var(--radius);font-size:.95rem;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;box-shadow:var(--shadow);font-family:inherit}
+.btn-action.camera{background:var(--accent)}
+.btn-action.camera:hover{background:var(--accent-hover);transform:translateY(-1px)}
+.btn-action.gallery{background:var(--green)}
+.btn-action.gallery:hover{background:var(--green-hover);transform:translateY(-1px)}
+.btn-action svg{fill:currentColor;flex-shrink:0}
+
+.btn-primary{width:100%;padding:1rem;background:var(--brand);color:#fff;border:none;border-radius:var(--radius);font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;box-shadow:var(--shadow);margin-top:1.25rem;display:none}
 .btn-primary:hover{background:var(--brand-hover);transform:translateY(-1px);box-shadow:var(--shadow-lg)}
 .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.loading{display:none;text-align:center;margin:1.5rem 0}
-.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--brand);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto .6rem}
+
+/* Feedback de Carregamento */
+.loading{display:none;text-align:center;margin:2rem 0}
+.spinner{width:40px;height:40px;border:4px solid var(--border);border-top-color:var(--brand);border-radius:50%;animation:spin .8s cubic-bezier(0.4,0,0.2,1) infinite;margin:0 auto 1rem}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading p{color:var(--sub);font-size:.85rem}
-#results{display:none;margin-top:1.5rem;animation:fadeIn .4s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
-.result-header h2{font-size:1.2rem;font-weight:700}
-.cal-badge{background:var(--brand-light);color:var(--brand);padding:.25rem .85rem;border-radius:20px;font-size:.85rem;font-weight:700}
-.macro-row{display:flex;gap:.5rem;margin-bottom:1.2rem}
-.macro{flex:1;min-width:70px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.7rem;text-align:center}
-.macro-num{font-size:1.1rem;font-weight:800;color:var(--brand)}
-.macro-lbl{font-size:.7rem;color:var(--sub);margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
-.card{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--bg2);margin-bottom:.8rem}
-.card-title{padding:.75rem 1rem;background:var(--bg3);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--sub)}
+.loading p{color:var(--brand);font-weight:600;font-size:.95rem}
+
+/* Layout de Resultados */
+#results{display:none;margin-top:1.5rem;animation:fadeIn .5s cubic-bezier(0.16,1,0.3,1) both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:2px solid var(--bg-alt)}
+.result-header h2{font-size:1.3rem;font-weight:800;letter-spacing:-0.5px}
+.cal-badge{background:var(--accent-light);color:var(--accent);padding:.4rem 1rem;border-radius:50px;font-size:.95rem;font-weight:800;box-shadow:0 2px 8px rgba(234,88,12,0.15)}
+
+.macro-row{display:flex;gap:8px;margin-bottom:1.25rem}
+.macro{flex:1;background:var(--bg-alt);border-radius:var(--radius);padding:.85rem .25rem;text-align:center;border:1px solid transparent}
+.macro-num{font-size:1.2rem;font-weight:800;color:var(--brand)}
+.macro-lbl{font-size:.7rem;color:var(--sub);margin-top:2px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+
+.card{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--bg-card);margin-bottom:1.25rem;box-shadow:var(--shadow)}
+.card-title{padding:.85rem 1.1rem;background:var(--brand);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#fff}
 .ing-list{list-style:none}
-.ing-item{display:flex;justify-content:space-between;padding:.65rem 1rem;border-top:1px solid var(--border);font-size:.88rem}
-.ing-item:last-child{border-bottom:none}
-.ing-amount{color:var(--sub);font-weight:500}
-.notes-box{margin-top:.8rem;padding:.9rem 1rem;background:var(--amber-light);border:1px solid #fcd34d;border-radius:var(--radius);font-size:.84rem;color:#92400e;line-height:1.6}
-.reset-btn{display:inline-block;margin-top:1rem;background:none;border:1px solid var(--border);color:var(--sub);padding:.5rem 1.2rem;border-radius:var(--radius);font-size:.82rem;cursor:pointer;font-family:inherit;transition:all .2s}
-.reset-btn:hover{background:var(--bg3);color:var(--text)}
-footer{text-align:center;margin-top:1.5rem;color:var(--sub);font-size:.72rem;opacity:.5}
+.ing-item{display:flex;justify-content:space-between;padding:.8rem 1.1rem;border-top:1px solid var(--border);font-size:.9rem;align-items:center}
+.ing-item:first-child{border-top:none}
+.ing-amount{color:var(--sub);font-weight:600;background:var(--bg-alt);padding:2px 8px;border-radius:10px;font-size:.8rem}
+.notes-box{padding:1.1rem;background:var(--brand-light);border-left:4px solid var(--brand);border-radius:0 var(--radius) var(--radius) 0;font-size:.85rem;color:var(--brand);line-height:1.5;margin-bottom:1.25rem;font-weight:500}
+
+.reset-btn{display:block;width:100%;background:none;border:2px solid var(--border);color:var(--sub);padding:.85rem;border-radius:var(--radius);font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.reset-btn:hover{background:var(--bg-alt);color:var(--text)}
+footer{text-align:center;margin-top:2rem;color:var(--sub);font-size:.7rem;font-weight:500;border-top:1px solid var(--border);padding-top:1.25rem}
 </style>
 </head>
 <body>
+
 <div id="gate">
-  <div class="lang-bar" style="position:absolute;top:1rem;right:1rem">
+  <div class="gate-card">
+    <div style="margin-bottom:1.25rem; display:flex; justify-content:center;">
+      <svg width="64" height="64" viewBox="0 0 100 100">
+        <rect width="100" height="100" rx="24" fill="#21424b"/>
+        <circle cx="50" cy="52" r="26" fill="none" stroke="#ffffff" stroke-width="4"/>
+        <rect x="38" y="30" width="24" height="6" rx="3" fill="#ea580c"/>
+        <path d="M50 38c-5 0-9 4-9 9s7 11 9 11 9-6 9-11-4-9-9-9z" fill="#16a34a"/>
+        <circle cx="70" cy="42" r="3" fill="#ea580c"/>
+      </svg>
+    </div>
+    <div class="gate-title" data-i18n="gate_title">NutriLens</div>
+    <div class="gate-sub" data-i18n="gate_sub">Insira a palavra-passe para aceder</div>
+    
     <select class="lang-select" id="gateLang" onchange="setLang(this.value)">
       <option value="pt">🇵🇹 Português</option>
       <option value="en">🇬🇧 English</option>
@@ -93,34 +135,13 @@ footer{text-align:center;margin-top:1.5rem;color:var(--sub);font-size:.72rem;opa
       <option value="de">🇩🇪 Deutsch</option>
       <option value="it">🇮🇹 Italiano</option>
     </select>
-  </div>
-  <div class="gate-card">
-    <div class="gate-icon" style="margin-bottom:1.2rem">
-<svg width="60" height="60" viewBox="0 0 512 512">
-  <defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#16a34a"/><stop offset="100%" stop-color="#15803d"/></linearGradient></defs>
-  <circle cx="256" cy="256" r="240" fill="url(#gg)"/>
-  <ellipse cx="256" cy="290" rx="120" ry="58" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.2)" stroke-width="2.5"/>
-  <ellipse cx="256" cy="285" rx="90" ry="42" fill="rgba(255,255,255,0.05)"/>
-  <line x1="160" y1="315" x2="175" y2="215" stroke="rgba(255,255,255,0.18)" stroke-width="2.8" stroke-linecap="round"/>
-  <line x1="160" y1="215" x2="160" y2="200" stroke="rgba(255,255,255,0.18)" stroke-width="1.8" stroke-linecap="round"/>
-  <line x1="167" y1="215" x2="167" y2="200" stroke="rgba(255,255,255,0.18)" stroke-width="1.8" stroke-linecap="round"/>
-  <line x1="174" y1="215" x2="174" y2="200" stroke="rgba(255,255,255,0.18)" stroke-width="1.8" stroke-linecap="round"/>
-  <line x1="153" y1="215" x2="153" y2="200" stroke="rgba(255,255,255,0.18)" stroke-width="1.8" stroke-linecap="round"/>
-  <line x1="345" y1="315" x2="345" y2="215" stroke="rgba(255,255,255,0.18)" stroke-width="2.8" stroke-linecap="round"/>
-  <path d="M345 215 Q355 225 355 245 Q355 265 345 275" stroke="rgba(255,255,255,0.18)" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-  <path d="M256 305 Q234 290 236 272 Q238 258 248 250 Q251 247 256 238 Q261 247 264 250 Q274 258 276 272 Q278 290 256 305Z" fill="rgba(255,255,255,0.38)"/>
-  <path d="M256 299 Q242 287 244 273 Q246 262 254 256 Q256 253 256 248 Q256 253 258 256 Q266 262 268 273 Q270 287 256 299Z" fill="rgba(255,255,255,0.5)"/>
-  <circle cx="262" cy="252" r="1.8" fill="rgba(255,255,255,0.5)"/>
-  <text x="256" y="335" text-anchor="middle" font-size="24" font-weight="700" font-family="Inter,sans-serif" fill="rgba(255,255,255,0.22)">kcal</text>
-</svg>
-</div>
-    <div class="gate-title" data-i18n="gate_title">NutriLens</div>
-    <div class="gate-sub" data-i18n="gate_sub">Enter password to access</div>
-    <input type="password" id="gp" placeholder="Password" autocomplete="off" data-i18n="gate_placeholder" onkeydown="if(event.key==='Enter')doAuth()"/>
-    <button class="gate-btn" onclick="doAuth()" data-i18n="gate_btn">Enter</button>
-    <div class="gate-err" id="ge" data-i18n="gate_err">Wrong password. Try again.</div>
+
+    <input type="password" id="gp" placeholder="Palavra-passe" autocomplete="off" data-i18n="gate_placeholder" onkeydown="if(event.key==='Enter')doAuth()"/>
+    <button class="gate-btn" onclick="doAuth()" data-i18n="gate_btn" style="padding:.85rem; background:var(--brand); color:#fff; border:none; border-radius:var(--radius); width:100%; font-weight:700; cursor:pointer; font-family:inherit;">Entrar</button>
+    <div class="gate-err" id="ge" data-i18n="gate_err" style="color:#dc2626; font-size:.85rem; margin-top:1rem; display:none">Palavra-passe errada. Tente novamente.</div>
   </div>
 </div>
+
 <div id="app">
   <div class="lang-bar">
     <select class="lang-select" id="langSelect" onchange="setLang(this.value)">
@@ -133,101 +154,233 @@ footer{text-align:center;margin-top:1.5rem;color:var(--sub);font-size:.72rem;opa
     </select>
     <button class="lang-select" style="cursor:pointer;color:#dc2626;border-color:#fca5a5" onclick="logout()" data-i18n="logout">Sair</button>
   </div>
+  
   <header>
-    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:.2rem">
-    <img src="/static/logo-square.jpg" style="width:72px;height:72px;border-radius:16px;object-fit:cover;flex-shrink:0;box-shadow:0 4px 16px rgba(33,66,75,0.12)" alt="NutriLens"/>
-    <h1 style="font-size:2rem;letter-spacing:-.5px"><span data-i18n="title">NutriLens</span></h1>
-  </div>
-    <p data-i18n="subtitle">Upload a photo of your meal - get ingredients and estimated calories</p>
+    <h1>
+      <svg width="34" height="34" viewBox="0 0 100 100" style="vertical-align: middle;">
+        <rect width="100" height="100" rx="24" fill="#21424b"/>
+        <circle cx="50" cy="52" r="26" fill="none" stroke="#ffffff" stroke-width="4"/>
+        <rect x="38" y="30" width="24" height="6" rx="3" fill="#ea580c"/>
+        <path d="M50 38c-5 0-9 4-9 9s7 11 9 11 9-6 9-11-4-9-9-9z" fill="#16a34a"/>
+        <circle cx="70" cy="42" r="3" fill="#ea580c"/>
+      </svg>
+      <span data-i18n="title">NutriLens</span>
+    </h1>
+    <p data-i18n="subtitle">Fotografe a sua refeição e obtenha uma análise nutricional instantânea.</p>
   </header>
-  <div class="upload-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
-    <div class="uz-icon">&#x1F4F8;</div>
-    <div class="uz-title" data-i18n="drop_title">Drop your photo here</div>
-    <div class="uz-sub" data-i18n="drop_sub">or click to browse - JPEG, PNG, WebP</div>
-    <div class="uz-file" id="fileName"></div>
-    <img class="uz-preview" id="preview" alt="preview"/>
+
+  <div class="steps-container">
+    <div class="step-item">
+      <div class="step-badge">1</div>
+      <div class="step-icon">📸</div>
+      <span class="step-txt" data-i18n="step1_title">Capturar</span>
+      <span class="step-subtxt" data-i18n="step1_sub">Foto do prato</span>
+    </div>
+    <div class="step-item">
+      <div class="step-badge">2</div>
+      <div class="step-icon">🧠</div>
+      <span class="step-txt" data-i18n="step2_title">Análise IA</span>
+      <span class="step-subtxt" data-i18n="step2_sub">Identificação</span>
+    </div>
+    <div class="step-item">
+      <div class="step-badge">3</div>
+      <div class="step-icon">📊</div>
+      <span class="step-txt" data-i18n="step3_title">Nutrição</span>
+      <span class="step-subtxt" data-i18n="step3_sub">Dados e Metas</span>
+    </div>
+  </div>
+
+  <div class="upload-container">
+    <div class="upload-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+      <div id="uploadPrompt">
+        <div class="uz-icon">☁️</div>
+        <div class="uz-title" data-i18n="drop_title">Selecione ou arraste o prato</div>
+        <div class="uz-sub" data-i18n="drop_sub">Formatos aceites: JPEG, PNG, WebP</div>
+      </div>
+      <div class="uz-file" id="fileName" style="display:none"></div>
+      <img class="uz-preview" id="preview" alt="Antevisão da refeição"/>
+    </div>
+    
+    <div class="mobile-actions">
+      <button class="btn-action camera" onclick="document.getElementById('cameraInput').click()">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm12 10a4 4 0 1 0-8 0 4 4 0 0 0 8 0zm-4 2.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+        <span data-i18n="camera_btn">Usar Câmara</span>
+      </button>
+      <button class="btn-action gallery" onclick="document.getElementById('fileInput').click()">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-5.5 6 3 4h-11l3-4 2 2.5 3-2.5z"/></svg>
+        <span data-i18n="gallery_btn">Ver Galeria</span>
+      </button>
+    </div>
+
     <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="handleFile(this)"/>
     <input type="file" id="cameraInput" accept="image/jpeg,image/png,image/webp" capture="environment" style="display:none" onchange="handleFile(this)"/>
   </div>
-  <button class="btn-primary" id="analyzeBtn" onclick="analyze()" data-i18n="analyze_btn">Analyze meal</button>
+
+  <button class="btn-primary" id="analyzeBtn" onclick="analyze()" data-i18n="analyze_btn">Analisar refeição</button>
+
   <div class="loading" id="loading">
     <div class="spinner"></div>
-    <p data-i18n="analyzing">Analysing your meal...</p>
+    <p data-i18n="analyzing">A analisar a imagem do seu prato...</p>
   </div>
+
   <div id="results">
     <div class="result-header">
-      <h2 id="dishName"></h2>
-      <div class="cal-badge" id="calBadge"></div>
+      <h2 id="dishName">Nome do Prato</h2>
+      <div class="cal-badge" id="calBadge">0 kcal</div>
     </div>
     <div class="macro-row" id="macroRow"></div>
+    
     <div class="card">
-      <div class="card-title" data-i18n="ingredients_title">Ingredients</div>
+      <div class="card-title" data-i18n="ingredients_title">Ingredientes Detetados</div>
       <ul class="ing-list" id="ingList"></ul>
     </div>
+    
     <div class="notes-box" id="notes"></div>
-    <button class="reset-btn" onclick="reset()" data-i18n="reset_btn">Scan another meal</button>
+    <button class="reset-btn" onclick="reset()" data-i18n="reset_btn">Analisar nova refeição</button>
   </div>
-  <footer data-i18n="footer">MVP by Guilherme Guerreiro with Copilot AI</footer>
+
+  <footer data-i18n="footer">MVP por Guilherme Guerreiro com Copilot AI @2026</footer>
 </div>
+
 <script>
 const I18N = {
-pt:{step1:"📸 Tira a foto",step2:"🤖 IA analisa",step3:"📊 Obtém nutrientes",camera_btn:"📷 Tirar foto",gallery_btn:"🖼️ Galeria",logout:"Sair",gate_title:"NutriLens",gate_sub:"Insere a password para aceder",gate_placeholder:"Password",gate_btn:"Entrar",gate_err:"Password errada. Tenta novamente.",title:"NutriLens",subtitle:"Fotografa a tua refeição e obtém análise nutricional instantânea - ingredientes, calorias, proteína, hidratos e gordura",drop_title:"Larga a tua foto aqui",drop_sub:"ou clica para procurar - JPEG, PNG, WebP",analyze_btn:"Analisar refeição",analyzing:"A analisar a tua refeição...",ingredients_title:"Ingredientes",reset_btn:"Analisar outra refeição",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
-en:{step1:"📸 Take a photo",step2:"🤖 AI analyzes",step3:"📊 Get nutrients",camera_btn:"📷 Take photo",gallery_btn:"🖼️ Gallery",logout:"Logout",gate_title:"NutriLens",gate_sub:"Enter password to access",gate_placeholder:"Password",gate_btn:"Enter",gate_err:"Wrong password. Try again.",title:"NutriLens",subtitle:"Snap a photo of your meal and get instant nutritional analysis - ingredients, calories, protein, carbs and fat",drop_title:"Drop your photo here",drop_sub:"or click to browse - JPEG, PNG, WebP",analyze_btn:"Analyze meal",analyzing:"Analysing your meal...",ingredients_title:"Ingredients",reset_btn:"Scan another meal",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
-es:{step1:"📸 Toma la foto",step2:"🤖 IA analiza",step3:"📊 Obtén nutrientes",camera_btn:"📷 Tomar foto",gallery_btn:"🖼️ Galería",logout:"Salir",gate_title:"NutriLens",gate_sub:"Introduce la contraseña para acceder",gate_placeholder:"Contraseña",gate_btn:"Entrar",gate_err:"Contraseña incorrecta. Inténtalo de nuevo.",title:"NutriLens",subtitle:"Toma una foto de tu plato y obtén análisis nutricional instantáneo - ingredientes, calorías, proteínas, carbohidratos y grasas",drop_title:"Suelta tu foto aquí",drop_sub:"o haz clic para buscar - JPEG, PNG, WebP",analyze_btn:"Analizar comida",analyzing:"Analizando tu comida...",ingredients_title:"Ingredientes",reset_btn:"Analizar otro plato",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
-fr:{step1:"📸 Prendre une photo",step2:"🤖 IA analyse",step3:"📊 Obtenir les nutriments",camera_btn:"📷 Prendre photo",gallery_btn:"🖼️ Galerie",logout:"Quitter",gate_title:"NutriLens",gate_sub:"Entrez le mot de passe pour accéder",gate_placeholder:"Mot de passe",gate_btn:"Entrer",gate_err:"Mot de passe incorrect. Réessayez.",title:"NutriLens",subtitle:"Prenez une photo de votre plat et obtenez une analyse nutritionnelle instantanée - ingrédients, calories, protéines, glucides et lipides",drop_title:"Déposez votre photo ici",drop_sub:"ou cliquez pour parcourir - JPEG, PNG, WebP",analyze_btn:"Analyser le repas",analyzing:"Analyse de votre repas en cours...",ingredients_title:"Ingrédients",reset_btn:"Analyser un autre plat",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
-de:{step1:"📸 Foto machen",step2:"🤖 KI analysiert",step3:"📊 Nährstoffe erhalten",camera_btn:"📷 Foto aufnehmen",gallery_btn:"🖼️ Galerie",logout:"Abmelden",gate_title:"NutriLens",gate_sub:"Passwort eingeben, um zuzugreifen",gate_placeholder:"Passwort",gate_btn:"Eingeben",gate_err:"Falsches Passwort. Versuche es erneut.",title:"NutriLens",subtitle:"Foto deines Gerichts für eine sofortige Ernährungsanalyse - Zutaten, Kalorien, Eiweiß, Kohlenhydrate und Fett",drop_title:"Foto hier ablegen",drop_sub:"oder klicken zum Durchsuchen - JPEG, PNG, WebP",analyze_btn:"Mahlzeit analysieren",analyzing:"Analysiere deine Mahlzeit...",ingredients_title:"Zutaten",reset_btn:"Weitere Mahlzeit scannen",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
-it:{step1:"📸 Scatta foto",step2:"🤖 IA analizza",step3:"📊 Ottieni nutrienti",camera_btn:"📷 Scatta foto",gallery_btn:"🖼️ Galleria",logout:"Esci",gate_title:"NutriLens",gate_sub:"Inserisci la password per accedere",gate_placeholder:"Password",gate_btn:"Entra",gate_err:"Password errata. Riprova.",title:"NutriLens",subtitle:"Scatta una foto del tuo piatto e ottieni un’analisi nutrizionale istantanea - ingredienti, calorie, proteine, carboidrati e grassi",drop_title:"Trascina la tua foto qui",drop_sub:"o clicca per cercare - JPEG, PNG, WebP",analyze_btn:"Analizza pasto",analyzing:"Analisi del pasto in corso...",ingredients_title:"Ingredienti",reset_btn:"Analizza un altro pasto",footer:"MVP by Guilherme Guerreiro with Copilot AI"}
+pt:{step1_title:"Capturar",step1_sub:"Foto do prato",step2_title:"Análise IA",step2_sub:"Identificação",step3_title:"Nutrição",step3_sub:"Dados e Metas",camera_btn:"Usar Câmara",gallery_btn:"Ver Galeria",logout:"Sair",gate_title:"NutriLens",gate_sub:"Insira a palavra-passe para aceder",gate_placeholder:"Palavra-passe",gate_btn:"Entrar",gate_err:"Palavra-passe errada. Tente novamente.",title:"NutriLens",subtitle:"Fotografe a sua refeição e obtenha uma análise nutricional instantânea — ingredientes, calorias e macronutrientes.",drop_title:"Selecione ou arraste o prato",drop_sub:"Formatos aceites: JPEG, PNG, WebP",analyze_btn:"Analisar refeição",analyzing:"A analisar a imagem do seu prato...",ingredients_title:"Ingredientes Detetados",reset_btn:"Analisar nova refeição",footer:"MVP por Guilherme Guerreiro com Copilot AI"},
+en:{step1_title:"Capture",step1_sub:"Meal photo",step2_title:"AI Scan",step2_sub:"Identification",step3_title:"Nutrition",step3_sub:"Data & Goals",camera_btn:"Use Camera",gallery_btn:"Open Gallery",logout:"Logout",gate_title:"NutriLens",gate_sub:"Enter password to access",gate_placeholder:"Password",gate_btn:"Enter",gate_err:"Wrong password. Try again.",title:"NutriLens",subtitle:"Snap a photo of your meal and get instant nutritional analysis - ingredients, calories and macros.",drop_title:"Select or drop meal photo",drop_sub:"Accepted formats: JPEG, PNG, WebP",analyze_btn:"Analyze meal",analyzing:"Analysing your meal image...",ingredients_title:"Detected Ingredients",reset_btn:"Scan another meal",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
+es:{step1_title:"Capturar",step1_sub:"Foto del plato",step2_title:"IA Scan",step2_sub:"Identificación",step3_title:"Nutrición",step3_sub:"Datos y Metas",camera_btn:"Usar Cámara",gallery_btn:"Abrir Galería",logout:"Salir",gate_title:"NutriLens",gate_sub:"Introduce la contraseña",gate_placeholder:"Contraseña",gate_btn:"Entrar",gate_err:"Contraseña incorrecta.",title:"NutriLens",subtitle:"Toma una foto de tu plato y obtén análisis nutricional instantáneo.",drop_title:"Selecciona o arrastra la foto",drop_sub:"Formatos aceptados: JPEG, PNG, WebP",analyze_btn:"Analizar plato",analyzing:"Analizando la imagen de tu plato...",ingredients_title:"Ingredientes Detectados",reset_btn:"Analizar otro plato",footer:"MVP por Guilherme Guerreiro con Copilot AI"},
+fr:{step1_title:"Capturer",step1_sub:"Photo du plat",step2_title:"Analyse IA",step2_sub:"Identification",step3_title:"Nutrition",step3_sub:"Données & Objectifs",camera_btn:"Appareil Photo",gallery_btn:"Galerie",logout:"Quitter",gate_title:"NutriLens",gate_sub:"Entrez le mot de passe",gate_placeholder:"Mot de passe",gate_btn:"Entrer",gate_err:"Mot de passe incorrect.",title:"NutriLens",subtitle:"Prenez une photo de votre plat et obtenez une analyse nutritionnelle instantanée.",drop_title:"Sélectionnez ou glissez la photo",drop_sub:"Formats acceptés: JPEG, PNG, WebP",analyze_btn:"Analyser le repas",analyzing:"Analyse de l'image de vos repas...",ingredients_title:"Ingrédients Détectés",reset_btn:"Analyser un outro plat",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
+de:{step1_title:"Aufnehmen",step1_sub:"Foto machen",step2_title:"KI Scan",step2_sub:"Erkennung",step3_title:"Ernährung",step3_sub:"Werte & Ziele",camera_btn:"Kamera nutzen",gallery_btn:"Galerie öffnen",logout:"Abmelden",gate_title:"NutriLens",gate_sub:"Passwort eingeben",gate_placeholder:"Passwort",gate_btn:"Eingeben",gate_err:"Falsches Passwort.",title:"NutriLens",subtitle:"Foto deines Gerichts für eine sofortige Ernährungsanalyse.",drop_title:"Foto auswählen oder ablegen",drop_sub:"Erlaubte Formate: JPEG, PNG, WebP",analyze_btn:"Mahlzeit analysieren",analyzing:"Gericht wird analysiert...",ingredients_title:"Erkannte Zutaten",reset_btn:"Weitere Mahlzeit scannen",footer:"MVP by Guilherme Guerreiro with Copilot AI"},
+it:{step1_title:"Cattura",step1_sub:"Foto piatto",step2_title:"Analisi IA",step2_sub:"Identificazione",step3_title:"Nutrizione",step3_sub:"Dati & Obiettivi",camera_btn:"Usa Fotocamera",gallery_btn:"Apri Galleria",logout:"Esci",gate_title:"NutriLens",gate_sub:"Inserisci la password",gate_placeholder:"Password",gate_btn:"Entra",gate_err:"Password errata.",title:"NutriLens",subtitle:"Scatta uma foto del tuo piatto e ottieni un'analisi nutrizionale istantanea.",drop_title:"Seleziona o trascina la foto",drop_sub:"Formati accettati: JPEG, PNG, WebP",analyze_btn:"Analizza pasto",analyzing:"Analisi dell'immagine in corso...",ingredients_title:"Ingredienti Rilevati",reset_btn:"Analizza un altro pasto",footer:"MVP por Guilherme Guerreiro com Copilot AI"}
 };
+
 let TOKEN=null;
+
 function applyLang(l){
   const t=I18N[l]||I18N.en;
-  document.querySelectorAll("[data-i18n]").forEach(e=>{const k=e.getAttribute("data-i18n");if(t[k]){if(e.tagName==="INPUT")e.placeholder=t[k];else e.textContent=t[k];}});
-  const sel=document.getElementById("langSelect");if(sel)sel.value=l;
+  document.querySelectorAll("[data-i18n]").forEach(e=>{
+    const k=e.getAttribute("data-i18n");
+    if(t[k]){
+      if(e.tagName==="INPUT") e.placeholder=t[k];
+      else e.textContent=t[k];
+    }
+  });
+  
+  // Sincronizar ambos os seletores de língua na UI
+  const sel=document.getElementById("langSelect"); if(sel) sel.value=l;
+  const gSel=document.getElementById("gateLang"); if(gSel) gSel.value=l;
   localStorage.setItem("ms_lang",l);
 }
+
 function setLang(l){applyLang(l);}
-function detectLang(){const s=localStorage.getItem("ms_lang");if(s)return s;const n=(navigator.language||"en").split("-")[0];return["pt","en","es","fr","de","it"].includes(n)?n:"en";}
+function detectLang(){
+  const s=localStorage.getItem("ms_lang"); if(s) return s;
+  const n=(navigator.language||"en").split("-")[0];
+  return ["pt","en","es","fr","de","it"].includes(n)?n:"en";
+}
+
 async function doAuth(){
-  const pwd=document.getElementById("gp").value,err=document.getElementById("ge");
-  try{const r=await fetch("/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:pwd})});if(!r.ok){err.style.display="block";return;}const d=await r.json();TOKEN=d.token;sessionStorage.setItem("ms_token",TOKEN);document.getElementById("gate").style.display="none";document.getElementById("app").style.display="block";}catch(e){err.style.display="block";}
+  const pwd=document.getElementById("gp").value, err=document.getElementById("ge");
+  try{
+    const r=await fetch("/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:pwd})});
+    if(!r.ok){err.style.display="block";return;}
+    const d=await r.json();
+    TOKEN=d.token;
+    sessionStorage.setItem("ms_token",TOKEN);
+    document.getElementById("gate").style.display="none";
+    document.getElementById("app").style.display="block";
+  }catch(e){err.style.display="block";}
 }
-window.addEventListener("DOMContentLoaded",()=>{const t=sessionStorage.getItem("ms_token");if(t){TOKEN=t;document.getElementById("gate").style.display="none";document.getElementById("app").style.display="block";}applyLang(detectLang());});
-function handleFile(i){
-  const f=i.files[0];if(!f)return;
+
+window.addEventListener("DOMContentLoaded",()=>{
+  const t=sessionStorage.getItem("ms_token");
+  if(t){
+    TOKEN=t;
+    document.getElementById("gate").style.display="none";
+    document.getElementById("app").style.display="block";
+  }
+  applyLang(detectLang());
+});
+
+function handleFile(input){
+  const f=input.files[0]; if(!f) return;
   document.getElementById("dropZone").classList.add("has-img");
-  document.getElementById("fileName").textContent=f.name;document.getElementById("fileName").style.display="block";
-  const r=new FileReader();r.onload=e=>{const p=document.getElementById("preview");p.src=e.target.result;p.style.display="block";document.querySelector(".uz-icon").style.display="none";};
-  r.readAsDataURL(f);document.getElementById("analyzeBtn").style.display="block";
+  document.getElementById("uploadPrompt").style.display="none";
+  
+  document.getElementById("fileName").textContent=f.name;
+  document.getElementById("fileName").style.display="inline-block";
+  
+  const r=new FileReader();
+  r.onload=e=>{
+    const p=document.getElementById("preview");
+    p.src=e.target.result;
+    p.style.display="block";
+  };
+  r.readAsDataURL(f);
+  document.getElementById("analyzeBtn").style.display="block";
 }
+
 const dz=document.getElementById("dropZone");
 dz.addEventListener("dragover",e=>{e.preventDefault();dz.classList.add("dragover");});
 dz.addEventListener("dragleave",()=>dz.classList.remove("dragover"));
-dz.addEventListener("drop",e=>{e.preventDefault();dz.classList.remove("dragover");const f=e.dataTransfer.files[0];if(f){document.getElementById("fileInput").files=e.dataTransfer.files;handleFile(document.getElementById("fileInput"));}});
+dz.addEventListener("drop",e=>{
+  e.preventDefault();
+  dz.classList.remove("dragover");
+  const f=e.dataTransfer.files[0];
+  if(f){
+    document.getElementById("fileInput").files=e.dataTransfer.files;
+    handleFile(document.getElementById("fileInput"));
+  }
+});
+
 async function analyze(){
-  const fi=document.getElementById("fileInput");if(!fi.files[0])return;
-  const btn=document.getElementById("analyzeBtn");btn.disabled=true;btn.textContent="...";
-  document.getElementById("loading").style.display="block";document.getElementById("results").style.display="none";
-  const fd=new FormData();fd.append("file",fi.files[0]);
-  try{const lng=detectLang();const r=await fetch("/analyze?lang="+lng,{method:"POST",headers:{"x-scan-auth":TOKEN},body:fd});if(r.status===401){sessionStorage.removeItem("ms_token");location.reload();return;}const data=await r.json();showResults(data);}catch(e){document.getElementById("loading").innerHTML="<p style='color:#dc2626'>Error</p>";}
-  btn.disabled=false;btn.textContent="Analyze meal";document.getElementById("loading").style.display="none";
+  const fi=document.getElementById("fileInput"); if(!fi.files[0]) return;
+  const btn=document.getElementById("analyzeBtn"); btn.disabled=true;
+  document.getElementById("loading").style.display="block";
+  document.getElementById("results").style.display="none";
+  
+  const fd=new FormData();
+  fd.append("file",fi.files[0]);
+  try{
+    const lng=detectLang();
+    const r=await fetch("/analyze?lang="+lng,{method:"POST",headers:{"x-scan-auth":TOKEN},body:fd});
+    if(r.status===401){sessionStorage.removeItem("ms_token");location.reload();return;}
+    const data=await r.json();
+    showResults(data);
+  }catch(e){
+    document.getElementById("loading").innerHTML="<p style='color:#dc2626'>Ocorreu um erro ao analisar a imagem.</p>";
+  }
+  btn.disabled=false;
+  document.getElementById("loading").style.display="none";
 }
+
 function showResults(d){
   document.getElementById("dishName").textContent=d.dish_name;
   document.getElementById("calBadge").textContent=d.total_calories_kcal+" kcal";
-  const l=detectLang();const m={pt:["Proteina","Hidratos","Gordura"],en:["Protein","Carbs","Fat"],es:["Proteina","Carbohidratos","Grasa"],fr:["Proteines","Glucides","Lipides"],de:["Eiweiss","Kohlenhydrate","Fett"],it:["Proteine","Carboidrati","Grassi"]};
+  const l=detectLang();
+  const m={
+    pt:["Proteína","Hidratos","Gordura"],en:["Protein","Carbs","Fat"],
+    es:["Proteína","Carbohidratos","Grasa"],fr:["Protéines","Glucides","Lipides"],
+    de:["Eiweiß","Kohlenhydrate","Fett"],it:["Proteine","Carboidrati","Grassi"]
+  };
   const ml=m[l]||m.en;
-  document.getElementById("macroRow").innerHTML=[{l:ml[0],v:d.protein_g},{l:ml[1],v:d.carbs_g},{l:ml[2],v:d.fat_g}].map(x=>'<div class="macro"><div class="macro-num">'+x.v+'</div><div class="macro-lbl">g '+x.l+'</div></div>').join("");
-  document.getElementById("ingList").innerHTML=d.ingredients.map(i=>'<li class="ing-item"><span>'+i.name+'</span><span class="ing-amount">'+i.estimated_amount+'</span></li>').join("");
+  document.getElementById("macroRow").innerHTML=[
+    {l:ml[0],v:d.protein_g,c:"#1e3a8a"},{l:ml[1],v:d.carbs_g,c:"#b45309"},{l:ml[2],v:d.fat_g,c:"#15803d"}
+  ].map(x=>`<div class="macro"><div class="macro-num" style="color:${x.c}">${x.v}g</div><div class="macro-lbl">${x.l}</div></div>`).join("");
+  
+  document.getElementById("ingList").innerHTML=d.ingredients.map(i=>`<li class="ing-item"><span>${i.name}</span><span class="ing-amount">${i.estimated_amount}</span></li>`).join("");
   document.getElementById("notes").textContent=d.notes;
   document.getElementById("results").style.display="block";
 }
+
 function logout(){sessionStorage.removeItem("ms_token");location.reload();}
-function openCamera(){document.getElementById("cameraInput").click();}
 function reset(){
-  document.getElementById("results").style.display="none";document.getElementById("analyzeBtn").style.display="none";
-  document.getElementById("fileInput").value="";document.getElementById("preview").style.display="none";
-  document.getElementById("fileName").style.display="none";document.getElementById("dropZone").classList.remove("has-img");
-  document.querySelector(".uz-icon").style.display="block";
+  document.getElementById("results").style.display="none";
+  document.getElementById("analyzeBtn").style.display="none";
+  document.getElementById("fileInput").value="";
+  document.getElementById("cameraInput").value="";
+  document.getElementById("preview").style.display="none";
+  document.getElementById("fileName").style.display="none";
+  document.getElementById("dropZone").classList.remove("has-img");
+  document.getElementById("uploadPrompt").style.display="block";
 }
 if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("/static/sw.js");});}
 </script>
