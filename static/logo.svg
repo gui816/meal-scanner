@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.3)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0.05)"/>
+    </linearGradient>
+  </defs>
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#bg)"/>
+  
+  <!-- Outer ring -->
+  <circle cx="256" cy="256" r="200" fill="none" stroke="url(#ring)" stroke-width="3"/>
+  
+  <!-- Plate/stylized bowl -->
+  <ellipse cx="256" cy="280" rx="120" ry="70" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+  <ellipse cx="256" cy="270" rx="100" ry="55" fill="rgba(255,255,255,0.06)"/>
+  
+  <!-- Food items in bowl -->
+  <!-- Rice/starch -->
+  <ellipse cx="230" cy="268" rx="25" ry="10" fill="rgba(255,255,255,0.28)" transform="rotate(-15,230,268)"/>
+  <ellipse cx="278" cy="265" rx="20" ry="8" fill="rgba(255,255,255,0.22)" transform="rotate(10,278,265)"/>
+  
+  <!-- Protein -->
+  <ellipse cx="252" cy="255" rx="14" ry="8" fill="rgba(255,255,255,0.35)" transform="rotate(-5,252,255)"/>
+  
+  <!-- Vegetables -->
+  <ellipse cx="215" cy="262" rx="10" ry="6" fill="rgba(255,255,255,0.2)" transform="rotate(-25,215,262)"/>
+  <ellipse cx="295" cy="270" rx="8" ry="5" fill="rgba(255,255,255,0.18)" transform="rotate(20,295,270)"/>
+  
+  <!-- Steam lines -->
+  <path d="M240 220 Q243 200 240 185" stroke="rgba(255,255,255,0.2)" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M255 215 Q258 195 255 178" stroke="rgba(255,255,255,0.25)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M270 220 Q273 200 270 183" stroke="rgba(255,255,255,0.18)" stroke-width="2" fill="none" stroke-linecap="round"/>
+  
+  <!-- Lens ring (scanning concept) -->
+  <circle cx="256" cy="256" r="130" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+  <circle cx="256" cy="256" r="160" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+  
+  <!-- Crosshair/dot -->
+  <circle cx="256" cy="256" r="3" fill="rgba(255,255,255,0.3)"/>
+  <line x1="256" y1="240" x2="256" y2="248" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+  <line x1="256" y1="264" x2="256" y2="272" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+  <line x1="240" y1="256" x2="248" y2="256" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+  <line x1="264" y1="256" x2="272" y2="256" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+  
+  <!-- Magnifying glass handle -->
+  <line x1="360" y1="360" x2="390" y2="390" stroke="rgba(255,255,255,0.25)" stroke-width="6" stroke-linecap="round"/>
+  <line x1="390" y1="390" x2="395" y2="395" stroke="rgba(255,255,255,0.15)" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- Lens arc -->
+  <path d="M340 340 A60 60 0 0 0 370 358" stroke="rgba(255,255,255,0.12)" stroke-width="2" fill="none"/>
+</svg>

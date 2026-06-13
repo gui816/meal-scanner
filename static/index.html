@@ -8,8 +8,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="NutriLens"/>
 <meta name="description" content="Snap a photo of your meal and get instant nutritional analysis - ingredients, calories, protein, carbs and fat."/>
+<link rel="icon" type="image/svg+xml" href="/static/logo.svg"/>
 <link rel="manifest" href="/static/manifest.json"/>
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white'%3E%F0%9F%8D%BD%3C/text%3E%3C/svg%3E"/>
+<link rel="apple-touch-icon" href="/static/logo.svg" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white'%3E%F0%9F%8D%BD%3C/text%3E%3C/svg%3E"/>
 <title id="pageTitle">NutriLens</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -110,7 +111,26 @@ footer{text-align:center;margin-top:1.5rem;color:var(--sub);font-size:.72rem;opa
     </select>
   </div>
   <header>
-    <h1>&#x1F9ED; <span data-i18n="title">NutriLens</span></h1>
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:.2rem">
+    <svg width="40" height="40" viewBox="0 0 512 512" style="flex-shrink:0">
+      <defs>
+        <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#2563eb"/>
+          <stop offset="100%" stop-color="#1d4ed8"/>
+        </linearGradient>
+      </defs>
+      <circle cx="256" cy="256" r="240" fill="url(#lg)"/>
+      <ellipse cx="256" cy="290" rx="110" ry="60" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+      <ellipse cx="245" cy="280" rx="22" ry="9" fill="rgba(255,255,255,0.25)" transform="rotate(-15,245,280)"/>
+      <ellipse cx="270" cy="275" rx="13" ry="7" fill="rgba(255,255,255,0.3)" transform="rotate(-5,270,275)"/>
+      <ellipse cx="225" cy="277" rx="9" ry="5" fill="rgba(255,255,255,0.18)" transform="rotate(-25,225,277)"/>
+      <path d="M245 230 Q248 210 245 195" stroke="rgba(255,255,255,0.2)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M260 225 Q263 205 260 188" stroke="rgba(255,255,255,0.25)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M275 230 Q278 210 275 193" stroke="rgba(255,255,255,0.18)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <line x1="360" y1="370" x2="390" y2="400" stroke="rgba(255,255,255,0.2)" stroke-width="6" stroke-linecap="round"/>
+    </svg>
+    <h1><span data-i18n="title">NutriLens</span></h1>
+  </div>
     <p data-i18n="subtitle">Upload a photo of your meal - get ingredients and estimated calories</p>
   </header>
   <div class="upload-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
