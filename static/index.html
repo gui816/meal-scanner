@@ -236,6 +236,9 @@ footer{text-align:center;margin-top:2rem;color:var(--sub);font-size:.7rem;font-w
     </div>
     
     <div class="notes-box" id="notes"></div>
+    <div class="freq-box" id="freqBox" style="display:none;margin-top:.8rem;padding:.9rem 1rem;background:var(--brand-light);border:1px solid rgba(33,66,75,.15);border-radius:var(--radius);font-size:.84rem;color:var(--brand);line-height:1.6;font-weight:600">
+      <span id="freqIcon">🔄</span> <span id="freqText"></span>
+    </div>
     <button class="reset-btn" onclick="reset()" data-i18n="reset_btn">Analisar nova refeição</button>
   </div>
 
@@ -369,6 +372,15 @@ function showResults(d){
   
   document.getElementById("ingList").innerHTML=d.ingredients.map(i=>`<li class="ing-item"><span>${i.name}</span><span class="ing-amount">${i.estimated_amount}</span></li>`).join("");
   document.getElementById("notes").textContent=d.notes;
+  if(d.frequency){
+    const fb=document.getElementById("freqBox");fb.style.display="flex";fb.style.alignItems="center";fb.style.gap="8px";
+    const ft=document.getElementById("freqText");ft.textContent=d.frequency;
+    // Choose icon based on frequency keywords
+    const f=d.frequency.toLowerCase();
+    if(f.includes("diari")||f.includes("daily")||f.includes("frequent")) document.getElementById("freqIcon").textContent="🟢";
+    else if(f.includes("moder")||f.includes("moderation")) document.getElementById("freqIcon").textContent="🟡";
+    else document.getElementById("freqIcon").textContent="🔴";
+  }
   document.getElementById("results").style.display="block";
 }
 

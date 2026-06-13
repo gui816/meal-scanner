@@ -63,6 +63,7 @@ class MealAnalysis:
     carbs_g: int = 0
     fat_g: int = 0
     notes: str = ""
+    frequency: str = ""
 
 
 # ---------------------------------------------------------------------------
@@ -71,9 +72,9 @@ class MealAnalysis:
 
 SYSTEM_PROMPT = """Analyse this food photo. Return ONLY valid JSON (no markdown, no extra text).
 
-{"dish_name": "...", "ingredients": [{"name": "...", "estimated_amount": "..."}], "total_calories_kcal": 0, "protein_g": 0, "carbs_g": 0, "fat_g": 0, "notes": "..."}
+{"dish_name": "...", "ingredients": [{"name": "...", "estimated_amount": "..."}], "total_calories_kcal": 0, "protein_g": 0, "carbs_g": 0, "fat_g": 0, "notes": "...", "frequency": "..."}
 
-Be realistic about portions. Use metric units.
+Add a "frequency" field with a consumption recommendation in the user's language. Examples: "Pode consumir diariamente", "Consumir com moderação", "Consumir ocasionalmente". Base it on the meal's nutritional profile, not just calories. Be realistic about portions. Use metric units.
 
 {lang}"""
 
