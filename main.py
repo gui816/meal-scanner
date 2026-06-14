@@ -110,8 +110,6 @@ Add a "frequency" field with a consumption recommendation in the user's language
 
 Also set the "confidence" field based on how certain you are: "high" (clear photo, recognizable portions, common dish), "medium" (some uncertainty), "low" (poor quality, mixed/unclear dish).
 
-IMPORTANTE: Assume a standard medium portion. Be conservative with calorie estimates — slightly underestimate rather than overestimate. A typical main dish: 400-700 kcal, light meal: 200-400 kcal, snack: under 200 kcal.
-
 {lang}"""
 
 
