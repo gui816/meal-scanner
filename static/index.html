@@ -58,14 +58,32 @@ header p{color:var(--sub);font-size:.85rem;margin-top:.4rem;max-width:90%;margin
 
 /* Zona de Upload & Ações Mobile */
 .upload-container{margin-bottom:1.5rem}
-.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:all 0.2s cubic-bezier(0.4,0,0.2,1);background:var(--bg-alt);position:relative;overflow:hidden}
+.upload-container{margin-bottom:1rem}
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:3rem 1.5rem;text-align:center;cursor:pointer;transition:all 0.25s cubic-bezier(0.4,0,0.2,1);background:var(--bg-alt);position:relative;overflow:hidden;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.upload-zone:active{transform:scale(.97)}
 .upload-zone.dragover{border-color:var(--brand);background:var(--brand-light)}
-.upload-zone.has-img{border-style:solid;border-color:var(--brand);background:var(--bg-card);padding:1rem}
-.uz-icon{font-size:3rem;margin-bottom:.5rem;display:inline-block}
-.uz-title{font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:.25rem}
-.uz-sub{color:var(--sub);font-size:.8rem}
+.upload-zone.has-img{border-style:solid;border-color:var(--brand);background:var(--bg-card);padding:.75rem;min-height:auto}
+.uz-icon{font-size:3.5rem;margin-bottom:.65rem;display:inline-block;opacity:.8}
+.uz-title{font-weight:700;font-size:1rem;color:var(--text);margin-bottom:.25rem}
+.uz-sub{color:var(--sub);font-size:.82rem}
 .uz-file{display:none;margin-top:.5rem;color:var(--brand);font-size:.8rem;font-weight:600;background:var(--brand-light);padding:4px 12px;border-radius:20px;display:inline-block}
-.uz-preview{display:none;width:100%;max-height:280px;border-radius:calc(var(--radius) - 4px);object-fit:cover;box-shadow:var(--shadow)}
+.uz-preview{display:none;width:100%;max-height:320px;border-radius:calc(var(--radius) - 4px);object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,.1);cursor:pointer;transition:opacity .2s}
+.uz-preview:active{opacity:.8}
+.uz-change{display:none;position:absolute;top:8px;right:8px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:20px;padding:5px 12px;font-size:.7rem;font-weight:600;cursor:pointer;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:2}
+.uz-change:active{transform:scale(.93)}
+/* Mobile-first action buttons */
+.mobile-actions{display:flex;gap:10px;margin-top:.85rem}
+.btn-action{flex:1;padding:1.1rem .5rem;border:none;border-radius:14px;font-size:1rem;font-weight:700;color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transition:all .15s;box-shadow:0 4px 8px rgba(0,0,0,.08);font-family:inherit;line-height:1.2}
+.btn-action:active{transform:scale(.95)}
+.btn-action svg{width:24px;height:24px;fill:currentColor;flex-shrink:0}
+.btn-action .btn-label{font-size:.82rem;font-weight:600}
+.btn-action.camera{background:var(--brand)}
+.btn-action.gallery{background:var(--accent)}
+@media(min-width:600px){
+  .upload-zone{min-height:160px;padding:3rem 2rem}
+  .btn-action{flex-direction:row;padding:1rem 1.25rem}
+  .btn-action svg{width:20px;height:20px}
+}
 
 /* Destaque para Ações Mobile (Câmara vs Galeria) */
 .mobile-actions{display:flex;gap:12px;margin-top:1rem}
@@ -202,22 +220,23 @@ footer{text-align:center;margin-top:2rem;color:var(--sub);font-size:.7rem;font-w
   <div class="upload-container">
     <div class="upload-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
       <div id="uploadPrompt">
-        <div class="uz-icon">☁️</div>
-        <div class="uz-title" data-i18n="drop_title">Selecione ou arraste o prato</div>
-        <div class="uz-sub" data-i18n="drop_sub">Formatos aceites: JPEG, PNG, WebP</div>
+        <div class="uz-icon">📸</div>
+        <div class="uz-title" data-i18n="drop_title">Tire uma foto ao seu prato</div>
+        <div class="uz-sub" data-i18n="drop_sub">Toque para selecionar da galeria</div>
       </div>
       <div class="uz-file" id="fileName" style="display:none"></div>
-      <img class="uz-preview" id="preview" alt="Antevisão da refeição"/>
+      <img class="uz-preview" id="preview" alt="Antevisão da refeição" onclick="event.stopPropagation();document.getElementById('fileInput').click()"/>
+      <button class="uz-change" id="changeBtn" onclick="event.stopPropagation();reset()">✕ Trocar foto</button>
     </div>
     
     <div class="mobile-actions">
       <button class="btn-action camera" onclick="document.getElementById('cameraInput').click()">
-        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm12 10a4 4 0 1 0-8 0 4 4 0 0 0 8 0zm-4 2.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
-        <span data-i18n="camera_btn">Usar Câmara</span>
+        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm12 10a4 4 0 1 0-8 0 4 4 0 0 0 8 0zm-4 2.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+        <span class="btn-label" data-i18n="camera_btn">Câmara</span>
       </button>
       <button class="btn-action gallery" onclick="document.getElementById('fileInput').click()">
-        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-5.5 6 3 4h-11l3-4 2 2.5 3-2.5z"/></svg>
-        <span data-i18n="gallery_btn">Ver Galeria</span>
+        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-5.5 6 3 4h-11l3-4 2 2.5 3-2.5z"/></svg>
+        <span class="btn-label" data-i18n="gallery_btn">Galeria</span>
       </button>
     </div>
 
@@ -345,6 +364,7 @@ function handleFile(input){
   };
   r.readAsDataURL(f);
   document.getElementById("analyzeBtn").style.display="block";document.getElementById("analyzeBtn").classList.add("shown");
+  document.getElementById("changeBtn").style.display="block";
 }
 
 const dz=document.getElementById("dropZone");
@@ -613,6 +633,7 @@ function frequencyFallback(cal,fat){
 function logout(){sessionStorage.removeItem("ms_token");location.reload();}
 function reset(){
   document.getElementById("results").style.display="none";
+  document.getElementById("changeBtn").style.display="none";
   document.getElementById("analyzeBtn").style.display="none";document.getElementById("analyzeBtn").classList.remove("shown");
   document.getElementById("fileInput").value="";
   document.getElementById("cameraInput").value="";
