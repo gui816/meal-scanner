@@ -677,6 +677,17 @@ function showFromHistory(idx){
   try{hist=JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]");}catch(e){}
   if(!hist[idx]) return;
   const e=hist[idx];
+  // Clear upload zone to avoid confusion (option A)
+  document.getElementById("fileInput").value="";
+  document.getElementById("cameraInput").value="";
+  document.getElementById("preview").style.display="none";
+  document.getElementById("fileName").style.display="none";
+  document.getElementById("changeBtn").style.display="none";
+  document.getElementById("uploadPrompt").style.display="block";
+  document.getElementById("dropZone").classList.remove("has-img");
+  document.getElementById("analyzeBtn").style.display="none";
+  document.getElementById("analyzeBtn").classList.remove("shown");
+  document.querySelector(".mobile-actions").style.display="flex";
   // Map history format to showResults format
   showResults({
     dish_name:e.name||"",
