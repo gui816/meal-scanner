@@ -614,8 +614,8 @@ function renderHistory(){
     const timeStr=dt.toLocaleDateString(l==="pt"?"pt-PT":l,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
     return '<div class="hist-item" onclick="showFromHistory('+i+')">'+
       '<span class="hist-icon">'+(confIcon[e.conf]||"🟡")+'</span>'+
-      '<div class="hist-info"><div class="hist-name">'+e.name+'</div><div class="hist-cal">'+
-        e.cal+' kcal · '+e.calPct+'% VD</div></div>'+
+      '<div class="hist-info"><div class="hist-name">'+(e.name||'Prato')+'</div><div class="hist-cal">'+
+        (e.cal||0)+' kcal · '+(e.calPct||0)+'% VD</div></div>'+
       '<span class="hist-time">'+timeStr+'</span></div>';
   }).join("");
 }
@@ -625,7 +625,18 @@ function showFromHistory(idx){
   try{hist=JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]");}catch(e){}
   if(!hist[idx]) return;
   const e=hist[idx];
-  showResults(e);
+  // Map history format to showResults format
+  showResults({
+    dish_name:e.name||"",
+    total_calories_kcal:e.cal||0,
+    protein_g:e.protein||0,
+    carbs_g:e.carbs||0,
+    fat_g:e.fat||0,
+    frequency:e.freq||"",
+    confidence:e.conf||"medium",
+    ingredients:[],
+    notes:""
+  });
   document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
 }
 
