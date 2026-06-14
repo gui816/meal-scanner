@@ -108,6 +108,8 @@ If the image does NOT contain a recognizable meal or food plate (e.g. landscape,
 
 Add a "frequency" field with a consumption recommendation in the user's language when is_food is true. Examples: "Pode consumir diariamente", "Consumir com moderacao", "Consumir ocasionalmente". Base it on the meal's nutritional profile. Use metric units.
 
+Use the plate/dish size visible in the image as a scale reference to estimate realistic portion sizes. A standard dinner plate is about 25-28cm in diameter. Adjust ingredient amounts to match typical portions for that dish type.
+
 Also set the "confidence" field based on how certain you are: "high" (clear photo, recognizable portions, common dish), "medium" (some uncertainty), "low" (poor quality, mixed/unclear dish).
 
 {lang}"""
