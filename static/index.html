@@ -80,8 +80,7 @@ header p{color:var(--sub);font-size:.85rem;margin-top:.4rem;max-width:90%;margin
 .btn-action.camera{background:var(--brand)}
 .btn-action.gallery{background:var(--accent)}
 @media(max-width:599px){
-  .load-step{display:none!important}
-  #loading p{font-size:.9rem}
+  .load-modal>div{padding:2rem 1.5rem!important;max-width:280px!important}
   #historySec{border-top:none!important;margin-top:1rem!important;padding-top:1rem!important}
   #historySec>div:first-child h3{font-size:.82rem!important}
 }
@@ -253,15 +252,14 @@ footer{text-align:center;margin-top:2rem;color:var(--sub);font-size:.7rem;font-w
 
   <button class="btn-primary" id="analyzeBtn" onclick="analyze()" data-i18n="analyze_btn">Analisar refeição</button>
 
-  <div class="loading" id="loading">
-    <div class="spinner"></div>
-    <p id="loadingMsg" data-i18n="analyzing">A analisar a imagem do seu prato...</p>
-    <div id="loadingSteps" style="margin-top:.8rem;display:flex;flex-direction:column;gap:6px;align-items:center">
-      <span class="load-step" data-step="0" style="font-size:.8rem;color:var(--sub);display:flex;align-items:center;gap:6px"><span class="step-dot" style="width:8px;height:8px;border-radius:50%;background:var(--border);display:inline-block"></span> <span data-i18n="load_step1">📸 A analisar a imagem...</span></span>
-      <span class="load-step" data-step="1" style="font-size:.8rem;color:var(--sub);display:flex;align-items:center;gap:6px"><span class="step-dot" style="width:8px;height:8px;border-radius:50%;background:var(--border);display:inline-block"></span> <span data-i18n="load_step2">🧪 A identificar ingredientes...</span></span>
-      <span class="load-step" data-step="2" style="font-size:.8rem;color:var(--sub);display:flex;align-items:center;gap:6px"><span class="step-dot" style="width:8px;height:8px;border-radius:50%;background:var(--border);display:inline-block"></span> <span data-i18n="load_step3">📊 A calcular macros...</span></span>
+  <!-- Loading Modal -->
+  <div class="load-modal" id="loading" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(15,23,42,.5);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);align-items:center;justify-content:center;flex-direction:column">
+    <div style="background:var(--bg-card);border-radius:20px;padding:2.5rem 2rem;text-align:center;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);max-width:320px;width:90%">
+      <div class="spinner" style="width:44px;height:44px;border:4px solid var(--border);border-top-color:var(--brand);border-radius:50%;animation:spin .8s cubic-bezier(0.4,0,0.2,1) infinite;margin:0 auto 1.25rem"></div>
+      <p id="loadingMsg" data-i18n="analyzing" style="font-weight:700;font-size:1rem;color:var(--text);margin-bottom:.5rem">A analisar a sua refeição...</p>
+      <p id="loadingSub" style="font-size:.8rem;color:var(--sub)"></p>
     </div>
-  </div>
+  </div>  </div>
 
   <div id="results">
     <div class="result-header">
@@ -292,36 +290,32 @@ footer{text-align:center;margin-top:2rem;color:var(--sub);font-size:.7rem;font-w
     <button class="reset-btn" onclick="reset()" data-i18n="reset_btn">Analisar nova refeição</button>
   </div>
 
+  <!-- History Dropdown + Timeline -->
   <div id="historySec" style="display:none;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border)">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-      <h3 style="font-size:.9rem;font-weight:700;color:var(--text);letter-spacing:-.3px" data-i18n="history_title">📋 Hist├│rico</h3>
-      <button onclick="clearHistory()" style="border:none;background:none;color:var(--sub);font-size:.72rem;cursor:pointer;font-weight:600;font-family:inherit;text-decoration:underline" data-i18n="history_clear">Limpar</button>
+    <div onclick="toggleHistoryDropdown()" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;padding:4px 0">
+      <h3 style="font-size:.9rem;font-weight:700;color:var(--text);letter-spacing:-.3px;display:flex;align-items:center;gap:8px"><span data-i18n="history_title">📋 Histórico</span> <span id="histCount" style="font-size:.7rem;background:var(--brand-light);color:var(--brand);padding:1px 8px;border-radius:10px;font-weight:600">0</span></h3>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button onclick="event.stopPropagation();clearHistory()" style="border:none;background:none;color:var(--sub);font-size:.7rem;cursor:pointer;font-weight:600;font-family:inherit;text-decoration:none;padding:2px 6px;border-radius:6px" data-i18n="history_clear">Limpar</button>
+        <span id="histArrow" style="font-size:.8rem;color:var(--sub);transition:transform .2s">▸</span>
+      </div>
     </div>
-    <div id="historyList" style="display:flex;flex-direction:column;gap:8px"></div>
+    <div id="historyBody" style="display:none;margin-top:.75rem;overflow:hidden;transition:max-height .3s ease">
+      <div id="historyList" style="display:flex;flex-direction:column;gap:2px"></div>
+    </div>
   </div>
 
   <footer data-i18n="footer">MVP por Guilherme Guerreiro com Copilot AI @2026</footer>
 </div>
 
 <!-- Mobile history FAB -->
-<button id="histFab" onclick="toggleHistory()" style="display:none;position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:var(--brand);color:#fff;border:none;border-radius:50%;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:100;transition:all .2s" aria-label="Histórico">📋</button>
+
 
 <script>
-let historyVisible=false;
-function toggleHistory(){
-  historyVisible=!historyVisible;
-  const sec=document.getElementById("historySec");
-  if(sec) sec.style.display=historyVisible?"block":"none";
-}
+
 
 // Show FAB only on mobile when there is history
 function updateFab(){
-  const fab=document.getElementById("histFab");
-  if(!fab) return;
-  if(window.innerWidth>=600){fab.style.display="none";return;}
-  let hist=[];
-  try{hist=JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]");}catch(e){}
-  fab.style.display=hist.length?"flex":"none";
+  // No-op: history uses inline dropdown now
 }
 
 
@@ -420,44 +414,38 @@ dz.addEventListener("drop",e=>{
 
 let loadingInterval = null;
 
+const loadingMessages={
+  pt:["📸 A analisar a imagem...","🧪 A identificar ingredientes...","📊 A calcular macros..."],
+  en:["📸 Analysing image...","🧪 Identifying ingredients...","📊 Calculating macros..."],
+  es:["📸 Analizando imagen...","🧪 Identificando ingredientes...","📊 Calculando macros..."],
+  fr:["📸 Analyse de l'image...","🧪 Identification...","📊 Calcul des macros..."],
+  de:["📸 Bild wird analysiert...","🧪 Zutaten werden erkannt...","📊 Makros werden berechnet..."],
+  it:["📸 Analisi immagine...","🧪 Identificazione...","📊 Calcolo macro..."]
+};
+
 function startLoadingSteps(){
-  const steps=document.querySelectorAll(".load-step");
+  const msgEl=document.getElementById("loadingSub");
+  if(!msgEl) return;
+  const langs=["pt","en","es","fr","de","it"];
+  const ci=langs.indexOf(detectLang());
+  const msgs=loadingMessages[langs[ci>=0?ci:1]]||loadingMessages.en;
   let i=0;
   const update=()=>{
-    steps.forEach((s,idx)=>{
-      const dot=s.querySelector(".step-dot");
-      if(idx===i){
-        dot.style.background="var(--brand)";
-        s.style.color="var(--brand)";
-        s.style.fontWeight="600";
-      }else if(idx<i){
-        dot.style.background="var(--green)";
-        s.style.color="var(--text)";
-        s.style.fontWeight="400";
-      }else{
-        dot.style.background="var(--border)";
-        s.style.color="var(--sub)";
-        s.style.fontWeight="400";
-      }
-    });
-    i=(i+1)%steps.length;
+    msgEl.textContent=msgs[i];
+    i=(i+1)%msgs.length;
   };
   update();
-  loadingInterval=setInterval(update,2200);
+  loadingInterval=setInterval(update,2500);
 }
 
 function stopLoadingSteps(){
   if(loadingInterval){clearInterval(loadingInterval);loadingInterval=null;}
-  document.querySelectorAll(".load-step").forEach(s=>{
-    s.style.color="var(--sub)";
-    s.style.fontWeight="400";
-    const dot=s.querySelector(".step-dot");
-    if(dot) dot.style.background="var(--border)";
-  });
+  const msgEl=document.getElementById("loadingSub");
+  if(msgEl) msgEl.textContent="";
 }
 
 async function analyze(){
-  const fi=document.getElementById("fileInput")||document.getElementById("cameraInput");
+  const fi=(document.getElementById("fileInput").files.length>0)?document.getElementById("fileInput"):document.getElementById("cameraInput");
   if(!fi||!fi.files[0]) return;
   const btn=document.getElementById("analyzeBtn"); btn.disabled=true;
   document.getElementById("loading").style.display="block";
@@ -623,29 +611,64 @@ function saveToHistory(d){
   try{renderHistory();}catch(e){}
 }
 
+let historyOpen=false;
+function toggleHistoryDropdown(){
+  historyOpen=!historyOpen;
+  const body=document.getElementById("historyBody");
+  const arrow=document.getElementById("histArrow");
+  if(body&&arrow){
+    body.style.display=historyOpen?"block":"none";
+    arrow.style.transform=historyOpen?"rotate(90deg)":"rotate(0deg)";
+  }
+}
+
 function renderHistory(){
   let hist=[];
   try{hist=JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]");}catch(e){}
   const sec=document.getElementById("historySec");
   const list=document.getElementById("historyList");
+  const count=document.getElementById("histCount");
   if(!sec||!list) return;
   if(!hist.length){
     sec.style.display="none";
     return;
   }
   sec.style.display="block";
+  if(count) count.textContent=hist.length;
+  
+  // Group by day
+  const groups={};
   const l=detectLang();
   const t=I18N[l]||I18N.en;
   const confIcon={high:"🟢",medium:"🟡",low:"🔴"};
-  list.innerHTML=hist.slice(0,5).map((e,i)=>{
+  const now=new Date();
+  
+  hist.forEach((e,i)=>{
     const dt=new Date(e.time);
-    const timeStr=dt.toLocaleDateString(l==="pt"?"pt-PT":l,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
-    return '<div class="hist-item" onclick="showFromHistory('+i+')">'+
-      '<span class="hist-icon">'+(confIcon[e.conf]||"🟡")+'</span>'+
-      '<div class="hist-info"><div class="hist-name">'+(e.name||'Prato')+'</div><div class="hist-cal">'+
-        (e.cal||0)+' kcal · '+(e.calPct||0)+'% VD</div></div>'+
-      '<span class="hist-time">'+timeStr+'</span></div>';
-  }).join("");
+    const dayKey=dt.toLocaleDateString(l==="pt"?"pt-PT":l,{year:"numeric",month:"long",day:"numeric"});
+    const dayLabel=dt.toDateString()===now.toDateString()
+      ? (l==="pt"?"Hoje":l==="en"?"Today":l==="es"?"Hoy":l==="fr"?"Aujourd'hui":l==="de"?"Heute":l==="it"?"Oggi":"Today")
+      : dayKey;
+    if(!groups[dayKey]) groups[dayKey]={label:dayLabel,items:[]};
+    const timeStr=dt.toLocaleTimeString(l==="pt"?"pt-PT":l,{hour:"2-digit",minute:"2-digit"});
+    groups[dayKey].items.push({time:timeStr,conf:e.conf||"medium",name:e.name||"Prato",cal:e.cal||0,pct:e.calPct||0,idx:i});
+  });
+  
+  let html="";
+  Object.entries(groups).forEach(([key,g])=>{
+    html+='<div style="margin-top:12px;padding-left:8px;border-left:2px solid var(--border)">'+
+      '<div style="font-size:.7rem;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">'+g.label+'</div>';
+    g.items.forEach(item=>{
+      html+='<div class="hist-item" onclick="showFromHistory('+item.idx+')" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;cursor:pointer;transition:background .15s">'+
+        '<span>'+(confIcon[item.conf]||"🟡")+'</span>'+
+        '<div style="flex:1;min-width:0"><div style="font-size:.82rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+item.name+'</div>'+
+        '<div style="font-size:.7rem;color:var(--sub)">'+item.cal+' kcal · '+item.pct+'% VD</div></div>'+
+        '<span style="font-size:.65rem;color:var(--sub);white-space:nowrap">'+item.time+'</span></div>';
+    });
+    html+='</div>';
+  });
+  
+  list.innerHTML=html;
   try{updateFab();}catch(e){}
 }
 
@@ -671,9 +694,12 @@ function showFromHistory(idx){
 
 function clearHistory(){
   localStorage.removeItem(HISTORY_KEY);
+  historyOpen=false;
+  const arrow=document.getElementById("histArrow");
+  const body=document.getElementById("historyBody");
+  if(arrow) arrow.style.transform="rotate(0deg)";
+  if(body) body.style.display="none";
   renderHistory();
-  // Hide history on mobile after clear
-  document.getElementById("historySec").style.display="none";
 }
 
 function frequencyFallback(cal,fat){
