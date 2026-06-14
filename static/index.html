@@ -358,29 +358,41 @@ async function analyze(){
   fd.append("file",fi.files[0]);
   try{
     const lng=detectLang();
-    const r=await fetch("/analyze?lang="+lng,{method:"POST",headers:{"x-scan-auth":TOKEN},body:fd});
-    if(r.status===401){sessionStorage.removeItem("ms_token");location.reload();return;}
+    const controller=new AbortController();setTimeout(()=>controller.abort(),30000);const r=await fetch("/analyze?lang="+lng,{method:"POST",headers:{"x-scan-auth":TOKEN},body:fd,signal:controller.signal});
+    
+    // Always hide loading when a response comes back
+    document.getElementById("loading").style.display="none";
+    
+    if(r.status===401){
+      sessionStorage.removeItem("ms_token");
+      location.reload();
+      return;
+    }
     if(r.status===422){
-      // NOT_FOOD or similar validation error: show friendly error box
-      document.getElementById("loading").style.display="none";
       showError("error_title","error_sub");
       btn.disabled=false;
       return;
     }
     if(!r.ok){
-      document.getElementById("loading").style.display="none";
-      showError("error_generic","");
+      // Try to read error body, fallback to generic message
+      try {
+        const errText = await r.text();
+        showError("error_generic","");
+      } catch(e) {
+        showError("error_generic","");
+      }
       btn.disabled=false;
       return;
     }
     const data=await r.json();
     showResults(data);
+    btn.disabled=false;
   }catch(e){
+    console.error("Analyze error:",e);
     document.getElementById("loading").style.display="none";
     showError("error_network","");
+    btn.disabled=false;
   }
-  btn.disabled=false;
-  document.getElementById("loading").style.display="none";
 }
 
 function showResults(d){

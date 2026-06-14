@@ -165,15 +165,46 @@ def _call_gemini(image: PIL.Image.Image, lang: str = "en") -> MealAnalysis:
 
 
     # Validate that the image actually contains food
-    is_food = data.get("is_food", True)  # default true for backward compat
-    if not is_food:
-        raise HTTPException(422, "NOT_FOOD")
-
-    # Additional sanity checks: if dish_name is empty with no ingredients, treat as not food
     dish_name = data.get("dish_name", "")
     ingredients_raw = data.get("ingredients", [])
-    if not dish_name or not ingredients_raw:
+    total_cal = data.get("total_calories_kcal", 0)
+    is_food = data.get("is_food", True)  # default true for backward compat
+
+    # Log what Gemini returned for debugging
+    logger.info(f"Gemini analysis: is_food={is_food}, dish='{dish_name}', ingredients={len(ingredients_raw)}, cal={total_cal}")
+
+    # Reject if Gemini explicitly says not food
+    if not is_food:
+        logger.info("Rejected: Gemini flagged is_food=false")
         raise HTTPException(422, "NOT_FOOD")
+
+    # Reject if dish_name is empty or too generic
+    if not dish_name or len(dish_name.strip()) < 3:
+        logger.info(f"Rejected: invalid dish_name '{dish_name}'")
+        raise HTTPException(422, "NOT_FOOD")
+
+    # Reject if no ingredients detected
+    if not ingredients_raw:
+        logger.info("Rejected: no ingredients")
+        raise HTTPException(422, "NOT_FOOD")
+
+    # Reject if suspiciously low calories with empty dish context
+    if total_cal == 0 and len(dish_name) < 5:
+        logger.info(f"Rejected: 0 cal with short dish_name '{dish_name}'")
+        raise HTTPException(422, "NOT_FOOD")
+
+    # Reject if dish_name suggests it's not food
+    non_food_keywords = [
+        "no dish", "no food", "unknown", "not a", "not recognized",
+        "unrecognizable", "cannot identify", "unable to determine",
+        "scenery", "landscape", "portrait", "animal", "document",
+        "object", "person", "building", "car", "vehicle"
+    ]
+    dish_lower = dish_name.lower().strip()
+    for kw in non_food_keywords:
+        if dish_lower.startswith(kw) or dish_lower == kw:
+            logger.info(f"Rejected: dish_name contains non-food keyword '{kw}'")
+            raise HTTPException(422, "NOT_FOOD")
 
 
 
