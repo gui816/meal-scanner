@@ -77,6 +77,8 @@ header p{color:var(--sub);font-size:.85rem;margin-top:.4rem;max-width:90%;margin
 .btn-action svg{fill:currentColor;flex-shrink:0}
 
 .btn-primary{width:100%;padding:1rem;background:var(--brand);color:#fff;border:none;border-radius:var(--radius);font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;box-shadow:var(--shadow);margin-top:1.25rem;display:none}
+.btn-primary.shown{animation:pulseGlow 2s ease-in-out infinite;box-shadow:0 0 0 0 rgba(33,66,75,.4)}
+@keyframes pulseGlow{0%{box-shadow:0 0 0 0 rgba(33,66,75,.4)}50%{box-shadow:0 0 0 8px rgba(33,66,75,.1)}100%{box-shadow:0 0 0 0 rgba(33,66,75,.4)}}
 .btn-primary:hover{background:var(--brand-hover);transform:translateY(-1px);box-shadow:var(--shadow-lg)}
 .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
@@ -269,12 +271,12 @@ footer{text-align:center;margin-top:2rem;color:var(--sub);font-size:.7rem;font-w
 
 <script>
 const I18N = {
-pt:{step1_title:"Capturar",step1_sub:"Foto do prato",step2_title:"Análise IA",step2_sub:"Identificação",step3_title:"Nutrição",step3_sub:"Dados e Metas",camera_btn:"Usar Câmara",gallery_btn:"Ver Galeria",logout:"Sair",gate_title:"NutriLens",gate_sub:"Insira a palavra-passe para aceder",gate_placeholder:"Palavra-passe",gate_btn:"Entrar",gate_err:"Palavra-passe errada. Tente novamente.",title:"NutriLens",subtitle:"Fotografe a sua refeição e obtenha uma análise nutricional instantânea — ingredientes, calorias e macronutrientes.",drop_title:"Selecione ou arraste o prato",drop_sub:"Formatos aceites: JPEG, PNG, WebP",analyze_btn:"Analisar refeição",analyzing:"A analisar a imagem do seu prato...",load_step1:"📸 A analisar a imagem...",load_step2:"🧪 A identificar ingredientes...",load_step3:"📊 A calcular macros...",ingredients_title:"Ingredientes Detetados",reset_btn:"Analisar nova refeição",freq_light:"Pode consumir diariamente",freq_moderate:"Consumir com moderação",freq_heavy:"Consumir ocasionalmente",footer:"v1.1.0 · MVP por Guilherme Guerreiro com Copilot",error_title:"Não foi detetado um prato de comida",error_sub:"Tire uma foto nítida do seu prato e tente novamente.",error_btn:"Tentar novamente",error_network:"Erro de ligação ao servidor. Verifique a sua internet e tente novamente.",error_generic:"Ocorreu um erro ao analisar a imagem. Tente novamente."},
-en:{step1_title:"Capture",step1_sub:"Meal photo",step2_title:"AI Scan",step2_sub:"Identification",step3_title:"Nutrition",step3_sub:"Data & Goals",camera_btn:"Use Camera",gallery_btn:"Open Gallery",logout:"Logout",gate_title:"NutriLens",gate_sub:"Enter password to access",gate_placeholder:"Password",gate_btn:"Enter",gate_err:"Wrong password. Try again.",title:"NutriLens",subtitle:"Snap a photo of your meal and get instant nutritional analysis - ingredients, calories and macros.",drop_title:"Select or drop meal photo",drop_sub:"Accepted formats: JPEG, PNG, WebP",analyze_btn:"Analyze meal",analyzing:"Analysing your meal image...",load_step1:"📸 Analysing image...",load_step2:"🧪 Identifying ingredients...",load_step3:"📊 Calculating macros...",ingredients_title:"Detected Ingredients",reset_btn:"Scan another meal",freq_light:"Can be consumed daily",freq_moderate:"Consume in moderation",freq_heavy:"Consume occasionally",footer:"v1.1.0 · MVP by Guilherme Guerreiro with Copilot",error_title:"No meal detected in the image",error_sub:"Take a clear photo of your plate and try again.",error_btn:"Try again",error_network:"Connection error. Check your internet and try again.",error_generic:"An error occurred while analyzing the image. Please try again."},
-es:{step1_title:"Capturar",step1_sub:"Foto del plato",step2_title:"IA Scan",step2_sub:"Identificación",step3_title:"Nutrición",step3_sub:"Datos y Metas",camera_btn:"Usar Cámara",gallery_btn:"Abrir Galería",logout:"Salir",gate_title:"NutriLens",gate_sub:"Introduce la contraseña",gate_placeholder:"Contraseña",gate_btn:"Entrar",gate_err:"Contraseña incorrecta.",title:"NutriLens",subtitle:"Toma una foto de tu plato y obtén análisis nutricional instantáneo.",drop_title:"Selecciona o arrastra la foto",drop_sub:"Formatos aceptados: JPEG, PNG, WebP",analyze_btn:"Analizar plato",analyzing:"Analizando la imagen de tu plato...",load_step1:"📸 Analizando imagen...",load_step2:"🧪 Identificando ingredientes...",load_step3:"📊 Calculando macros...",ingredients_title:"Ingredientes Detectados",reset_btn:"Analizar otro plato",freq_light:"Puede consumir a diario",freq_moderate:"Consumir con moderación",freq_heavy:"Consumir ocasionalmente",footer:"v1.1.0 · MVP por Guilherme Guerreiro con Copilot",error_title:"No se detectó un plato de comida",error_sub:"Toma una foto clara de tu plato e inténtalo de nuevo.",error_btn:"Intentar de nuevo",error_network:"Error de conexión. Verifica tu internet e inténtalo de nuevo.",error_generic:"Ocurrió un error al analizar la imagen. Inténtalo de nuevo."},
-fr:{step1_title:"Capturer",step1_sub:"Photo du plat",step2_title:"Analyse IA",step2_sub:"Identification",step3_title:"Nutrition",step3_sub:"Données & Objectifs",camera_btn:"Appareil Photo",gallery_btn:"Galerie",logout:"Quitter",gate_title:"NutriLens",gate_sub:"Entrez le mot de passe",gate_placeholder:"Mot de passe",gate_btn:"Entrer",gate_err:"Mot de passe incorrect.",title:"NutriLens",subtitle:"Prenez une photo de votre plat et obtenez une analyse nutritionnelle instantanée.",drop_title:"Sélectionnez ou glissez la photo",drop_sub:"Formats acceptés: JPEG, PNG, WebP",analyze_btn:"Analyser le repas",analyzing:"Analyse de l'image de vos repas...",load_step1:"📸 Analyse de l'image...",load_step2:"🧪 Identification des ingrédients...",load_step3:"📊 Calcul des macros...",ingredients_title:"Ingrédients Détectés",reset_btn:"Analyser un outro plat",freq_light:"Peut être consommé quotidiennement",freq_moderate:"À consommer avec modération",freq_heavy:"À consommer occasionnellement",footer:"v1.1.0 · MVP by Guilherme Guerreiro with Copilot",error_title:"Aucun plat détecté dans l'image",error_sub:"Prenez une photo claire de votre plat et réessayez.",error_btn:"Réessayer",error_network:"Erreur de connexion. Vérifiez votre connexion internet et réessayez.",error_generic:"Une erreur est survenue lors de l'analyse. Veuillez réessayer."},
-de:{step1_title:"Aufnehmen",step1_sub:"Foto machen",step2_title:"KI Scan",step2_sub:"Erkennung",step3_title:"Ernährung",step3_sub:"Werte & Ziele",camera_btn:"Kamera nutzen",gallery_btn:"Galerie öffnen",logout:"Abmelden",gate_title:"NutriLens",gate_sub:"Passwort eingeben",gate_placeholder:"Passwort",gate_btn:"Eingeben",gate_err:"Falsches Passwort.",title:"NutriLens",subtitle:"Foto deines Gerichts für eine sofortige Ernährungsanalyse.",drop_title:"Foto auswählen oder ablegen",drop_sub:"Erlaubte Formate: JPEG, PNG, WebP",analyze_btn:"Mahlzeit analysieren",analyzing:"Gericht wird analysiert...",load_step1:"📸 Bild wird analysiert...",load_step2:"🧪 Zutaten werden erkannt...",load_step3:"📊 Makros werden berechnet...",ingredients_title:"Erkannte Zutaten",reset_btn:"Weitere Mahlzeit scannen",freq_light:"Kann täglich verzehrt werden",freq_moderate:"In Maßen konsumieren",freq_heavy:"Gelegentlich konsumieren",footer:"v1.1.0 · MVP by Guilherme Guerreiro with Copilot",error_title:"Kein Gericht im Bild erkannt",error_sub:"Machen Sie ein klares Foto Ihres Tellers und versuchen Sie es erneut.",error_btn:"Erneut versuchen",error_network:"Verbindungsfehler. Überprüfen Sie Ihre Internetverbindung.",error_generic:"Bei der Analyse ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."},
-it:{step1_title:"Cattura",step1_sub:"Foto piatto",step2_title:"Analisi IA",step2_sub:"Identificazione",step3_title:"Nutrizione",step3_sub:"Dati & Obiettivi",camera_btn:"Usa Fotocamera",gallery_btn:"Apri Galleria",logout:"Esci",gate_title:"NutriLens",gate_sub:"Inserisci la password",gate_placeholder:"Password",gate_btn:"Entra",gate_err:"Password errata.",title:"NutriLens",subtitle:"Scatta una foto del tuo piatto e ottieni un'analisi nutrizionale istantanea.",drop_title:"Seleziona o trascina la foto",drop_sub:"Formati accettati: JPEG, PNG, WebP",analyze_btn:"Analizza pasto",analyzing:"Analisi dell'immagine in corso...",load_step1:"📸 Analisi immagine...",load_step2:"🧪 Identificazione ingredienti...",load_step3:"📊 Calcolo macro...",ingredients_title:"Ingredienti Rilevati",reset_btn:"Analizza un altro pasto",freq_light:"Può essere consumato quotidianamente",freq_moderate:"Consumare con moderazione",freq_heavy:"Consumare occasionalmente",footer:"v1.1.0 · MVP por Guilherme Guerreiro con Copilot",error_title:"Nessun piatto rilevato nell'immagine",error_sub:"Scatta una foto nitida del tuo piatto e riprova.",error_btn:"Riprova",error_network:"Errore di connessione. Controlla la tua connessione internet e riprova.",error_generic:"Si è verificato un errore durante l'analisi. Per favore riprova."}
+pt:{step1_title:"Capturar",step1_sub:"Foto do prato",step2_title:"Análise IA",step2_sub:"Identificação",step3_title:"Nutrição",step3_sub:"Dados e Metas",camera_btn:"Usar Câmara",gallery_btn:"Ver Galeria",logout:"Sair",gate_title:"NutriLens",gate_sub:"Insira a palavra-passe para aceder",gate_placeholder:"Palavra-passe",gate_btn:"Entrar",gate_err:"Palavra-passe errada. Tente novamente.",title:"NutriLens",subtitle:"Fotografe a sua refeição e obtenha uma análise nutricional instantânea — ingredientes, calorias e macronutrientes.",drop_title:"Selecione ou arraste o prato",drop_sub:"Formatos aceites: JPEG, PNG, WebP",analyze_btn:"Analisar refeição",analyzing:"A analisar a imagem do seu prato...",load_step1:"📸 A analisar a imagem...",load_step2:"🧪 A identificar ingredientes...",load_step3:"📊 A calcular macros...",ingredients_title:"Ingredientes Detetados",reset_btn:"Analisar nova refeição",freq_light:"Pode consumir diariamente",freq_moderate:"Consumir com moderação",history_title:"📋 Histórico",history_clear:"Limpar",history_empty:"Nenhuma análise anterior.",history_title:"📋 Historial",history_clear:"Limpiar",history_empty:"Sin análisis anteriores.",freq_heavy:"Consumir ocasionalmente",footer:"v1.1.0 · MVP por Guilherme Guerreiro com Copilot",error_title:"Não foi detetado um prato de comida",error_sub:"Tire uma foto nítida do seu prato e tente novamente.",error_btn:"Tentar novamente",error_network:"Erro de ligação ao servidor. Verifique a sua internet e tente novamente.",error_generic:"Ocorreu um erro ao analisar a imagem. Tente novamente."},
+en:{step1_title:"Capture",step1_sub:"Meal photo",step2_title:"AI Scan",step2_sub:"Identification",step3_title:"Nutrition",step3_sub:"Data & Goals",camera_btn:"Use Camera",gallery_btn:"Open Gallery",logout:"Logout",gate_title:"NutriLens",gate_sub:"Enter password to access",gate_placeholder:"Password",gate_btn:"Enter",gate_err:"Wrong password. Try again.",title:"NutriLens",subtitle:"Snap a photo of your meal and get instant nutritional analysis - ingredients, calories and macros.",drop_title:"Select or drop meal photo",drop_sub:"Accepted formats: JPEG, PNG, WebP",analyze_btn:"Analyze meal",analyzing:"Analysing your meal image...",load_step1:"📸 Analysing image...",load_step2:"🧪 Identifying ingredients...",load_step3:"📊 Calculating macros...",ingredients_title:"Detected Ingredients",reset_btn:"Scan another meal",freq_light:"Can be consumed daily",freq_moderate:"Consume in moderation",history_title:"📋 History",history_clear:"Clear",history_empty:"No previous analyses.",freq_heavy:"Consume occasionally",footer:"v1.1.0 · MVP by Guilherme Guerreiro with Copilot",error_title:"No meal detected in the image",error_sub:"Take a clear photo of your plate and try again.",error_btn:"Try again",error_network:"Connection error. Check your internet and try again.",error_generic:"An error occurred while analyzing the image. Please try again."},
+es:{step1_title:"Capturar",step1_sub:"Foto del plato",step2_title:"IA Scan",step2_sub:"Identificación",step3_title:"Nutrición",step3_sub:"Datos y Metas",camera_btn:"Usar Cámara",gallery_btn:"Abrir Galería",logout:"Salir",gate_title:"NutriLens",gate_sub:"Introduce la contraseña",gate_placeholder:"Contraseña",gate_btn:"Entrar",gate_err:"Contraseña incorrecta.",title:"NutriLens",subtitle:"Toma una foto de tu plato y obtén análisis nutricional instantáneo.",drop_title:"Selecciona o arrastra la foto",drop_sub:"Formatos aceptados: JPEG, PNG, WebP",analyze_btn:"Analizar plato",analyzing:"Analizando la imagen de tu plato...",load_step1:"📸 Analizando imagen...",load_step2:"🧪 Identificando ingredientes...",load_step3:"📊 Calculando macros...",ingredients_title:"Ingredientes Detectados",reset_btn:"Analizar otro plato",freq_light:"Puede consumir a diario",freq_moderate:"Consumir con moderación",history_title:"📋 Histórico",history_clear:"Limpar",history_empty:"Nenhuma análise anterior.",history_title:"📋 Historial",history_clear:"Limpiar",history_empty:"Sin análisis anteriores.",freq_heavy:"Consumir ocasionalmente",footer:"v1.1.0 · MVP por Guilherme Guerreiro con Copilot",error_title:"No se detectó un plato de comida",error_sub:"Toma una foto clara de tu plato e inténtalo de nuevo.",error_btn:"Intentar de nuevo",error_network:"Error de conexión. Verifica tu internet e inténtalo de nuevo.",error_generic:"Ocurrió un error al analizar la imagen. Inténtalo de nuevo."},
+fr:{step1_title:"Capturer",step1_sub:"Photo du plat",step2_title:"Analyse IA",step2_sub:"Identification",step3_title:"Nutrition",step3_sub:"Données & Objectifs",camera_btn:"Appareil Photo",gallery_btn:"Galerie",logout:"Quitter",gate_title:"NutriLens",gate_sub:"Entrez le mot de passe",gate_placeholder:"Mot de passe",gate_btn:"Entrer",gate_err:"Mot de passe incorrect.",title:"NutriLens",subtitle:"Prenez une photo de votre plat et obtenez une analyse nutritionnelle instantanée.",drop_title:"Sélectionnez ou glissez la photo",drop_sub:"Formats acceptés: JPEG, PNG, WebP",analyze_btn:"Analyser le repas",analyzing:"Analyse de l'image de vos repas...",load_step1:"📸 Analyse de l'image...",load_step2:"🧪 Identification des ingrédients...",load_step3:"📊 Calcul des macros...",ingredients_title:"Ingrédients Détectés",reset_btn:"Analyser un outro plat",freq_light:"Peut être consommé quotidiennement",freq_moderate:"À consommer avec modération",history_title:"📋 Historique",history_clear:"Effacer",history_empty:"Aucune analyse précédente.",freq_heavy:"À consommer occasionnellement",footer:"v1.1.0 · MVP by Guilherme Guerreiro with Copilot",error_title:"Aucun plat détecté dans l'image",error_sub:"Prenez une photo claire de votre plat et réessayez.",error_btn:"Réessayer",error_network:"Erreur de connexion. Vérifiez votre connexion internet et réessayez.",error_generic:"Une erreur est survenue lors de l'analyse. Veuillez réessayer."},
+de:{step1_title:"Aufnehmen",step1_sub:"Foto machen",step2_title:"KI Scan",step2_sub:"Erkennung",step3_title:"Ernährung",step3_sub:"Werte & Ziele",camera_btn:"Kamera nutzen",gallery_btn:"Galerie öffnen",logout:"Abmelden",gate_title:"NutriLens",gate_sub:"Passwort eingeben",gate_placeholder:"Passwort",gate_btn:"Eingeben",gate_err:"Falsches Passwort.",title:"NutriLens",subtitle:"Foto deines Gerichts für eine sofortige Ernährungsanalyse.",drop_title:"Foto auswählen oder ablegen",drop_sub:"Erlaubte Formate: JPEG, PNG, WebP",analyze_btn:"Mahlzeit analysieren",analyzing:"Gericht wird analysiert...",load_step1:"📸 Bild wird analysiert...",load_step2:"🧪 Zutaten werden erkannt...",load_step3:"📊 Makros werden berechnet...",ingredients_title:"Erkannte Zutaten",reset_btn:"Weitere Mahlzeit scannen",freq_light:"Kann täglich verzehrt werden",freq_moderate:"In Maßen konsumieren",history_title:"📋 Verlauf",history_clear:"Löschen",history_empty:"Keine vorherigen Analysen.",freq_heavy:"Gelegentlich konsumieren",footer:"v1.1.0 · MVP by Guilherme Guerreiro with Copilot",error_title:"Kein Gericht im Bild erkannt",error_sub:"Machen Sie ein klares Foto Ihres Tellers und versuchen Sie es erneut.",error_btn:"Erneut versuchen",error_network:"Verbindungsfehler. Überprüfen Sie Ihre Internetverbindung.",error_generic:"Bei der Analyse ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."},
+it:{step1_title:"Cattura",step1_sub:"Foto piatto",step2_title:"Analisi IA",step2_sub:"Identificazione",step3_title:"Nutrizione",step3_sub:"Dati & Obiettivi",camera_btn:"Usa Fotocamera",gallery_btn:"Apri Galleria",logout:"Esci",gate_title:"NutriLens",gate_sub:"Inserisci la password",gate_placeholder:"Password",gate_btn:"Entra",gate_err:"Password errata.",title:"NutriLens",subtitle:"Scatta una foto del tuo piatto e ottieni un'analisi nutrizionale istantanea.",drop_title:"Seleziona o trascina la foto",drop_sub:"Formati accettati: JPEG, PNG, WebP",analyze_btn:"Analizza pasto",analyzing:"Analisi dell'immagine in corso...",load_step1:"📸 Analisi immagine...",load_step2:"🧪 Identificazione ingredienti...",load_step3:"📊 Calcolo macro...",ingredients_title:"Ingredienti Rilevati",reset_btn:"Analizza un altro pasto",freq_light:"Può essere consumato quotidianamente",freq_moderate:"Consumare con moderazione",history_title:"📋 Cronologia",history_clear:"Cancella",history_empty:"Nessuna analisi precedente.",freq_heavy:"Consumare occasionalmente",footer:"v1.1.0 · MVP por Guilherme Guerreiro con Copilot",error_title:"Nessun piatto rilevato nell'immagine",error_sub:"Scatta una foto nitida del tuo piatto e riprova.",error_btn:"Riprova",error_network:"Errore di connessione. Controlla la tua connessione internet e riprova.",error_generic:"Si è verificato un errore durante l'analisi. Per favore riprova."}
 };
 let TOKEN=null;
 
@@ -342,7 +344,7 @@ function handleFile(input){
     p.style.display="block";
   };
   r.readAsDataURL(f);
-  document.getElementById("analyzeBtn").style.display="block";
+  document.getElementById("analyzeBtn").style.display="block";document.getElementById("analyzeBtn").classList.add("shown");
 }
 
 const dz=document.getElementById("dropZone");
@@ -459,13 +461,15 @@ function showResults(d){
   // Show confidence badge
   const conf=d.confidence||"medium";
   const confMap={
-    high:{icon:"🟢",label:["pt:Alta confiança","en:High confidence","es:Alta confianza","fr:Haute confiance","de:Hohe Genauigkeit","it:Alta affidabilità"]},
-    medium:{icon:"🟡",label:["pt:Confiança média","en:Medium confidence","es:Confianza media","fr:Confiance moyenne","de:Mittlere Genauigkeit","it:Affidabilità media"]},
-    low:{icon:"🔴",label:["pt:Baixa confiança","en:Low confidence","es:Baja confianza","fr:Faible confiance","de:Niedrige Genauigkeit","it:Bassa affidabilità"]}
+    high:{icon:"🟢",label:["pt:Alta","en:High","es:Alta","fr:Haute","de:Hohe","it:Alta"]},
+    medium:{icon:"🟡",label:["pt:Média","en:Medium","es:Media","fr:Moyenne","de:Mittlere","it:Media"]},
+    low:{icon:"🔴",label:["pt:Baixa","en:Low","es:Baja","fr:Faible","de:Niedrige","it:Bassa"]}
   };
+  const confLabel=["pt:Confiança da identificação:","en:Identification confidence:","es:Confianza de identificación:","fr:Confiance d'identification:","de:Identifikationsgenauigkeit:","it:Affidabilità identificazione:"];
   const idx=["pt","en","es","fr","de","it"].indexOf(detectLang());
   const ci=idx>=0?idx:1;
   const info=confMap[conf]||confMap.medium;
+  const label=confLabel[ci].split(":")[1];
   const lbl=info.label[ci].split(":")[1];
   let cb=document.getElementById("confBadge");
   if(!cb){
@@ -474,7 +478,7 @@ function showResults(d){
     document.getElementById("dishName").after(cb);
   }
   cb.className="conf-badge conf-"+conf;
-  cb.textContent=info.icon+" "+lbl;
+  cb.textContent=info.icon+" "+label+" "+lbl;
     const calPct=Math.round((d.total_calories_kcal/2000)*100);
   document.getElementById("calBadge").textContent=d.total_calories_kcal+" kcal";
   // Add % of daily calories next to the badge
@@ -520,6 +524,7 @@ function showResults(d){
   else if(f.includes("moder")||f.includes("moderation")||f.includes("modera")) document.getElementById("freqIcon").textContent="🟡";
   else document.getElementById("freqIcon").textContent="🔴";
   document.getElementById("results").style.display="block";
+  saveToHistory(d);
 }
 
 function showError(titleKey,subKey){
@@ -533,6 +538,71 @@ function showError(titleKey,subKey){
   document.getElementById("results").style.display="none";
   document.getElementById("loading").style.display="none";
 }
+
+// ── History (localStorage, last 10) ──
+const HISTORY_KEY="ms_history";
+const MAX_HISTORY=10;
+
+function saveToHistory(d){
+  const calPct=Math.round((d.total_calories_kcal/2000)*100);
+  const conf=d.confidence||"medium";
+  const entry={
+    name:d.dish_name,
+    cal:d.total_calories_kcal,
+    calPct:calPct,
+    protein:d.protein_g,
+    carbs:d.carbs_g,
+    fat:d.fat_g,
+    freq:d.frequency||"",
+    conf:conf,
+    time:Date.now()
+  };
+  let hist=[];
+  try{hist=JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]");}catch(e){}
+  hist.unshift(entry);
+  if(hist.length>MAX_HISTORY) hist=hist.slice(0,MAX_HISTORY);
+  localStorage.setItem(HISTORY_KEY,JSON.stringify(hist));
+  renderHistory();
+}
+
+function renderHistory(){
+  let hist=[];
+  try{hist=JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]");}catch(e){}
+  const sec=document.getElementById("historySec");
+  const list=document.getElementById("historyList");
+  if(!hist.length){
+    sec.style.display="none";
+    return;
+  }
+  sec.style.display="block";
+  const l=detectLang();
+  const t=I18N[l]||I18N.en;
+  const confIcon={high:"🟢",medium:"🟡",low:"🔴"};
+  list.innerHTML=hist.slice(0,5).map((e,i)=>{
+    const dt=new Date(e.time);
+    const timeStr=dt.toLocaleDateString(l==="pt"?"pt-PT":l,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+    return '<div class="hist-item" onclick="showFromHistory('+i+')">'+
+      '<span class="hist-icon">'+(confIcon[e.conf]||"🟡")+'</span>'+
+      '<div class="hist-info"><div class="hist-name">'+e.name+'</div><div class="hist-cal">'+
+        e.cal+' kcal · '+e.calPct+'% VD</div></div>'+
+      '<span class="hist-time">'+timeStr+'</span></div>';
+  }).join("");
+}
+
+function showFromHistory(idx){
+  let hist=[];
+  try{hist=JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]");}catch(e){}
+  if(!hist[idx]) return;
+  const e=hist[idx];
+  showResults(e);
+  document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function clearHistory(){
+  localStorage.removeItem(HISTORY_KEY);
+  renderHistory();
+}
+
 function frequencyFallback(cal,fat){
   const l=detectLang();
   const t=I18N[l]||I18N.en;
@@ -543,7 +613,7 @@ function frequencyFallback(cal,fat){
 function logout(){sessionStorage.removeItem("ms_token");location.reload();}
 function reset(){
   document.getElementById("results").style.display="none";
-  document.getElementById("analyzeBtn").style.display="none";
+  document.getElementById("analyzeBtn").style.display="none";document.getElementById("analyzeBtn").classList.remove("shown");
   document.getElementById("fileInput").value="";
   document.getElementById("cameraInput").value="";
   document.getElementById("preview").style.display="none";
@@ -552,6 +622,7 @@ function reset(){
   document.getElementById("uploadPrompt").style.display="block";
 }
 if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("/static/sw.js");});}
+renderHistory();
 </script>
 </body>
 </html>
