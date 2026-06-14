@@ -179,6 +179,7 @@ footer{text-align:center;margin-top:2rem;color:var(--sub);font-size:.7rem;font-w
     <input type="password" id="gp" placeholder="Palavra-passe" autocomplete="off" data-i18n="gate_placeholder" onkeydown="if(event.key==='Enter')doAuth()"/>
     <button class="gate-btn" onclick="doAuth()" data-i18n="gate_btn" style="padding:.85rem; background:var(--brand); color:#fff; border:none; border-radius:var(--radius); width:100%; font-weight:700; cursor:pointer; font-family:inherit;">Entrar</button>
     <div class="gate-err" id="ge" data-i18n="gate_err" style="color:#dc2626; font-size:.85rem; margin-top:1rem; display:none">Palavra-passe errada. Tente novamente.</div>
+    <button id="gateInstallBtn" style="border:none;background:none;color:var(--sub);font-size:.72rem;cursor:pointer;font-weight:500;font-family:inherit;margin-top:1rem;text-decoration:underline" onclick="installApp()">📲 Instalar App</button>
   </div>
 </div>
 
@@ -193,7 +194,7 @@ footer{text-align:center;margin-top:2rem;color:var(--sub);font-size:.7rem;font-w
       <option value="it">🇮🇹 Italiano</option>
     </select>
     <button class="lang-select" style="cursor:pointer;color:#dc2626;border-color:#fca5a5" onclick="logout()" data-i18n="logout">Sair</button>
-    <button id="installBtn" style="display:none;border:none;background:var(--brand);color:#fff;padding:6px 12px;border-radius:var(--radius-sm);font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap" onclick="installApp()">📲 Instalar</button>
+    <button id="installBtn" style="border:none;background:var(--brand);color:#fff;padding:6px 12px;border-radius:var(--radius-sm);font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;margin-left:auto" onclick="installApp()">📲 Instalar</button>
   </div>
   
   <header>
@@ -738,8 +739,6 @@ let deferredPrompt=null;
 window.addEventListener("beforeinstallprompt",(e)=>{
   e.preventDefault();
   deferredPrompt=e;
-  const btn=document.getElementById("installBtn");
-  if(btn) btn.style.display="inline-block";
 });
 window.addEventListener("appinstalled",()=>{
   deferredPrompt=null;
@@ -747,9 +746,20 @@ window.addEventListener("appinstalled",()=>{
   if(btn) btn.style.display="none";
 });
 function installApp(){
-  if(!deferredPrompt) return;
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(()=>{deferredPrompt=null;});
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(()=>{deferredPrompt=null;const b=document.getElementById("installBtn");if(b)b.style.display="none";const g=document.getElementById("gateInstallBtn");if(g)g.style.display="none";});
+    return;
+  }
+  // Fallback: open browser install instructions
+  const l=detectLang();
+  const msgs={
+    pt:"Para instalar, abra esta página no Chrome e toque em ⋮ > Adicionar ao ecrã inicial",
+    en:"To install, open this page in Chrome and tap ⋮ > Add to Home screen",
+    es:"Para instalar, abra esta página en Chrome y toque ⋮ > Añadir a pantalla de inicio",
+    fr:"Pour installer, ouvrez cette page dans Chrome et appuyez sur ⋮ > Ajouter à l'écran d'accueil"
+  };
+  alert(msgs[l]||msgs.en);
 }
 if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("/static/sw.js");});}
 renderHistory();try{updateFab();}catch(e){}
