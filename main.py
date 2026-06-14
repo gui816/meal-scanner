@@ -187,6 +187,7 @@ def _call_gemini(image: PIL.Image.Image, lang: str = "en") -> MealAnalysis:
         carbs_g=data.get("carbs_g", 0),
         fat_g=data.get("fat_g", 0),
         notes=data.get("notes", ""),
+        frequency=data.get("frequency", ""),
     )
 
 
