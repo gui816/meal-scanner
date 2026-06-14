@@ -69,8 +69,8 @@ header p{color:var(--sub);font-size:.85rem;margin-top:.4rem;max-width:90%;margin
 .uz-file{display:none;margin-top:.5rem;color:var(--brand);font-size:.8rem;font-weight:600;background:var(--brand-light);padding:4px 12px;border-radius:20px;display:inline-block}
 .uz-preview{display:none;width:100%;max-height:320px;border-radius:calc(var(--radius) - 4px);object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,.1);cursor:pointer;transition:opacity .2s}
 .uz-preview:active{opacity:.8}
-.uz-change{display:none;position:absolute;top:8px;right:8px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:20px;padding:5px 12px;font-size:.7rem;font-weight:600;cursor:pointer;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:2}
-.uz-change:active{transform:scale(.93)}
+.uz-change{display:none;background:var(--bg-card);color:var(--sub);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.55rem 1rem;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit;margin:.75rem auto 0;width:auto}
+.uz-change:hover{background:var(--bg-alt);color:var(--text);border-color:var(--brand)}
 /* Mobile-first action buttons */
 .mobile-actions{display:flex;gap:10px;margin-top:.85rem}
 .btn-action{flex:1;padding:1.1rem .5rem;border:none;border-radius:14px;font-size:1rem;font-weight:700;color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transition:all .15s;box-shadow:0 4px 8px rgba(0,0,0,.08);font-family:inherit;line-height:1.2}
@@ -226,8 +226,9 @@ footer{text-align:center;margin-top:2rem;color:var(--sub);font-size:.7rem;font-w
       </div>
       <div class="uz-file" id="fileName" style="display:none"></div>
       <img class="uz-preview" id="preview" alt="Antevisão da refeição" onclick="event.stopPropagation();document.getElementById('fileInput').click()"/>
-      <button class="uz-change" id="changeBtn" onclick="event.stopPropagation();reset()">✕ Trocar foto</button>
     </div>
+    
+    <button class="uz-change" id="changeBtn" onclick="reset()">✕ Trocar foto</button>
     
     <div class="mobile-actions">
       <button class="btn-action camera" onclick="document.getElementById('cameraInput').click()">
@@ -364,7 +365,7 @@ function handleFile(input){
   };
   r.readAsDataURL(f);
   document.getElementById("analyzeBtn").style.display="block";document.getElementById("analyzeBtn").classList.add("shown");
-  document.getElementById("changeBtn").style.display="block";
+  document.getElementById("changeBtn").style.display="block";document.getElementById("changeBtn").style.margin=".75rem auto 0";
   document.querySelector(".mobile-actions").style.display="none";
 }
 
