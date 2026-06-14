@@ -193,6 +193,7 @@ footer{text-align:center;margin-top:2rem;color:var(--sub);font-size:.7rem;font-w
       <option value="it">🇮🇹 Italiano</option>
     </select>
     <button class="lang-select" style="cursor:pointer;color:#dc2626;border-color:#fca5a5" onclick="logout()" data-i18n="logout">Sair</button>
+    <button id="installBtn" style="display:none;border:none;background:var(--brand);color:#fff;padding:6px 12px;border-radius:var(--radius-sm);font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap" onclick="installApp()">📲 Instalar</button>
   </div>
   
   <header>
@@ -732,6 +733,23 @@ function reset(){
   document.getElementById("fileName").style.display="none";
   document.getElementById("dropZone").classList.remove("has-img");
   document.getElementById("uploadPrompt").style.display="block";
+}
+let deferredPrompt=null;
+window.addEventListener("beforeinstallprompt",(e)=>{
+  e.preventDefault();
+  deferredPrompt=e;
+  const btn=document.getElementById("installBtn");
+  if(btn) btn.style.display="inline-block";
+});
+window.addEventListener("appinstalled",()=>{
+  deferredPrompt=null;
+  const btn=document.getElementById("installBtn");
+  if(btn) btn.style.display="none";
+});
+function installApp(){
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(()=>{deferredPrompt=null;});
 }
 if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("/static/sw.js");});}
 renderHistory();try{updateFab();}catch(e){}
