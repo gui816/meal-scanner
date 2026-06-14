@@ -79,6 +79,12 @@ header p{color:var(--sub);font-size:.85rem;margin-top:.4rem;max-width:90%;margin
 .btn-action .btn-label{font-size:.82rem;font-weight:600}
 .btn-action.camera{background:var(--brand)}
 .btn-action.gallery{background:var(--accent)}
+@media(max-width:599px){
+  .load-step{display:none!important}
+  #loading p{font-size:.9rem}
+  #historySec{border-top:none!important;margin-top:1rem!important;padding-top:1rem!important}
+  #historySec>div:first-child h3{font-size:.82rem!important}
+}
 @media(min-width:600px){
   .upload-zone{min-height:160px;padding:3rem 2rem}
   .btn-action{flex-direction:row;padding:1rem 1.25rem}
@@ -296,6 +302,28 @@ footer{text-align:center;margin-top:2rem;color:var(--sub);font-size:.7rem;font-w
 
   <footer data-i18n="footer">MVP por Guilherme Guerreiro com Copilot AI @2026</footer>
 </div>
+
+<!-- Mobile history FAB -->
+<button id="histFab" onclick="toggleHistory()" style="display:none;position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:var(--brand);color:#fff;border:none;border-radius:50%;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:100;transition:all .2s" aria-label="Histórico">📋</button>
+
+<script>
+let historyVisible=false;
+function toggleHistory(){
+  historyVisible=!historyVisible;
+  const sec=document.getElementById("historySec");
+  if(sec) sec.style.display=historyVisible?"block":"none";
+}
+
+// Show FAB only on mobile when there is history
+function updateFab(){
+  const fab=document.getElementById("histFab");
+  if(!fab) return;
+  if(window.innerWidth>=600){fab.style.display="none";return;}
+  let hist=[];
+  try{hist=JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]");}catch(e){}
+  fab.style.display=hist.length?"flex":"none";
+}
+
 
 <script>
 const I18N = {
@@ -618,6 +646,7 @@ function renderHistory(){
         (e.cal||0)+' kcal · '+(e.calPct||0)+'% VD</div></div>'+
       '<span class="hist-time">'+timeStr+'</span></div>';
   }).join("");
+  try{updateFab();}catch(e){}
 }
 
 function showFromHistory(idx){
@@ -643,6 +672,8 @@ function showFromHistory(idx){
 function clearHistory(){
   localStorage.removeItem(HISTORY_KEY);
   renderHistory();
+  // Hide history on mobile after clear
+  document.getElementById("historySec").style.display="none";
 }
 
 function frequencyFallback(cal,fat){
@@ -666,7 +697,8 @@ function reset(){
   document.getElementById("uploadPrompt").style.display="block";
 }
 if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("/static/sw.js");});}
-renderHistory();
+renderHistory();try{updateFab();}catch(e){}
+window.addEventListener("resize",()=>{try{updateFab();}catch(e){}});
 </script>
 </body>
 </html>

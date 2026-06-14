@@ -110,6 +110,8 @@ Add a "frequency" field with a consumption recommendation in the user's language
 
 Also set the "confidence" field based on how certain you are: "high" (clear photo, recognizable portions, common dish), "medium" (some uncertainty), "low" (poor quality, mixed/unclear dish).
 
+IMPORTANTE: Assume a standard medium portion. Be conservative with calorie estimates — slightly underestimate rather than overestimate. A typical main dish: 400-700 kcal, light meal: 200-400 kcal, snack: under 200 kcal.
+
 {lang}"""
 
 
@@ -231,16 +233,31 @@ def _call_gemini(image: PIL.Image.Image, lang: str = "en") -> MealAnalysis:
 
 
     ingredients = [Ingredient(**i) for i in ingredients_raw]
+
+    # Apply confidence-based correction factor (Gemini tends to overestimate)
+    confidence = data.get("confidence", "medium")
+    correction_factors = {"high": 1.0, "medium": 0.85, "low": 0.75}
+    cf = correction_factors.get(confidence, 0.85)
+    raw_cal = data.get("total_calories_kcal", 0)
+    raw_protein = data.get("protein_g", 0)
+    raw_carbs = data.get("carbs_g", 0)
+    raw_fat = data.get("fat_g", 0)
+    adjusted_cal = max(1, round(raw_cal * cf))
+    adjusted_protein = max(0, round(raw_protein * cf))
+    adjusted_carbs = max(0, round(raw_carbs * cf))
+    adjusted_fat = max(0, round(raw_fat * cf))
+    logger.info(f"Confidence={confidence} factor={cf} raw_cal={raw_cal} adj_cal={adjusted_cal}")
+
     return MealAnalysis(
         dish_name=dish_name,
         ingredients=ingredients,
-        total_calories_kcal=data.get("total_calories_kcal", 0),
-        protein_g=data.get("protein_g", 0),
-        carbs_g=data.get("carbs_g", 0),
-        fat_g=data.get("fat_g", 0),
+        total_calories_kcal=adjusted_cal,
+        protein_g=adjusted_protein,
+        carbs_g=adjusted_carbs,
+        fat_g=adjusted_fat,
         notes=data.get("notes", ""),
         frequency=data.get("frequency", ""),
-        confidence=data.get("confidence", "medium"),
+        confidence=confidence,
     )
 
 
