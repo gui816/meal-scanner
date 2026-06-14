@@ -373,6 +373,13 @@ async function analyze(){
       btn.disabled=false;
       return;
     }
+    if(r.status===400){
+      // Bad request - e.g. wrong file type or invalid image
+      document.getElementById("loading").style.display="none";
+      showError("error_generic","");
+      btn.disabled=false;
+      return;
+    }
     if(!r.ok){
       // Try to read error body, fallback to generic message
       try {

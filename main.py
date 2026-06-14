@@ -70,15 +70,41 @@ class MealAnalysis:
 # prompt
 # ---------------------------------------------------------------------------
 
-SYSTEM_PROMPT = """Analyse this food photo. Return ONLY valid JSON (no markdown, no extra text).
+# Define response schema for structured JSON output
+RESPONSE_SCHEMA = {
+    "type": "OBJECT",
+    "properties": {
+        "is_food": {"type": "BOOLEAN", "description": "Whether the image contains a recognizable meal or food plate"},
+        "dish_name": {"type": "STRING", "description": "Name of the dish/meal in the user's language, or empty string if not food"},
+        "ingredients": {
+            "type": "ARRAY",
+            "items": {
+                "type": "OBJECT",
+                "properties": {
+                    "name": {"type": "STRING", "description": "Ingredient name"},
+                    "estimated_amount": {"type": "STRING", "description": "Estimated amount (metric units)"}
+                },
+                "required": ["name", "estimated_amount"]
+            },
+            "description": "List of detected ingredients"
+        },
+        "total_calories_kcal": {"type": "INTEGER", "description": "Total estimated calories in kcal"},
+        "protein_g": {"type": "INTEGER", "description": "Protein in grams"},
+        "carbs_g": {"type": "INTEGER", "description": "Carbohydrates in grams"},
+        "fat_g": {"type": "INTEGER", "description": "Fat in grams"},
+        "notes": {"type": "STRING", "description": "Additional nutritional notes in the user's language"},
+        "frequency": {"type": "STRING", "description": "Consumption frequency recommendation in user's language: 'Pode consumir diariamente', 'Consumir com moderacao', 'Consumir ocasionalmente', or equivalent"},
+    },
+    "required": ["is_food", "dish_name", "ingredients", "total_calories_kcal", "protein_g", "carbs_g", "fat_g", "notes", "frequency"]
+}
 
-If the image DOES contain a recognizable meal, dish, or food plate:
-{"is_food": true, "dish_name": "...", "ingredients": [{"name": "...", "estimated_amount": "..."}], "total_calories_kcal": 0, "protein_g": 0, "carbs_g": 0, "fat_g": 0, "notes": "...", "frequency": "..."}
+SYSTEM_PROMPT = """Analyse this food photo. Return the analysis in the user's requested language.
 
-If the image does NOT contain a recognizable meal or food plate (e.g. landscape, person, document, object, animal, abstract image):
-{"is_food": false, "dish_name": "", "ingredients": [], "total_calories_kcal": 0, "protein_g": 0, "carbs_g": 0, "fat_g": 0, "notes": "", "frequency": ""}
+If the image DOES contain a recognizable meal, dish, or food plate: set is_food=true and fill all nutritional fields with realistic estimates based on the visible portion.
 
-Add a "frequency" field with a consumption recommendation in the user's language when is_food is true. Examples: "Pode consumir diariamente", "Consumir com moderação", "Consumir ocasionalmente". Base it on the meal's nutritional profile, not just calories. Be realistic about portions. Use metric units.
+If the image does NOT contain a recognizable meal or food plate (e.g. landscape, person, document, object, animal, abstract image): set is_food=false and leave all other fields empty/default.
+
+Add a "frequency" field with a consumption recommendation in the user's language when is_food is true. Examples: "Pode consumir diariamente", "Consumir com moderacao", "Consumir ocasionalmente". Base it on the meal's nutritional profile. Use metric units.
 
 {lang}"""
 
@@ -122,6 +148,8 @@ def _call_gemini(image: PIL.Image.Image, lang: str = "en") -> MealAnalysis:
             config=types.GenerateContentConfig(
                 temperature=0.15,
                 max_output_tokens=4096,
+                response_mime_type="application/json",
+                response_schema=RESPONSE_SCHEMA,
             ),
         )
         raw = resp.text.strip()
@@ -131,34 +159,23 @@ def _call_gemini(image: PIL.Image.Image, lang: str = "en") -> MealAnalysis:
         logger.error(f"Gemini API call failed: {err[:300]}")
         if "RESOURCE_EXHAUSTED" in err or "quota" in err:
             raise HTTPException(429, f"API quota exceeded: {err[:200]}")
+        if "SAFETY" in err or "blocked" in err.lower() or "finish_reason" in err.lower():
+            raise HTTPException(422, "BLOCKED")
         raise HTTPException(502, f"Gemini API error: {err[:300]}")
 
-    # Strip markdown code fences if present
-    if "```" in raw:
-        # Extract JSON between first ``` and last ```
-        parts = raw.split("```")
-        for p in parts:
-            p = p.strip()
-            if p.startswith("json"):
-                p = p[4:].strip()
-            if p.startswith("{") and p.endswith("}"):
-                raw = p
-                break
-        else:
-            # fallback: just strip the fences
-            raw = raw.replace("```json", "").replace("```", "").strip()
-
+    # With response_mime_type=application/json and response_schema set,
+    # Gemini always returns valid JSON. Try to parse it.
     try:
         data = json.loads(raw)
-    except json.JSONDecodeError:
-        # Last resort: find first { and last }
+    except json.JSONDecodeError as exc:
+        logger.error(f"Gemini returned invalid JSON despite schema mode: {raw[:300]}")
+        # Last resort just in case schema mode fails
         start = raw.find("{")
         end = raw.rfind("}")
         if start >= 0 and end > start:
-            raw = raw[start:end+1]
             try:
-                data = json.loads(raw)
-            except json.JSONDecodeError as exc:
+                data = json.loads(raw[start:end+1])
+            except json.JSONDecodeError:
                 raise HTTPException(502, f"Gemini returned invalid JSON:\n{raw[:500]}")
         else:
             raise HTTPException(502, f"Gemini returned invalid JSON:\n{raw[:500]}")
