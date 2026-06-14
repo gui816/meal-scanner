@@ -365,6 +365,7 @@ function handleFile(input){
   r.readAsDataURL(f);
   document.getElementById("analyzeBtn").style.display="block";document.getElementById("analyzeBtn").classList.add("shown");
   document.getElementById("changeBtn").style.display="block";
+  document.querySelector(".mobile-actions").style.display="none";
 }
 
 const dz=document.getElementById("dropZone");
@@ -634,6 +635,7 @@ function logout(){sessionStorage.removeItem("ms_token");location.reload();}
 function reset(){
   document.getElementById("results").style.display="none";
   document.getElementById("changeBtn").style.display="none";
+  document.querySelector(".mobile-actions").style.display="flex";
   document.getElementById("analyzeBtn").style.display="none";document.getElementById("analyzeBtn").classList.remove("shown");
   document.getElementById("fileInput").value="";
   document.getElementById("cameraInput").value="";
