@@ -290,16 +290,15 @@ footer{text-align:center;margin-top:2rem;color:var(--sub);font-size:.7rem;font-w
     
     <div class="notes-box" id="notes"></div>
 
-
-    <!-- Error state -->
-    <div id="errorBox" style="display:none;text-align:center;padding:2rem 1rem;margin-top:.5rem;background:#fef2f2;border:1px solid #fecaca;border-radius:var(--radius)">
-      <div style="font-size:3rem;margin-bottom:.75rem">😕</div>
-      <div id="errorMsg" style="font-size:.95rem;font-weight:600;color:#991b1b;margin-bottom:.25rem">Não foi detetado um prato de comida.</div>
-      <div id="errorSub" style="font-size:.82rem;color:#b91c1c;margin-bottom:1.25rem">Tire uma foto nítida do seu prato e tente novamente.</div>
-      <button class="reset-btn" onclick="reset()" data-i18n="error_btn" style="max-width:280px;margin:0 auto">Tentar novamente</button>
-    </div>
-
     <button class="reset-btn" onclick="reset()" data-i18n="reset_btn">Analisar nova refeição</button>
+  </div>
+
+  <!-- Error state (outside #results to avoid parent display:none) -->
+  <div id="errorBox" style="display:none;text-align:center;padding:2rem 1rem;margin-top:1rem;background:#fef2f2;border:1px solid #fecaca;border-radius:var(--radius)">
+    <div style="font-size:3rem;margin-bottom:.75rem">😕</div>
+    <div id="errorMsg" style="font-size:.95rem;font-weight:600;color:#991b1b;margin-bottom:.25rem">Não foi detetado um prato de comida.</div>
+    <div id="errorSub" style="font-size:.82rem;color:#b91c1c;margin-bottom:1.25rem">Tire uma foto nítida do seu prato e tente novamente.</div>
+    <button class="reset-btn" onclick="reset()" data-i18n="error_btn" style="max-width:280px;margin:0 auto">Tentar novamente</button>
   </div>
 
   <!-- History Dropdown + Timeline -->
