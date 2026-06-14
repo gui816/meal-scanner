@@ -72,9 +72,13 @@ class MealAnalysis:
 
 SYSTEM_PROMPT = """Analyse this food photo. Return ONLY valid JSON (no markdown, no extra text).
 
-{"dish_name": "...", "ingredients": [{"name": "...", "estimated_amount": "..."}], "total_calories_kcal": 0, "protein_g": 0, "carbs_g": 0, "fat_g": 0, "notes": "...", "frequency": "..."}
+If the image DOES contain a recognizable meal, dish, or food plate:
+{"is_food": true, "dish_name": "...", "ingredients": [{"name": "...", "estimated_amount": "..."}], "total_calories_kcal": 0, "protein_g": 0, "carbs_g": 0, "fat_g": 0, "notes": "...", "frequency": "..."}
 
-Add a "frequency" field with a consumption recommendation in the user's language. Examples: "Pode consumir diariamente", "Consumir com moderação", "Consumir ocasionalmente". Base it on the meal's nutritional profile, not just calories. Be realistic about portions. Use metric units.
+If the image does NOT contain a recognizable meal or food plate (e.g. landscape, person, document, object, animal, abstract image):
+{"is_food": false, "dish_name": "", "ingredients": [], "total_calories_kcal": 0, "protein_g": 0, "carbs_g": 0, "fat_g": 0, "notes": "", "frequency": ""}
+
+Add a "frequency" field with a consumption recommendation in the user's language when is_food is true. Examples: "Pode consumir diariamente", "Consumir com moderação", "Consumir ocasionalmente". Base it on the meal's nutritional profile, not just calories. Be realistic about portions. Use metric units.
 
 {lang}"""
 
@@ -160,10 +164,23 @@ def _call_gemini(image: PIL.Image.Image, lang: str = "en") -> MealAnalysis:
             raise HTTPException(502, f"Gemini returned invalid JSON:\n{raw[:500]}")
 
 
+    # Validate that the image actually contains food
+    is_food = data.get("is_food", True)  # default true for backward compat
+    if not is_food:
+        raise HTTPException(422, "NOT_FOOD")
 
-    ingredients = [Ingredient(**i) for i in data.get("ingredients", [])]
+    # Additional sanity checks: if dish_name is empty with no ingredients, treat as not food
+    dish_name = data.get("dish_name", "")
+    ingredients_raw = data.get("ingredients", [])
+    if not dish_name or not ingredients_raw:
+        raise HTTPException(422, "NOT_FOOD")
+
+
+
+
+    ingredients = [Ingredient(**i) for i in ingredients_raw]
     return MealAnalysis(
-        dish_name=data.get("dish_name", "Unknown dish"),
+        dish_name=dish_name,
         ingredients=ingredients,
         total_calories_kcal=data.get("total_calories_kcal", 0),
         protein_g=data.get("protein_g", 0),
