@@ -292,14 +292,11 @@ footer{text-align:center;margin-top:2rem;color:var(--sub);font-size:.7rem;font-w
 
   <!-- History Dropdown + Timeline -->
   <div id="historySec" style="display:none;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border)">
-    <div onclick="toggleHistoryDropdown()" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;padding:4px 0">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0">
       <h3 style="font-size:.9rem;font-weight:700;color:var(--text);letter-spacing:-.3px;display:flex;align-items:center;gap:8px"><span data-i18n="history_title">📋 Histórico</span> <span id="histCount" style="font-size:.7rem;background:var(--brand-light);color:var(--brand);padding:1px 8px;border-radius:10px;font-weight:600">0</span></h3>
-      <div style="display:flex;align-items:center;gap:8px">
-        <button onclick="event.stopPropagation();clearHistory()" style="border:none;background:none;color:var(--sub);font-size:.7rem;cursor:pointer;font-weight:600;font-family:inherit;text-decoration:none;padding:2px 6px;border-radius:6px" data-i18n="history_clear">Limpar</button>
-        <span id="histArrow" style="font-size:.8rem;color:var(--sub);transition:transform .2s">▸</span>
-      </div>
+      <button onclick="clearHistory()" style="border:none;background:none;color:var(--sub);font-size:.7rem;cursor:pointer;font-weight:600;font-family:inherit;text-decoration:none;padding:2px 6px;border-radius:6px" data-i18n="history_clear">Limpar</button>
     </div>
-    <div id="historyBody" style="display:none;margin-top:.75rem;overflow:hidden;transition:max-height .3s ease">
+    <div id="historyBody" style="margin-top:.75rem">
       <div id="historyList" style="display:flex;flex-direction:column;gap:2px"></div>
     </div>
   </div>
@@ -611,17 +608,6 @@ function saveToHistory(d){
   try{renderHistory();}catch(e){}
 }
 
-let historyOpen=false;
-function toggleHistoryDropdown(){
-  historyOpen=!historyOpen;
-  const body=document.getElementById("historyBody");
-  const arrow=document.getElementById("histArrow");
-  if(body&&arrow){
-    body.style.display=historyOpen?"block":"none";
-    arrow.style.transform=historyOpen?"rotate(90deg)":"rotate(0deg)";
-  }
-}
-
 function renderHistory(){
   let hist=[];
   try{hist=JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]");}catch(e){}
@@ -694,11 +680,6 @@ function showFromHistory(idx){
 
 function clearHistory(){
   localStorage.removeItem(HISTORY_KEY);
-  historyOpen=false;
-  const arrow=document.getElementById("histArrow");
-  const body=document.getElementById("historyBody");
-  if(arrow) arrow.style.transform="rotate(0deg)";
-  if(body) body.style.display="none";
   renderHistory();
 }
 
