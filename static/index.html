@@ -87,6 +87,10 @@ header p{color:var(--sub);font-size:.85rem;margin-top:.4rem;max-width:90%;margin
 .loading p{color:var(--brand);font-weight:600;font-size:.95rem}
 
 /* Layout de Resultados */
+.conf-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:20px;font-size:.68rem;font-weight:700;letter-spacing:.02em;margin-left:8px;vertical-align:middle}
+.conf-high{background:#dcfce7;color:#166534}
+.conf-medium{background:#fef9c3;color:#854d0e}
+.conf-low{background:#fee2e2;color:#991b1b}
 #results{display:none;margin-top:1.5rem;animation:fadeIn .5s cubic-bezier(0.16,1,0.3,1) both}
 @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:2px solid var(--bg-alt)}
@@ -451,7 +455,26 @@ async function analyze(){
 }
 
 function showResults(d){
-  document.getElementById("dishName").textContent=d.dish_name;
+    document.getElementById("dishName").textContent=d.dish_name;
+  // Show confidence badge
+  const conf=d.confidence||"medium";
+  const confMap={
+    high:{icon:"🟢",label:["pt:Alta confiança","en:High confidence","es:Alta confianza","fr:Haute confiance","de:Hohe Genauigkeit","it:Alta affidabilità"]},
+    medium:{icon:"🟡",label:["pt:Confiança média","en:Medium confidence","es:Confianza media","fr:Confiance moyenne","de:Mittlere Genauigkeit","it:Affidabilità media"]},
+    low:{icon:"🔴",label:["pt:Baixa confiança","en:Low confidence","es:Baja confianza","fr:Faible confiance","de:Niedrige Genauigkeit","it:Bassa affidabilità"]}
+  };
+  const idx=["pt","en","es","fr","de","it"].indexOf(detectLang());
+  const ci=idx>=0?idx:1;
+  const info=confMap[conf]||confMap.medium;
+  const lbl=info.label[ci].split(":")[1];
+  let cb=document.getElementById("confBadge");
+  if(!cb){
+    cb=document.createElement("span");
+    cb.id="confBadge";
+    document.getElementById("dishName").after(cb);
+  }
+  cb.className="conf-badge conf-"+conf;
+  cb.textContent=info.icon+" "+lbl;
     const calPct=Math.round((d.total_calories_kcal/2000)*100);
   document.getElementById("calBadge").textContent=d.total_calories_kcal+" kcal";
   // Add % of daily calories next to the badge

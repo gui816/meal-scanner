@@ -64,6 +64,7 @@ class MealAnalysis:
     fat_g: int = 0
     notes: str = ""
     frequency: str = ""
+    confidence: str = "medium"  # high, medium, low
 
 
 # ---------------------------------------------------------------------------
@@ -94,8 +95,9 @@ RESPONSE_SCHEMA = {
         "fat_g": {"type": "INTEGER", "description": "Fat in grams"},
         "notes": {"type": "STRING", "description": "Additional nutritional notes in the user's language"},
         "frequency": {"type": "STRING", "description": "Consumption frequency recommendation in user's language: 'Pode consumir diariamente', 'Consumir com moderacao', 'Consumir ocasionalmente', or equivalent"},
+        "confidence": {"type": "STRING", "description": "Confidence level in this analysis: 'high' (clear photo, recognizable portions), 'medium' (some uncertainty), 'low' (poor image, very uncertain)"}
     },
-    "required": ["is_food", "dish_name", "ingredients", "total_calories_kcal", "protein_g", "carbs_g", "fat_g", "notes", "frequency"]
+    "required": ["is_food", "dish_name", "ingredients", "total_calories_kcal", "protein_g", "carbs_g", "fat_g", "notes", "frequency", "confidence"]
 }
 
 SYSTEM_PROMPT = """Analyse this food photo. Return the analysis in the user's requested language.
@@ -105,6 +107,8 @@ If the image DOES contain a recognizable meal, dish, or food plate: set is_food=
 If the image does NOT contain a recognizable meal or food plate (e.g. landscape, person, document, object, animal, abstract image): set is_food=false and leave all other fields empty/default.
 
 Add a "frequency" field with a consumption recommendation in the user's language when is_food is true. Examples: "Pode consumir diariamente", "Consumir com moderacao", "Consumir ocasionalmente". Base it on the meal's nutritional profile. Use metric units.
+
+Also set the "confidence" field based on how certain you are: "high" (clear photo, recognizable portions, common dish), "medium" (some uncertainty), "low" (poor quality, mixed/unclear dish).
 
 {lang}"""
 
@@ -236,6 +240,7 @@ def _call_gemini(image: PIL.Image.Image, lang: str = "en") -> MealAnalysis:
         fat_g=data.get("fat_g", 0),
         notes=data.get("notes", ""),
         frequency=data.get("frequency", ""),
+        confidence=data.get("confidence", "medium"),
     )
 
 
