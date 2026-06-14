@@ -598,6 +598,7 @@ function saveToHistory(d){
     fat:d.fat_g,
     freq:d.frequency||"",
     conf:conf,
+    ingredients:d.ingredients||[],
     time:Date.now()
   };
   let hist=[];
@@ -697,7 +698,7 @@ function showFromHistory(idx){
     fat_g:e.fat||0,
     frequency:e.freq||"",
     confidence:e.conf||"medium",
-    ingredients:[],
+    ingredients:e.ingredients||[],
     notes:""
   });
   document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
