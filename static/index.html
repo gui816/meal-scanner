@@ -42,7 +42,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
 /* Estrutura Principal App */
 #app{display:none;width:100%;max-width:540px;margin:0 auto;background:var(--bg-card);padding:1.5rem;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}
-.lang-bar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:.75rem;align-items:center;width:100%;max-width:540px}
+.lang-bar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:1.25rem;align-items:center}
 .lang-select{padding:6px 12px;border:1px solid var(--border);background:var(--bg-card);border-radius:var(--radius-sm);font-size:.85rem;font-weight:600;color:var(--text);cursor:pointer;outline:none;transition:all .2s;font-family:inherit}
 .lang-select:hover{border-color:var(--brand);background:var(--bg-alt)}
 
@@ -185,6 +185,7 @@ footer{text-align:center;margin-top:2rem;color:var(--sub);font-size:.7rem;font-w
   </div>
 </div>
 
+<div id="appWrapper" style="width:100%;max-width:540px;margin:0 auto">
 <div id="appBar" style="display:none" class="lang-bar">
     <select class="lang-select" id="langSelect" onchange="setLang(this.value)">
       <option value="pt">🇵🇹 Português</option>
@@ -324,6 +325,7 @@ footer{text-align:center;margin-top:2rem;color:var(--sub);font-size:.7rem;font-w
 
   <footer data-i18n="footer">MVP por Guilherme Guerreiro com Copilot AI @2026</footer>
 </div>
+</div><!-- /appWrapper -->
 
 <!-- Mobile history FAB -->
 
