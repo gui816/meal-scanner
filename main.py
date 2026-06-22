@@ -13,6 +13,7 @@ import json
 import logging
 import os
 from dataclasses import dataclass, field, asdict
+from datetime import datetime
 from functools import wraps
 from pathlib import Path
 from typing import List, Optional
@@ -43,6 +44,34 @@ if not GEMINI_API_KEY:
     raise RuntimeError("GEMINI_API_KEY not set — copy .env.example to .env and fill in your key")
 
 client = genai.Client(api_key=GEMINI_API_KEY)
+
+# ---------------------------------------------------------------------------
+# usage stats (persistent file counter)
+# ---------------------------------------------------------------------------
+
+STATS_FILE = Path(__file__).resolve().parent / "stats.json"
+
+
+def _load_stats() -> dict:
+    if STATS_FILE.exists():
+        try:
+            return json.loads(STATS_FILE.read_text())
+        except (json.JSONDecodeError, OSError):
+            pass
+    return {"total_analyzes": 0, "by_date": {}, "last_analyze": None}
+
+
+def _save_stats(stats: dict):
+    STATS_FILE.write_text(json.dumps(stats, indent=2))
+
+
+def _increment_stats():
+    stats = _load_stats()
+    stats["total_analyzes"] += 1
+    today = datetime.now().strftime("%Y-%m-%d")
+    stats["by_date"][today] = stats["by_date"].get(today, 0) + 1
+    stats["last_analyze"] = datetime.now().isoformat()
+    _save_stats(stats)
 
 # ---------------------------------------------------------------------------
 # data models
@@ -318,6 +347,7 @@ async def analyze(req: Request, file: UploadFile = File(...), lang: str = "en"):
     image = _validate_image(contents, file.filename or "photo")
     try:
         result = _call_gemini(image, lang)
+        _increment_stats()
         logger.info(f"Analyze success: {result.dish_name}, {result.total_calories_kcal} kcal, {len(result.ingredients)} ingredients")
         return result
     except HTTPException:
@@ -339,3 +369,24 @@ else:
 @app.get("/", response_class=HTMLResponse)
 def index():
     return HTML_PAGE
+
+
+# ── Hidden admin stats ──────────────────────────────────────────────────
+
+@app.get("/admin")
+def admin_stats(req: Request):
+    """Hidden endpoint — shows usage stats only if 'x-admin-key' matches."""
+    admin_key = req.headers.get("x-admin-key", "")
+    if not admin_key:
+        # Try query param as fallback (less secure but easier to curl)
+        admin_key = req.query_params.get("key", "")
+    if admin_key != SITE_PASSWORD:
+        # Return 404 instead of 401 to stay hidden
+        raise HTTPException(404)
+
+    stats = _load_stats()
+    return {
+        "total_analyzes": stats["total_analyzes"],
+        "by_date": stats["by_date"],
+        "last_analyze": stats["last_analyze"],
+    }
