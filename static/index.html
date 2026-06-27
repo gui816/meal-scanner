@@ -391,9 +391,10 @@ async function doAuth(){
 }
 
 window.addEventListener("DOMContentLoaded",()=>{
-  // Check URL query param ?token=xxx (for mobile app WebView)
   const urlParams=new URLSearchParams(window.location.search);
   const urlToken=urlParams.get("token");
+  const isCliente=urlParams.get("cliente")==="true";
+
   if(urlToken){
     sessionStorage.setItem("ms_token",urlToken);
     TOKEN=urlToken;
@@ -409,6 +410,19 @@ window.addEventListener("DOMContentLoaded",()=>{
       document.getElementById("app").style.display="block";
     }
   }
+
+  // Modo cliente: esconder Sair, Instalar, logo e nome NutriLens
+  if(isCliente){
+    const logoutBtn=document.querySelector("#appBar button[onclick*='logout']");
+    if(logoutBtn) logoutBtn.style.display="none";
+    const installBtn=document.getElementById("installBtn");
+    if(installBtn) installBtn.style.display="none";
+    const gateInstallBtn=document.getElementById("gateInstallBtn");
+    if(gateInstallBtn) gateInstallBtn.style.display="none";
+    const hdr=document.querySelector("#app header");
+    if(hdr) hdr.style.display="none";
+  }
+
   applyLang(detectLang());
 });
 
