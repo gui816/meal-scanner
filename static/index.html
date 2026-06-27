@@ -391,12 +391,23 @@ async function doAuth(){
 }
 
 window.addEventListener("DOMContentLoaded",()=>{
-  const t=sessionStorage.getItem("ms_token");
-  if(t){
-    TOKEN=t;
+  // Check URL query param ?token=xxx (for mobile app WebView)
+  const urlParams=new URLSearchParams(window.location.search);
+  const urlToken=urlParams.get("token");
+  if(urlToken){
+    sessionStorage.setItem("ms_token",urlToken);
+    TOKEN=urlToken;
     document.getElementById("gate").style.display="none";
     document.getElementById("appBar").style.display="flex";
     document.getElementById("app").style.display="block";
+  }else{
+    const t=sessionStorage.getItem("ms_token");
+    if(t){
+      TOKEN=t;
+      document.getElementById("gate").style.display="none";
+      document.getElementById("appBar").style.display="flex";
+      document.getElementById("app").style.display="block";
+    }
   }
   applyLang(detectLang());
 });
