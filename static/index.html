@@ -376,6 +376,8 @@ function detectLang(){
   return ["pt","en","es","fr","de","it"].includes(n)?n:"en";
 }
 
+window.LANG_KEYS = {pt:"Português",en:"English",es:"Español",fr:"Français",de:"Deutsch",it:"Italiano"};
+
 async function doAuth(){
   const pwd=document.getElementById("gp").value, err=document.getElementById("ge");
   try{
@@ -394,6 +396,13 @@ window.addEventListener("DOMContentLoaded",()=>{
   const urlParams=new URLSearchParams(window.location.search);
   const urlToken=urlParams.get("token");
   const isCliente=urlParams.get("cliente")==="true";
+  const urlLang=urlParams.get("lang");
+  const validLangs=["pt","en","es","fr","de","it"];
+  if(urlLang && validLangs.includes(urlLang)){
+    localStorage.setItem("ms_lang",urlLang);
+  }else if(isCliente && !urlLang){
+    localStorage.setItem("ms_lang","pt");
+  }
 
   if(urlToken){
     sessionStorage.setItem("ms_token",urlToken);
@@ -421,6 +430,11 @@ window.addEventListener("DOMContentLoaded",()=>{
     if(gateInstallBtn) gateInstallBtn.style.display="none";
     const hdr=document.querySelector("#app header");
     if(hdr) hdr.style.display="none";
+    // Hide language selectors in client mode
+    const selApp=document.getElementById("langSelect");
+    if(selApp) selApp.style.display="none";
+    const selGate=document.getElementById("gateLang");
+    if(selGate) selGate.style.display="none";
   }
 
   applyLang(detectLang());
